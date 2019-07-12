@@ -30,23 +30,11 @@
                   }
                   else
                   {
-                      //if (item.ModuleDetailID == ViewBag.ModuleDetailID)
-                      //{
-                      //    items.Add()
-                      //        .Text(item.SoftDescription)
-                      //        .Content(item.Description)
-                      //        .ImageUrl(item.ImageIndex)
-                      //        .HtmlAttributes(new { @class = "menuModuleDetailItems", @ModuleDetailID = item.ModuleDetailID, @taskName = item.Description, @itemmenu = "item", @taskActions = item.Actions, @taskController = item.Controller, @highlight = "highlight" });
-
-                      //}
-                      //else
-                      //{
                       items.Add()
                           .Text(item.SoftDescription)
                           .Content(item.Description)
                           .ImageUrl(item.ImageIndex)
                           .HtmlAttributes(new { @class = "menuModuleDetailItems", @ModuleDetailID = item.ModuleDetailID, @taskName = item.Description, @itemmenu = "item", @taskActions = item.Actions, @taskController = item.Controller });
-                      //}
                   }
           }
       })
@@ -65,37 +53,16 @@
         $("#grouplist").find(".k-state-selected").removeClass("k-state-selected");
         $(e.item).addClass("k-state-selected");
 
-        moduleDetailID = $(e.item).attr("ModuleDetailID");
         taskName = $(e.item).attr("taskName");
         taskController = $(e.item).attr("taskController");
         taskActions = $(e.item).attr("taskActions");
 
         if (taskController != "") {
+            var url = '@Url.Action("taskActions", "taskController")';
+            url = url.replace("taskActions", taskActions);
+            url = url.replace("taskController", taskController);
 
-            return $.ajax({
-                url: '@Url.Action("SetModuleDetailID", "MenuAPIs")',
-                data: JSON.stringify({ "ModuleDetailID": moduleDetailID }),
-
-                type: 'POST',
-                contentType: 'application/json;',
-                dataType: 'json',
-                success: function (result) {
-                    if (result.SetResult == "Successfully") {
-
-                        var url = '@Url.Action("taskActions", "taskController")';
-                        url = url.replace("taskActions", taskActions);
-                        url = url.replace("taskController", taskController);
-
-                        window.open(url, "_self");
-
-                    }
-                    else
-                        alert(result.SetResult);
-                },
-                error: function (jqXHR, textStatus) {
-                    alert(textStatus);
-                }
-            });
+            window.open(url, "_self");
         }
     }
 

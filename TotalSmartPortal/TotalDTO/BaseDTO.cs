@@ -10,6 +10,8 @@ namespace TotalDTO
 {
     public interface IBaseDTO : IBaseModel, IAccessControlAttribute
     {
+        GlobalEnums.NmvnTaskID ModuleDetailID { get; set; }
+
         string Reference { get; set; }
 
         int ApproverID { get; set; }
@@ -72,7 +74,8 @@ namespace TotalDTO
             }
         }
 
-        
+        public virtual GlobalEnums.NmvnTaskID ModuleDetailID { get; set; }
+
         [Display(Name = "Số phiếu")]
         public virtual string Reference { get; set; }
 

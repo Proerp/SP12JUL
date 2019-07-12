@@ -342,7 +342,7 @@ namespace TotalDTO.Inventories
 
 
 
-        public string ControllerName { get { return this.NMVNTaskID.ToString() + "s"; } }
+        public string ControllerName { get { return this.ModuleDetailID.ToString() + "s"; } }
         public string ArrivalController { get { return this.IsMaterial ? "MaterialArrivals" : (this.IsItem ? "ItemArrivals" : (this.IsProduct ? "ProductArrivals" : "")); } }
 
         public bool IsMaterial { get { return this.NMVNTaskID == GlobalEnums.NmvnTaskID.MaterialReceipt; } }

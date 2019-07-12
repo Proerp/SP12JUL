@@ -2033,6 +2033,12 @@
     <Content Include="Areas\Purchases\Views\ProductArrivals\GetPendingPurchaseOrderDetails.cshtml" />
     <Content Include="Areas\Purchases\Views\ProductArrivals\Index.cshtml" />
     <Content Include="Areas\Purchases\Views\ProductArrivals\Print.cshtml" />
+    <Content Include="Areas\Inventories\Views\HeapReceipts\Approve.cshtml" />
+    <Content Include="Areas\Inventories\Views\HeapReceipts\CreateWizard.cshtml" />
+    <Content Include="Areas\Inventories\Views\HeapReceipts\Delete.cshtml" />
+    <Content Include="Areas\Inventories\Views\HeapReceipts\Edit.cshtml" />
+    <Content Include="Areas\Inventories\Views\HeapReceipts\Index.cshtml" />
+    <Content Include="Areas\Inventories\Views\HeapReceipts\Print.cshtml" />
     <None Include="Properties\PublishProfiles\CBPP.pubxml" />
     <None Include="Properties\PublishProfiles\TDV.pubxml" />
     <None Include="Properties\PublishProfiles\VCP.pubxml">
@@ -2148,6 +2154,13 @@
     <Content Include="Scripts\Controllers\Inventories\HandlingUnits\Edit.js" />
     <Content Include="Scripts\Controllers\Inventories\HandlingUnits\Index.js" />
     <Content Include="Scripts\Controllers\Inventories\HandlingUnits\Open.js" />
+    <Content Include="Scripts\Controllers\Inventories\HeapReceipts\Approve.js" />
+    <Content Include="Scripts\Controllers\Inventories\HeapReceipts\CreateWizard.js" />
+    <Content Include="Scripts\Controllers\Inventories\HeapReceipts\Delete.js" />
+    <Content Include="Scripts\Controllers\Inventories\HeapReceipts\Edit.js" />
+    <Content Include="Scripts\Controllers\Inventories\HeapReceipts\Index.js" />
+    <Content Include="Scripts\Controllers\Inventories\HeapReceipts\Open.js" />
+    <Content Include="Scripts\Controllers\Inventories\HeapReceipts\Print.js" />
     <Content Include="Scripts\Controllers\Inventories\InventoryControls\Details.js" />
     <Content Include="Scripts\Controllers\Inventories\InventoryControls\Summaries.js" />
     <Content Include="Scripts\Controllers\Inventories\ItemAdjustments\Approve.js" />

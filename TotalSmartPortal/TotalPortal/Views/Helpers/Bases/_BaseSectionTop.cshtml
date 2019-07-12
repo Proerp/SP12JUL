@@ -1,1 +1,5 @@
-﻿<input id="preventImplicitSubmission" type="submit" style="display:none" onclick="return false;" />
+﻿@model TotalDTO.BaseDTO
+
+<input id="preventImplicitSubmission" type="submit" style="display:none" onclick="return false;" />
+
+@Html.HiddenFor(model => model.ModuleDetailID)

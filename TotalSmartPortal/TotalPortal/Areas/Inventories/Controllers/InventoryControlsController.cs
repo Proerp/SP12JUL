@@ -66,8 +66,7 @@ namespace TotalPortal.Areas.Inventories.Controllers
         public virtual void AddRequireJsOptions(int nmvnTaskID)
         {
             MenuSession.SetModuleID(this.HttpContext, (this.binLocationService.LocationID == 1? 6 : 3));
-            MenuSession.SetModuleDetailID(this.HttpContext, (nmvnTaskID == 6668805 ? (this.binLocationService.LocationID == 1 ? 666880501 : 6668805) : (this.binLocationService.LocationID == 1 ? 666880901 : 6668809)));
-
+            
             RequireJsOptions.Add("ModuleID", (this.binLocationService.LocationID == 1 ? 6 : 3), RequireJsOptionsScope.Page);
             RequireJsOptions.Add("ModuleDetailID", (nmvnTaskID == 6668805 ? (this.binLocationService.LocationID == 1 ? 666880501 : 6668805) : (this.binLocationService.LocationID == 1 ? 666880901 : 6668809)), RequireJsOptionsScope.Page);
             RequireJsOptions.Add("NmvnTaskID", nmvnTaskID, RequireJsOptionsScope.Page);

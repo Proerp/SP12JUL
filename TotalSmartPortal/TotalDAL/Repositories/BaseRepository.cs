@@ -38,32 +38,10 @@ namespace TotalDAL.Repositories
 
 
         #region Menu
-        public int GetModuleID(GlobalEnums.NmvnTaskID nmvnTaskID, int userID, ref int moduleDetailID)
+        public int GetModuleID(GlobalEnums.NmvnTaskID moduleDetailID)
         {
-            int localModuleDetailID = moduleDetailID;
-            if (localModuleDetailID == 0) localModuleDetailID = this.GetDefaultModuleDetailID(nmvnTaskID, userID);
-
-            var moduleDetail = this.totalSmartPortalEntities.ModuleDetails.Where(w => w.TaskID == (int)nmvnTaskID && w.ModuleDetailID == localModuleDetailID).FirstOrDefault();
-            if (moduleDetail == null)
-            {
-                localModuleDetailID = this.GetDefaultModuleDetailID(nmvnTaskID, userID);
-                moduleDetail = this.totalSmartPortalEntities.ModuleDetails.Where(w => w.TaskID == (int)nmvnTaskID && w.ModuleDetailID == localModuleDetailID).FirstOrDefault();
-            }
-
-            moduleDetailID = localModuleDetailID;
+            var moduleDetail = this.totalSmartPortalEntities.ModuleDetails.Where(w => w.ModuleDetailID == (int)moduleDetailID).FirstOrDefault();
             return moduleDetail != null ? moduleDetail.ModuleID : 0;
-        }
-
-        private int GetDefaultModuleDetailID(GlobalEnums.NmvnTaskID nmvnTaskID, int userID)
-        {
-            var moduleDefault = this.totalSmartPortalEntities.ModuleDefaults.Where(w => w.TaskID == (int)nmvnTaskID && w.UserID == (int)userID).FirstOrDefault();
-
-            if (moduleDefault != null)
-                return moduleDefault.ModuleDetailID;
-            {
-                var moduleDetail = this.totalSmartPortalEntities.ModuleDetails.Where(w => w.TaskID == (int)nmvnTaskID).FirstOrDefault();
-                return moduleDetail != null ? moduleDetail.ModuleDetailID : 0;
-            }
         }
         #endregion Menu
 

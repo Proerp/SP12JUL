@@ -44,9 +44,6 @@ namespace TotalPortal.APIs.Sessions
             }
 
 
-            ViewBag.ModuleDetailID = MenuSession.GetModuleDetailID(this.HttpContext);
-
-
             //var moduleDetail = moduleDetailRepository.GetModuleDetailByID((int)moduleID);
             var moduleDetail = moduleDetailRepository.GetAllModuleDetails().ToList().Where(w => (w.ModuleID == moduleID || (w.ModuleID == (GlobalEnums.CBPP? 3: 2) && moduleID == 0 && MenuSession.GetUserLocked(this.HttpContext) == 0)) && w.InActive == 0).OrderBy(o => o.SerialID);
             return PartialView(moduleDetail);
@@ -98,19 +95,6 @@ namespace TotalPortal.APIs.Sessions
         }
 
 
-        [HttpPost]
-        public JsonResult SetModuleDetailID(int moduleDetailID)
-        {
-            try
-            {
-                MenuSession.SetModuleDetailID(this.HttpContext, moduleDetailID);     
-                return Json(new { SetResult = "Successfully" }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { SetResult = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
 
         public ActionResult SetTask(int? taskID, string taskName, string taskController)
         {

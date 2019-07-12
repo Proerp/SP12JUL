@@ -182,6 +182,7 @@ namespace TotalBase.Enums
             GoodsReceipt = 8077,
             MaterialReceipt = 10081008,
             ItemReceipt = 10081009,
+            HeapReceipt = 1008100910,
             ProductReceipt = 10081010
         };
 

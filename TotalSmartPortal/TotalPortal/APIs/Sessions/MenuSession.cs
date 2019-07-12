@@ -186,19 +186,6 @@ namespace TotalPortal.APIs.Sessions
             context.Session["ModuleID"] = moduleID;
         }
 
-        public static int GetModuleDetailID(HttpContextBase context)
-        {
-            if (context.Session["ModuleDetailID"] == null)
-                return 0;
-            else
-                return (int)context.Session["ModuleDetailID"];
-        }
-
-        public static void SetModuleDetailID(HttpContextBase context, int moduleID)
-        {
-            context.Session["ModuleDetailID"] = moduleID;
-        }
-
         public static int GetTaskID(HttpContextBase context)
         {
             if (context.Session["TaskID"] == null)

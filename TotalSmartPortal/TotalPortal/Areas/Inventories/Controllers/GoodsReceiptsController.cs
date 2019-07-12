@@ -151,6 +151,23 @@ namespace TotalPortal.Areas.Inventories.Controllers
         }
     }
 
+    public class HeapReceiptsController : ItemReceiptsController
+    {
+        public override GlobalEnums.NmvnTaskID ModuleDetailID { get { return GlobalEnums.NmvnTaskID.HeapReceipt; } }
+
+        public HeapReceiptsController(IItemReceiptService itemReceiptService, IItemReceiptViewModelSelectListBuilder itemReceiptViewModelSelectListBuilder)
+            : base(itemReceiptService, itemReceiptViewModelSelectListBuilder)
+        {
+        }
+
+        protected override ItemReceiptViewModel NewViewModel()
+        {
+            ItemReceiptViewModel itemReceiptViewModel = base.NewViewModel();
+            itemReceiptViewModel.ModuleDetailID = this.ModuleDetailID;
+            return itemReceiptViewModel;
+        }
+    }
+
 
     public class ProductReceiptsController : GoodsReceiptsController<GoodsReceiptDTO<GROptionProduct>, GoodsReceiptPrimitiveDTO<GROptionProduct>, GoodsReceiptDetailDTO, ProductReceiptViewModel>
     {

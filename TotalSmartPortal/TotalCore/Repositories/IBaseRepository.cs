@@ -16,7 +16,7 @@ namespace TotalCore.Repositories
 
         Dictionary<string, object> RepositoryBag { get; set; }
 
-        int GetModuleID(GlobalEnums.NmvnTaskID nmvnTaskID, int userID, ref int moduleDetailID);
+        int GetModuleID(GlobalEnums.NmvnTaskID moduleDetailID);
 
         ICollection<TElement> ExecuteFunction<TElement>(string functionName, params ObjectParameter[] parameters);
         int ExecuteFunction(string functionName, params ObjectParameter[] parameters);

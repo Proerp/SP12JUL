@@ -67,7 +67,9 @@ namespace TotalPortal.Controllers
             ViewBag.SelectedEntityID = id == null ? -1 : (int)id;
             ViewBag.ShowDiscount = this.GenericService.GetShowDiscount();
 
-            TSimpleViewModel simpleViewModel = new TSimpleViewModel() { GlobalFromDate = HomeSession.GetGlobalFromDate(this.HttpContext), GlobalToDate = HomeSession.GetGlobalToDate(this.HttpContext) };
+            TSimpleViewModel simpleViewModel = NewViewModel();
+            simpleViewModel.GlobalFromDate = HomeSession.GetGlobalFromDate(this.HttpContext);
+            simpleViewModel.GlobalToDate = HomeSession.GetGlobalToDate(this.HttpContext);
 
             return View(this.InitViewModel(simpleViewModel));
         }
@@ -103,7 +105,7 @@ namespace TotalPortal.Controllers
             if (!this.isSimpleCreate) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
 
-            return View(this.TailorViewModel(this.InitViewModelByPrior(this.InitViewModelByDefault(new TSimpleViewModel())))); //Need to call new TSimpleViewModel() to ensure construct TSimpleViewModel object using Constructor!
+            return View(this.TailorViewModel(this.InitViewModelByPrior(this.InitViewModelByDefault(NewViewModel())))); //Need to call NewViewModel() to ensure construct TSimpleViewModel object using Constructor!
         }
 
         [HttpPost]
@@ -138,7 +140,7 @@ namespace TotalPortal.Controllers
         {
             if (!this.isCreateWizard) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            return View(this.TailorViewModel(this.InitViewModelByDefault(new TSimpleViewModel())));
+            return View(this.TailorViewModel(this.InitViewModelByDefault(NewViewModel())));
         }
 
         /// <summary>
@@ -528,6 +530,10 @@ namespace TotalPortal.Controllers
         }
 
 
+        protected virtual TSimpleViewModel NewViewModel()
+        {
+            return new TSimpleViewModel() { ModuleDetailID = this.GenericService.NmvnTaskID };
+        }
 
         protected virtual bool Save(TSimpleViewModel simpleViewModel)
         {
