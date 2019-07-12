@@ -1,0 +1,171 @@
+﻿@using TotalPortal.Configuration;
+
+@using TotalDTO
+@using TotalDTO.Purchases
+@using TotalPortal.Areas.Purchases.ViewModels
+
+@{Layout = "~/Views/Shared/_LayoutPopup.cshtml";}
+
+@model IGoodsArrivalViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Partial("~/Views/Helpers/Bases/_BaseSectionTop.cshtml")
+
+    @Html.HiddenFor(model => (model as IGoodsArrivalPrimitiveDTO).HasPurchaseOrder)
+    @Html.HiddenFor(model => (model as IGoodsArrivalPrimitiveDTO).PurchaseOrderID)
+    @Html.HiddenFor(model => (model as IGoodsArrivalPrimitiveDTO).PurchaseOrderCode)
+    @Html.HiddenFor(model => (model as IGoodsArrivalPrimitiveDTO).PurchaseOrderReference)
+    @Html.HiddenFor(model => (model as IGoodsArrivalPrimitiveDTO).PurchaseOrderVoucherDate)
+    @Html.HiddenFor(model => (model as IGoodsArrivalPrimitiveDTO).DeliveryDate)
+    
+    @Html.HiddenFor(model => (model as IGoodsArrivalDTO).Salesperson.EmployeeID);
+    @Html.HiddenFor(model => (model as IGoodsArrivalDTO).Salesperson.Name);
+
+    @Html.HiddenFor(model => (model as IBaseDTO).Description);
+
+    @(Html.Kendo().TabStrip()
+        .HtmlAttributes(new { @style = "height: 377px; margin-left: 0px; margin-right: 0px;" })
+        .Name("tabStrip")
+        .Items(tabStrip =>
+        {
+            tabStrip.Add().Text("Nhập hàng theo PO")
+                .Selected(true)
+                .Content(@<text>
+                    @Html.Partial("~/Areas/Purchases/Views/GoodsArrivals/_GetPurchaseOrder.cshtml")
+                </text>);
+            tabStrip.Add().Text("Nhập hàng tổng hợp PO")
+                .Content(@<text>
+                    @Html.Partial("~/Areas/Purchases/Views/GoodsArrivals/_GetCustomer.cshtml")
+                </text>);
+            @*tabStrip.Add().Text("Nhập hàng không có PO")
+                .Enabled(false)
+                .Visible(false)
+                .Content(@<text>
+                    @Html.EditorFor(d => (d as IGoodsArrivalDTO).Customer, "AutoCompletes/CustomerBase", new { CustomerDescriptionHidden = "false", CustomerDisplayName = @Model.Customer.GetDisplayName(m => m.CustomerID) })
+                    @Html.EditorFor(d => (d as IGoodsArrivalDTO).Transporter, "AutoCompletes/CustomerBase", new { CustomerDescriptionHidden = "false", CustomerDisplayName = @Model.Transporter.GetDisplayName(m => m.CustomerID) })
+                    @Html.EditorFor(d => (d as IGoodsArrivalDTO).Warehouse, new { WarehouseDisplayName = @Model.GetDisplayName(m => m.Warehouse) })
+                </text>);*@
+        })
+    )
+
+    <div class="SBT-Hidden"> @*WILL REMOVE, IF WE USE THE TAB ABOVE*@
+        @Html.EditorFor(d => (d as IGoodsArrivalDTO).Customer, "AutoCompletes/CustomerBase", new { CustomerDescriptionHidden = "false", CustomerDisplayName = @Model.Customer.GetDisplayName(m => m.CustomerID) })
+        @Html.EditorFor(d => (d as IGoodsArrivalDTO).Transporter, "AutoCompletes/CustomerBase", new { CustomerDescriptionHidden = "false", CustomerDisplayName = @Model.Transporter.GetDisplayName(m => m.CustomerID) })
+        @Html.EditorFor(d => (d as IGoodsArrivalDTO).Warehouse, new { WarehouseDisplayName = @Model.Warehouse.GetDisplayName(m => m.WarehouseID) })
+    </div>
+
+    
+    
+    <div class="background-bar" style="height: 45px;">
+        <div class="popup-button-bar">
+            <input id="submitCreateWizard" type="submit" formaction="@Url.Action("CreateWizard", Model.ControllerName)" formtarget="_top" style="display:none" />
+
+            @*<button type="button" class="k-button" onclick="okButton_Click()"> <img src="~/Content/Images/Mains/Size24/Ok-1.png" /> Áp dụng CTKM đang chọn </button>   //At VCP DON'T ALLOW SELECT BY SINGLE PROMOTION *@
+            <button type="button" class="k-button" onclick="okWOSelectButton_Click()"> <img src="~/Content/Images/Mains/Size24/Accept-Total.png" /> Tiếp tục </button>
+            <button type="button" class="k-button" onclick="window.parent.$('#myWindow').data('kendoWindow').close()"> <img src="~/Content/Images/Mains/Size24/Users-Exit-icon-24.png" /> Thoát </button>
+        </div>
+    </div>
+
+}
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralPopup.css")" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    function okButton_Click() {
+        if ($("#tabStrip").data("kendoTabStrip").select().index() === 2)
+            handleOKEvent($("#gridPromotion").data("kendoGrid"));
+        else //BY PurchaseOrder
+            handleOKEvent();
+    }
+
+    function okWOSelectButton_Click() {
+        handleOKEvent();
+    }
+
+    function handleOKEvent(promotionGrid) { //This javascript is now used only here. Later, if it is used somewhere else, it should be break into a standalone js file, and then just only add a link here
+
+        var hasPurchaseOrder = $("#tabStrip").data("kendoTabStrip").select().index() === 2 ? false : true;
+
+        if (hasPurchaseOrder == false) {
+            if ($("#Customer_CustomerID").val() === null || $("#Customer_CustomerID").val() === "")
+                return false;
+
+            if (promotionGrid != undefined) {
+                var selectedPromotionItem = promotionGrid.dataItem(promotionGrid.select());
+                if (selectedPromotionItem === undefined || selectedPromotionItem === null)
+                    return false;
+            }
+
+            _setModelInput();
+        }
+        else {
+            var selectedGrid = $($("#tabStrip").data("kendoTabStrip").select().index() === 0 ? "#goodsArrivalPendingPurchaseOrderGrid" : "#goodsArrivalPendingCustomerGrid").data("kendoGrid");
+            var selectedDataItem = selectedGrid.dataItem(selectedGrid.select());
+            if (selectedDataItem === undefined || selectedDataItem === null)
+                return false;
+
+            _setModelInput(selectedDataItem);
+        }
+
+
+        $("#submitCreateWizard").trigger("click");
+
+
+        function _setModelInput(selectedDataItem) {
+
+            $("#HasPurchaseOrder").val(hasPurchaseOrder);
+
+            if (hasPurchaseOrder == false) {
+                $("#Salesperson_EmployeeID").val($("#Customer_SalespersonID").val()); //INIT DEFAULT Salesperson_EmployeeID, Salesperson_Name FROM Customer_SalespersonID, Customer_SalespersonName
+                $("#Salesperson_Name").val($("#Customer_SalespersonName").val());
+            }
+            else {
+                //TEMP ONLY
+                //$("#EntryDate").val(selectedDataItem === undefined || selectedDataItem.PurchaseOrderEntryDate === undefined ? null : kendo.toString(selectedDataItem.PurchaseOrderEntryDate, Settings.DateTimeFormat));
+
+                $("#Customer_CustomerID").val(selectedDataItem === undefined || selectedDataItem.CustomerID === undefined ? null : selectedDataItem.CustomerID);
+                $("#Customer_Code").val(selectedDataItem === undefined || selectedDataItem.CustomerCode === undefined ? null : selectedDataItem.CustomerCode);
+                $("#Customer_Name").val(selectedDataItem === undefined || selectedDataItem.CustomerName === undefined ? null : selectedDataItem.CustomerName);
+                $("#Customer_OfficialName").val(selectedDataItem === undefined || selectedDataItem.CustomerOfficialName === undefined ? null : selectedDataItem.CustomerOfficialName);
+                $("#Customer_Birthday").val(selectedDataItem === undefined || selectedDataItem.CustomerBirthday === undefined ? null : kendo.toString(selectedDataItem.CustomerBirthday, Settings.DateFormat));
+                $("#Customer_VATCode").val(selectedDataItem === undefined || selectedDataItem.CustomerVATCode === undefined ? null : selectedDataItem.CustomerVATCode);
+                $("#Customer_Telephone").val(selectedDataItem === undefined || selectedDataItem.CustomerTelephone === undefined ? null : selectedDataItem.CustomerTelephone);
+                $("#Customer_BillingAddress").val(selectedDataItem === undefined || selectedDataItem.CustomerBillingAddress === undefined ? null : selectedDataItem.CustomerBillingAddress);
+                $("#Customer_ShippingAddress").val(selectedDataItem === undefined || selectedDataItem.CustomerShippingAddress === undefined ? null : selectedDataItem.CustomerShippingAddress);
+                $("#Customer_SalespersonID").val(selectedDataItem === undefined || selectedDataItem.CustomerSalespersonID === undefined ? null : selectedDataItem.CustomerSalespersonID);
+                $("#Customer_SalespersonName").val(selectedDataItem === undefined || selectedDataItem.CustomerSalespersonName === undefined ? null : selectedDataItem.CustomerSalespersonName);
+
+                $("#Transporter_CustomerID").val(selectedDataItem === undefined || selectedDataItem.TransporterID === undefined ? null : selectedDataItem.TransporterID);
+                $("#Transporter_Code").val(selectedDataItem === undefined || selectedDataItem.TransporterCode === undefined ? null : selectedDataItem.TransporterCode);
+                $("#Transporter_Name").val(selectedDataItem === undefined || selectedDataItem.TransporterName === undefined ? null : selectedDataItem.TransporterName);
+                $("#Transporter_OfficialName").val(selectedDataItem === undefined || selectedDataItem.TransporterOfficialName === undefined ? null : selectedDataItem.TransporterOfficialName);
+                $("#Transporter_Birthday").val(selectedDataItem === undefined || selectedDataItem.TransporterBirthday === undefined ? null : kendo.toString(selectedDataItem.TransporterBirthday, Settings.DateFormat));
+                $("#Transporter_VATCode").val(selectedDataItem === undefined || selectedDataItem.TransporterVATCode === undefined ? null : selectedDataItem.TransporterVATCode);
+                $("#Transporter_Telephone").val(selectedDataItem === undefined || selectedDataItem.TransporterTelephone === undefined ? null : selectedDataItem.TransporterTelephone);
+                $("#Transporter_BillingAddress").val(selectedDataItem === undefined || selectedDataItem.TransporterBillingAddress === undefined ? null : selectedDataItem.TransporterBillingAddress);
+                $("#Transporter_ShippingAddress").val(selectedDataItem === undefined || selectedDataItem.TransporterShippingAddress === undefined ? null : selectedDataItem.TransporterShippingAddress);
+                $("#Transporter_SalespersonID").val(selectedDataItem === undefined || selectedDataItem.TransporterSalespersonID === undefined ? null : selectedDataItem.TransporterSalespersonID);
+                $("#Transporter_SalespersonName").val(selectedDataItem === undefined || selectedDataItem.TransporterSalespersonName === undefined ? null : selectedDataItem.TransporterSalespersonName);
+
+                $("#PurchaseOrderID").val(selectedDataItem === undefined || selectedDataItem.PurchaseOrderID === undefined ? null : selectedDataItem.PurchaseOrderID);
+                $("#PurchaseOrderCode").val(selectedDataItem === undefined || selectedDataItem.PurchaseOrderCode === undefined ? null : selectedDataItem.PurchaseOrderCode);
+                $("#PurchaseOrderReference").val(selectedDataItem === undefined || selectedDataItem.PurchaseOrderReference === undefined ? null : selectedDataItem.PurchaseOrderReference);
+                $("#PurchaseOrderVoucherDate").val(selectedDataItem === undefined || selectedDataItem.PurchaseOrderVoucherDate === undefined ? null : kendo.toString(selectedDataItem.PurchaseOrderVoucherDate, Settings.DateTimeFormat));
+                $("#DeliveryDate").val(selectedDataItem === undefined || selectedDataItem.PurchaseOrderDeliveryDate === undefined || selectedDataItem.PurchaseOrderDeliveryDate === null ? null : kendo.toString(selectedDataItem.PurchaseOrderDeliveryDate, Settings.DateTimeFormat));
+
+                $("#Warehouse_WarehouseID").val(selectedDataItem === undefined || selectedDataItem.WarehouseID === undefined ? null : selectedDataItem.WarehouseID);
+                $("#Warehouse_Code").val(selectedDataItem === undefined || selectedDataItem.WarehouseCode === undefined ? null : selectedDataItem.WarehouseCode);
+                $("#Warehouse_Name").val(selectedDataItem === undefined || selectedDataItem.WarehouseName === undefined ? null : selectedDataItem.WarehouseName);
+
+                $("#Salesperson_EmployeeID").val(selectedDataItem === undefined || selectedDataItem.SalespersonID === undefined ? $("#Salesperson_EmployeeID").val() : selectedDataItem.SalespersonID);
+                $("#Salesperson_Name").val(selectedDataItem === undefined || selectedDataItem.SalespersonName === undefined ? $("#Salesperson_Name").val() : selectedDataItem.SalespersonName);
+
+                $("#Description").val(selectedDataItem === undefined || selectedDataItem.Description === undefined ? null : selectedDataItem.Description);
+            }
+        }
+    }
+
+</script>

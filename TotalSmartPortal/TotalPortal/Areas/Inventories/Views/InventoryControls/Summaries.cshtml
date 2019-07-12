@@ -1,0 +1,246 @@
+﻿@using TotalPortal.Configuration
+
+@model TotalPortal.Areas.Inventories.ViewModels.InventoryControlViewModel
+
+<div>
+    @Html.Hidden("LastLabOptionID", "99")
+    @Html.Hidden("LastFilterOptionID", "0")
+    @Html.Hidden("SelectedFirmOrderID", "0")
+    @Html.Hidden("LastShelfLife", "80")
+
+    @(Html.Kendo().Grid<TotalModel.Models.InventoryControl>()
+            .Name("kendoGridIndex")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.CommodityID).DisplayNameTitle().Hidden();
+                columns.Bound(p => p.CategoryName).Title("CAT").Hidden();
+                columns.Group(gr => gr
+                    .Title("Nguyên liệu").HeaderHtmlAttributes(new { style = "text-align:center" })
+                    .Columns(g =>
+                        {
+                            g.Bound(p => p.CommodityCode).Title("Mã").Width(88).ClientTemplate("<a onclick='openDetails(#= CommodityID #)'><span class='index-nav-column'>#=CommodityCode#</span></a>");
+                            
+                            g.Bound(p => p.CommodityName).Title("Tên").Width(208);
+                            g.Bound(p => p.ExpiryDate).Title("HSD").Format("{0:dd/MM/yy}").Width(20).HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" });
+                        }
+                    ));
+                columns.Group(gr => gr
+                    .Title("Tồn lệnh pha chế [BIS]").HeaderHtmlAttributes(new { style = "text-align:center" })
+                    .Columns(g =>
+                        {
+                            g.Bound(p => p.BisQuantity).Title("SL Y/C").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                            g.Bound(p => p.BisQuantityIssued).Title("Đã xuất").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                            g.Bound(p => p.BisQuantityRemains).Title("Còn lại").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                        }
+                    ));
+                columns.Group(gr => gr
+                    .Title("Tồn kho").HeaderHtmlAttributes(new { style = "text-align:center" })
+                    .Columns(g =>
+                        {
+                            g.Bound(p => p.QuantityAvailableLocation2).Title("Kho PC").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                            g.Bound(p => p.QuantityAvailableLocation1).Title("Kho NVL").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                            g.Bound(p => p.QuantityAvailableArrivals).Title("Mới về").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });                        
+                        }
+                    ));
+                columns.Group(gr => gr
+                    .Title("[Tồn BIS] - [Tồn kho]").HeaderHtmlAttributes(new { style = "text-align:center" })
+                    .Columns(g =>
+                        {
+                            g.Bound(p => p.BisQuantityRemainsVsLocation2).Title("PC").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                            g.Bound(p => p.BisQuantityRemainsVsLocation12).Title("PC & NVL").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                            g.Bound(p => p.BisQuantityRemainsVsLocation12A).Title("Toàn bộ").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                        }
+                    ));
+                columns.Group(gr => gr
+                    .Title("Đặt").HeaderHtmlAttributes(new { style = "text-align:center" })
+                    .Columns(g =>
+                        {
+                            g.Bound(p => p.QuantityPurchaseOrders).Title("hàng").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                            //g.Bound(p => p.QuantityTransferOrders).Title("VCNB").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                        }
+                    ));                
+            })
+            .ToolBar(toolbar =>
+            {
+                toolbar.Template(@<text>
+                    
+                    <button type="button" class="k-button" onclick="callPrint(6)"> <img src="~/Content/Images/New/Printer-author-24.png" /> NXK </button>
+                    <button type="button" class="k-button" onclick="callPrint(3)"> <img src="~/Content/Images/New/printer-D-24.png" /> Thẻ kho </button>
+                    <button type="button" title="Cập nhật số liệu tồn kho" class="k-button" onclick="indexFilterText_KeyUp(true)"> <img src="~/Content/Images/New/Refresh-icon.png" /> </button>
+                    <div class="toolbar" style="float: right;">
+                        <label>Lọc dữ liệu</label>
+                        <input id="indexFilterText" class="k-textbox" style="text-align: center; width: 188px; " onkeyup="indexFilterText_KeyUp()" />
+
+                        <span id="filterExtended">
+                            @(Html.Kendo().DropDownList()
+                                    .Name("ShowFilterOptionID")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .HtmlAttributes(new { @style = "width: 120px; text-align: center; " })
+                                    .BindTo(new List<SelectListItem>()
+                                      {
+                                          new SelectListItem { Text = "Tất cả", Value = "0"},  
+                                          new SelectListItem { Text = "Còn tồn BIS", Value = "10"},
+                                          new SelectListItem { Text = "Sắp đến HSD", Value = "20"}
+                                      })
+                                    .Events(e => e.Change("indexFilterText_KeyUp"))
+                            )
+
+                            @(Html.Kendo().IntegerTextBox().Name("ShowShelfLife").Value(80).Enable(false).HtmlAttributes(new { @style = "width: 68px; text-align: center; " }).Events(e => e.Change("indexFilterText_KeyUp")))
+
+                            @(Html.Kendo().DropDownList()
+                                    .Name("ShowLabOptionID")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .HtmlAttributes(new { @style = "width: 138px; text-align: center; " })
+                                    .BindTo(new List<SelectListItem>()
+                                      {
+                                          new SelectListItem { Text = "Tất cả", Value = "99"}, 
+                                          new SelectListItem { Text = "Đã kiểm định", Value = "1"},
+                                          new SelectListItem { Text = "Chưa kiểm định", Value = "0"}
+                                      })
+                                    .Events(e => e.Change("indexFilterText_KeyUp"))
+                            )
+
+                            @(Html.Kendo().DropDownList()
+                                    .Name("ShowLocationID")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Value(@Model.LocationID.ToString("N0"))
+                                    .HtmlAttributes(new { @style = "width: 88px; text-align: center; " })
+                                    .BindTo(new List<SelectListItem>()
+                                      {
+                                          new SelectListItem { Text = "Tất cả", Value = "0"},
+                                          new SelectListItem { Text = "Kho NVL", Value = "1"},
+                                          new SelectListItem { Text = "Kho PC", Value = "2"}
+                                      })
+                                    .Events(e => e.Change("indexFilterText_KeyUp"))
+                            )
+                        </span>
+
+
+                        @*</div>*@
+
+
+
+                    </div>
+                </text>);
+            })
+            .Filterable(f => f.Enabled(false))
+            .Pageable()
+            //.Groupable(g => g.Messages(messages => messages.Empty("Phân nhóm dữ liệu: Kéo và thả tiêu đề một hoặc nhiều cột dữ liệu ngay bên dưới vào đây để phân nhóm hiển thị theo phân cấp của các cột dữ liệu")))
+            .Selectable()
+            .Sortable()
+            .Events(e =>
+            {
+                e.DataBound("hightLightSelectedRow");
+            })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Group(group => group.Add(p => p.CategoryName))
+                .Read(read => read.Action("GetInventoryControls", "InventoryControlAPIs", new { area = "Inventories" }).Data("onGetInventoryControls"))
+                .PageSize(20)
+                .Model(model =>
+                {
+                    model.Id(x => x.CommodityID);
+                    model.Field(m => m.CommodityID).DefaultValue(0);
+                })
+                .ServerOperation(true)
+                .Aggregates(a => a.Add(x => x.BisQuantity).Sum())
+                .Aggregates(a => a.Add(x => x.BisQuantityIssued).Sum())
+                .Aggregates(a => a.Add(x => x.BisQuantityRemains).Sum())
+                .Aggregates(a => a.Add(x => x.QuantityAvailableLocation1).Sum())
+                .Aggregates(a => a.Add(x => x.QuantityAvailableLocation2).Sum())
+                .Aggregates(a => a.Add(x => x.QuantityAvailableArrivals).Sum())
+                .Aggregates(a => a.Add(x => x.BisQuantityRemainsVsLocation2).Sum())
+                .Aggregates(a => a.Add(x => x.BisQuantityRemainsVsLocation12).Sum())
+                .Aggregates(a => a.Add(x => x.BisQuantityRemainsVsLocation12A).Sum())
+                .Aggregates(a => a.Add(x => x.QuantityPurchaseOrders).Sum())
+                .Aggregates(a => a.Add(x => x.QuantityTransferOrders).Sum())
+                )
+            .HtmlAttributes(new { @class = "grid-class" }))
+</div>
+
+
+
+<script type="text/javascript">
+
+    function onGetInventoryControls(e) {
+        var indexFilterText = $("#indexFilterText").val();
+        return {
+            locationID: $("#ShowLocationID").val(),
+            summaryOptionID: 10,
+            labOptionID: $("#ShowLabOptionID").val(),
+            filterOptionID: $("#ShowFilterOptionID").val(),
+            pendingOptionID: 1,
+            shelfLife: $("#ShowShelfLife").val()
+        };
+    }
+
+    function hightLightSelectedRow(e) {
+        require(["kindexGrid"], function (kindexGrid) {
+            var kindexGridInstance = new kindexGrid("kendoGridIndex");
+            kindexGridInstance.setSelectedRow("InventoryControlID", '@ViewBag.SelectedEntityID');
+        });
+    }
+
+    
+    function openDetails(commodityID) {
+        window.open('@Url.Action("Details", "InventoryControls", new { area = "Inventories" })' + "/" + commodityID + "/" + $("#ShowLocationID").val())
+    }
+
+    function callPrint(reportGroupID) {
+        var reportID = reportGroupID == 6 ? ($("#ShowLocationID").val() == 1 ? 800007 : 800010) : ($("#ShowLocationID").val() == 1 ? 800001 : 800006);
+        window.open('@Url.Action("Viewer", "Reports", new { area = "Analysis" })' + "/" + reportID)
+    }
+
+    decoratingKindex = function (idx, elem) {
+
+        if (elem.Approved == null || elem.Approved == false) {
+            $('tr[data-uid="' + elem.uid + '"]').addClass("NotApproved");
+        }
+        else {
+            if (elem.InActive != null && elem.InActive == true) {
+                $('tr[data-uid="' + elem.uid + '"]').addClass("isBonus");
+            }
+
+            if (elem.InActivePartial != null && elem.InActivePartial == true) {
+                $('tr[data-uid="' + elem.uid + '"]').addClass("isBonus1");
+            }
+        }
+    }
+
+
+
+
+
+
+    function indexFilterText_KeyUp(readDataSource) {
+        var indexFilterText = $("#indexFilterText").val(), gridDetails = $("#kendoGridIndex").data("kendoGrid");
+
+        if (readDataSource == true || (indexFilterText === "" || indexFilterText.length >= "@Settings.AutoCompleteMinLenght03") || $("#LastLabOptionID").val() != $("#ShowLabOptionID").val() || $("#LastFilterOptionID").val() != $("#ShowFilterOptionID").val() || $("#LastShelfLife").val() != $("#ShowShelfLife").val()) {
+
+            if ($("#LastFilterOptionID").val() != $("#ShowFilterOptionID").val()) { $("#ShowShelfLife").data("kendoNumericTextBox").enable($("#ShowFilterOptionID").val() == 20 ? true : false); }
+
+            $("#LastLabOptionID").val($("#ShowLabOptionID").val());
+            $("#LastFilterOptionID").val($("#ShowFilterOptionID").val());
+            $("#LastShelfLife").val($("#ShowShelfLife").val());
+
+            gridDetails.dataSource.filter({
+                logic: "or",
+                filters: [
+                    { field: "CommodityCode", operator: "contains", value: indexFilterText },
+                    { field: "BatchCode", operator: "contains", value: indexFilterText },
+                    { field: "LabCode", operator: "contains", value: indexFilterText },
+                    { field: "CommodityName", operator: "contains", value: indexFilterText }
+                ]
+            });
+
+
+        } else {
+            if (indexFilterText && indexFilterText.length && gridDetails.dataSource.filter() != undefined)
+                gridDetails.dataSource.filter({});
+        }
+    }
+
+</script>

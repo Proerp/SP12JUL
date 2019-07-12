@@ -1,0 +1,71 @@
+﻿@using TotalPortal.Configuration
+@using TotalModel.Models;
+
+@(Html.Kendo().Grid<GoodsArrivalPendingPurchaseOrder>()
+    .Name("goodsArrivalPendingPurchaseOrderGrid")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.PurchaseOrderReference).Title("Số ĐH").Width(30);
+        columns.Bound(c => c.PurchaseOrderEntryDate).Title("Ngày Lập").Width(42).Format("{0:" + Settings.DateFormat + "}");
+        columns.Bound(c => c.PurchaseOrderCode).Title("Số PO").Width(50);
+        columns.Bound(c => c.PurchaseOrderVoucherDate).Title("Ngày PO").Width(42).Format("{0:" + Settings.DateFormat + "}");
+        columns.Bound(c => c.CustomerCode).Title("NCC").Width(60);
+        columns.Bound(c => c.Caption).Title("Mặt hàng").Width(168);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+            <div class="toolbar" style="float: right;">
+                <label>Nhập PO/ hoặc mã, tên NCC hay đơn vị giao hàng, hoặc mã NVL</label>
+                <input id="goodsArrivalPendingPurchaseOrderFilter" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="goodsArrivalPendingPurchaseOrderFilter_KeyUp()" />
+            </div>
+        </text>);
+    })
+        .Scrollable(s => s.Height(Settings.PopupContentHeightMedium))
+        .DataSource(ds => ds.Ajax()
+            .Read(read => read.Action("GetPurchaseOrders", "GoodsArrivalAPIs", new { area = "Purchases" }).Data("onAdditionalGetPurchaseOrders"))
+            .ServerOperation(false)
+        )
+        .Selectable()
+)
+
+<script type="text/javascript">
+    function onAdditionalGetPurchaseOrders(e) {
+        return {
+            locationID: window.parent.requireConfig.pageOptions.LocationID,
+            nmvnTaskID: window.parent.requireConfig.pageOptions.NmvnTaskID
+        };
+    }
+
+    function goodsArrivalPendingPurchaseOrderFilter_KeyUp() {
+        var goodsArrivalPendingPurchaseOrderFilter = $("#goodsArrivalPendingPurchaseOrderFilter").val(), gridDetails = $("#goodsArrivalPendingPurchaseOrderGrid").data("kendoGrid");
+
+        if (goodsArrivalPendingPurchaseOrderFilter && goodsArrivalPendingPurchaseOrderFilter.length >= "@Settings.AutoCompleteMinLenght") {
+            gridDetails.dataSource.filter({
+                logic: "or",
+                filters: [
+                    { field: "PurchaseOrderCode", operator: "contains", value: goodsArrivalPendingPurchaseOrderFilter },
+                    { field: "PurchaseOrderReference", operator: "contains", value: goodsArrivalPendingPurchaseOrderFilter },
+                    
+                    { field: "CustomerCode", operator: "contains", value: goodsArrivalPendingPurchaseOrderFilter },
+                    { field: "CustomerName", operator: "contains", value: goodsArrivalPendingPurchaseOrderFilter },
+
+                    { field: "TransporterCode", operator: "contains", value: goodsArrivalPendingPurchaseOrderFilter },
+                    { field: "TransporterName", operator: "contains", value: goodsArrivalPendingPurchaseOrderFilter },
+
+                    { field: "Caption", operator: "contains", value: goodsArrivalPendingPurchaseOrderFilter }
+                ]
+            });
+
+
+        } else {
+            if (gridDetails.dataSource.filter() != undefined)
+                gridDetails.dataSource.filter({});
+        }
+    }
+
+    $("#goodsArrivalPendingPurchaseOrderGrid").dblclick(function (e) {
+        okButton_Click();
+    })
+</script>
+

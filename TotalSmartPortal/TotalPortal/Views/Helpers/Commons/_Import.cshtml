@@ -1,0 +1,17 @@
+﻿<label style="max-width:300px;" id="uploadFile" disabled="disabled"></label>
+
+<div class="fileUpload k-button" style="margin-right: 0px; padding-left: 0px; padding-right: 0px; border: none; background-color: Transparent; ">
+    <img style="width:28px; height:28px" src="~/Content/Images/New/excel-icon.png" />
+    @*<span>Import</span>  DON'T SHOW LABEL 'Import' *@
+    <input type="file" name="xlfile" id="xlf" class="upload" />
+</div>
+
+
+
+<script type="text/javascript">
+    document.getElementById("xlf").onchange = function () {
+        if (this.files.length > 0) {            
+            $("#uploadFile").text(this.files[0].name);
+        }
+    };
+</script>

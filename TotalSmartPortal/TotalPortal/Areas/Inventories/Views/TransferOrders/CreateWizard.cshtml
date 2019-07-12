@@ -1,0 +1,143 @@
+﻿@using TotalModel.Models;
+@using TotalPortal.Configuration;
+
+@using TotalDTO.Inventories
+@using TotalPortal.Areas.Inventories.ViewModels
+
+@{Layout = "~/Views/Shared/_LayoutPopup.cshtml";}
+
+@model ITransferOrderViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Partial("~/Views/Helpers/Bases/_BaseSectionTop.cshtml")
+
+    @Html.Hidden("WarehouseTaskID", (int)@ViewBag.WarehouseTaskID);
+    @Html.Hidden("WarehouseTaskIDList", (string)@ViewBag.WarehouseTaskIDList);
+
+    <div style="display:none">
+        @Html.EditorFor(d => (d as ITransferOrderDTO).Warehouse, new { WarehouseDisplayName = @Model.Warehouse.GetDisplayName(m => m.WarehouseID) })
+        @Html.EditorFor(d => (d as ITransferOrderDTO).WarehouseReceipt, new { WarehouseDisplayName = @Model.WarehouseReceipt.GetDisplayName(m => m.WarehouseID) })
+    </div>
+
+    @(Html.Kendo().Grid<TransferOrderAvailableWarehouse>()
+        .Name("transferOrderAvailableWarehouseGrid")
+
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.WarehouseCode).Title("Kho xuất").Width(90);
+            columns.Bound(c => c.WarehouseReceiptCode).Title("Kho nhập").Width(190);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar" style="float: right;">
+                    <label>Nhập kho xuất hoặc kho nhập</label>
+                    <input id="transferOrderAvailableWarehouseFilter" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="transferOrderAvailableWarehouseFilter_KeyUp()" />
+                </div>
+            </text>);
+        })
+        .Scrollable(s => s.Height(Settings.PopupContentHeight))
+        .DataSource(ds => ds.Ajax()
+            .Read(read => read.Action("GetAvailableWarehouses", "TransferOrderAPIs", new { area = "Inventories" }).Data("onAdditionalGetAvailableWarehouses"))
+            .ServerOperation(false)
+        )
+        .Selectable()
+    )
+
+    <div class="background-bar" style="height: 45px;">
+        <div class="popup-button-bar">
+            <input id="submitCreateWizard" type="submit" formaction="@Url.Action("CreateWizard", Model.ControllerName)" formtarget="_top" style="display:none" />  @*<button type="button" class="k-button" onclick="okButton_Click()"> <img src="~/Content/Images/Mains/Size24/Ok-1.png" /> Áp dụng CTKM đang chọn </button>   //At VCP DON'T ALLOW SELECT BY SINGLE PROMOTION *@
+
+            <button type="button" class="k-button" onclick="okButton_Click()"> <img src="~/Content/Images/Mains/Size24/Accept-Total.png" /> Next </button>
+            <button type="button" class="k-button" onclick="window.parent.$('#myWindow').data('kendoWindow').close()"> <img src="~/Content/Images/Mains/Size24/Users-Exit-icon-24.png" /> Exit </button>
+        </div>
+    </div>
+}
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralPopup.css")" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    function okButton_Click() {
+        handleOKEvent($("#transferOrderAvailableWarehouseGrid").data("kendoGrid"));
+    }
+
+    function okWOSelectButton_Click() {
+        handleOKEvent();
+    }
+
+    function handleOKEvent(selectedGrid) { //This javascript is now used only here. Later, if it is used somewhere else, it should be break into a standalone js file, and then just only add a link here
+        if (selectedGrid === undefined)
+            _setModelInput();
+        else {
+
+
+            var selectedDataItem = selectedGrid.dataItem(selectedGrid.select());
+            if (selectedDataItem === undefined || selectedDataItem === null)
+                return false;
+
+            _setModelInput(selectedDataItem);
+
+
+            var selectedDataItem = selectedGrid.dataItem(selectedGrid.select());
+            if (selectedDataItem === undefined)
+                return false;
+
+            _setModelInput(selectedDataItem);
+        }
+        $("#submitCreateWizard").trigger("click");
+
+
+        function _setModelInput(selectedDataItem) {
+            $("#Warehouse_WarehouseID").val(selectedDataItem === undefined || selectedDataItem.WarehouseID === undefined ? null : selectedDataItem.WarehouseID);
+            $("#Warehouse_Code").val(selectedDataItem === undefined || selectedDataItem.WarehouseCode === undefined ? null : selectedDataItem.WarehouseCode);
+            $("#Warehouse_Name").val(selectedDataItem === undefined || selectedDataItem.WarehouseName === undefined ? null : selectedDataItem.WarehouseName);
+            $("#Warehouse_LocationID").val(selectedDataItem === undefined || selectedDataItem.LocationIssuedID === undefined ? null : selectedDataItem.LocationIssuedID);
+            $("#WarehouseReceipt_WarehouseID").val(selectedDataItem === undefined || selectedDataItem.WarehouseReceiptID === undefined ? null : selectedDataItem.WarehouseReceiptID);
+            $("#WarehouseReceipt_Code").val(selectedDataItem === undefined || selectedDataItem.WarehouseReceiptCode === undefined ? null : selectedDataItem.WarehouseReceiptCode);
+            $("#WarehouseReceipt_Name").val(selectedDataItem === undefined || selectedDataItem.WarehouseReceiptName === undefined ? null : selectedDataItem.WarehouseReceiptName);
+            $("#WarehouseReceipt_LocationID").val(selectedDataItem === undefined || selectedDataItem.LocationReceiptID === undefined ? null : selectedDataItem.LocationReceiptID);
+        }
+    }
+
+
+
+
+
+    function onAdditionalGetAvailableWarehouses(e) {
+        return {
+            locationID: window.parent.requireConfig.pageOptions.LocationID,
+            nmvnTaskID: window.parent.requireConfig.pageOptions.NmvnTaskID
+        };
+    }
+
+    function transferOrderAvailableWarehouseFilter_KeyUp() {
+        var transferOrderAvailableWarehouseFilter = $("#transferOrderAvailableWarehouseFilter").val(), gridDetails = $("#transferOrderAvailableWarehouseGrid").data("kendoGrid");
+
+        if (transferOrderAvailableWarehouseFilter && transferOrderAvailableWarehouseFilter.length >= "@Settings.AutoCompleteMinLenght") {
+            gridDetails.dataSource.filter({
+                logic: "or",
+                filters: [
+                    { field: "WarehouseCode", operator: "contains", value: transferOrderAvailableWarehouseFilter },
+                    { field: "WarehouseReceiptCode", operator: "contains", value: transferOrderAvailableWarehouseFilter }
+                ]
+            });
+
+
+        } else {
+            if (gridDetails.dataSource.filter() != undefined)
+                gridDetails.dataSource.filter({});
+        }
+    }
+
+    $("#transferOrderAvailableWarehouseGrid").dblclick(function (e) {
+        okButton_Click();
+    })
+</script>
+
+
+
+
+

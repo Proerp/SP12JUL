@@ -1,0 +1,91 @@
+﻿@using TotalPortal.Configuration
+
+@model TotalPortal.Areas.Analysis.ViewModels.ReportViewModel
+
+<div>
+        @(Html.Kendo().Grid<TotalModel.Models.ReportIndex>()
+        .Name("kendoGridIndex")
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.ReportID).Hidden();
+            columns.Bound(p => p.ReportGroupName).Title("CAT").Width(10).Hidden();
+
+            columns.Bound(p => p.ReportName).Title("Báo cáo").Width(306).HtmlAttributes(new { @class = "index-nav-column" }).ClientTemplate("<a href='javascript: void(0);' onclick=\"return SetReportParameters('#= ReportTypeID #', '#= ReportID #', '#= ReportURL #');\">#=ReportName#</a>");
+            //columns.Bound(p => p.ReportName).Title("Báo cáo").Width(306).ClientTemplate("# if (ReportTypeID == 1) { #<a href=#=ReportURL# target='_blank'> #=ReportName# </a># } else { #<a href='" + Url.RouteUrl("Default", new { controller = "Analysis/Reports", action = "Viewer" }) + "/#= ReportID #' target='_blank'>#=ReportName#</a># } #");
+
+            columns.Bound(p => p.Remarks).Title("Diễn giải").Width(620);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar" style="float: right;">
+                    @Html.LabelFor(m => m.FromDate)
+                    @Html.Kendo().DatePickerFor(m => m.FromDate).Events(e => e.Change("SetReportParameters")).HtmlAttributes(new { @class = "input-class", type = "text", style = "text-align: center; width:118px" })
+                    @Html.Kendo().DatePickerFor(m => m.ToDate).Events(e => e.Change("SetReportParameters")).HtmlAttributes(new { @class = "input-class", type = "text", style = "text-align: center; width:118px" })
+                </div>
+            </text>);
+        })
+        .Filterable(f => f.Enabled(false))
+        .Selectable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Group(group => group.Add(p => p.ReportGroupName))
+            .Read(read => read.Action("GetReportIndexes", "ReportAPIs", new { area = "Analysis" }))
+            .Sort(sort =>
+                {
+                    sort.Add(p => p.ReportName);
+                })
+            .PageSize(20)
+            .Model(model =>
+            {
+                model.Id(x => x.ReportID);
+                model.Field(m => m.ReportID).DefaultValue(0);
+            })
+            .ServerOperation(true)
+        )
+        .HtmlAttributes(new { @class = "grid-class" }))
+</div>
+
+
+<script>
+    function SetReportParameters(reportTypeID, reportID, reportURL) {
+        
+        return $.ajax({
+            url: window.urlSetReportParameters,
+            data: JSON.stringify({ "fromDate": $("#FromDate").val(), "toDate": $("#ToDate").val() }),
+
+            type: 'POST',
+            contentType: 'application/json;',
+            dataType: 'json',
+            success: function (result) {
+                if (result.AddResult == "Successfully") {
+                    if (reportTypeID != undefined && reportID != undefined)
+                    { //SAVE ReportParameters FOR EVERY REPORT CLICK
+                        if (reportTypeID == 1)
+                            window.open(reportURL, '_blank');
+                        else
+                            window.open('@Url.Action("Viewer", "Reports", new { area = "Analysis" })' + "/" + reportID, '_blank'); //window.open('https://stackoverflow.com/q/4907843/456814', '_blank');
+                    }
+                }
+                else
+                    alert(result.AddResult);
+            },
+            error: function (jqXHR, textStatus) {
+                alert(textStatus);
+            }
+        });
+    }
+
+    window.urlSetReportParameters = '@Url.Action("SetReportParameters", "ReportAPIs", new { area = "Analysis" })';
+</script>
+
+<style>
+    .k-grid td {
+        border-width: 0;
+        /*background-color: #f5f5f5;*/
+    }
+
+    .k-grid {
+        background: #f5f5f5;
+    }
+</style>

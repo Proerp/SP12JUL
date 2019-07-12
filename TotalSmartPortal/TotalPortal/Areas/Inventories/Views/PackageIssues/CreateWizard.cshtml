@@ -1,0 +1,158 @@
+﻿@using TotalBase.Enums;
+@using TotalPortal.Configuration;
+@using TotalModel.Models;
+
+
+@{Layout = "~/Views/Shared/_LayoutPopup.cshtml";}
+
+@model TotalPortal.Areas.Inventories.ViewModels.PackageIssueViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Partial("~/Views/Helpers/Bases/_BaseSectionTop.cshtml")
+
+    @Html.HiddenFor(model => model.BlendingInstructionID)
+    @Html.HiddenFor(model => model.BlendingInstructionCode)
+    @Html.HiddenFor(model => model.BlendingInstructionReference)
+    @Html.HiddenFor(model => model.BlendingInstructionEntryDate)
+
+    @Html.HiddenFor(model => model.Commodity.CommodityID)
+    @Html.HiddenFor(model => model.Commodity.Code)
+    @Html.HiddenFor(model => model.Commodity.Name)
+    
+    @Html.HiddenFor(model => model.Warehouse.WarehouseID)
+    @Html.HiddenFor(model => model.Warehouse.Code)
+    @Html.HiddenFor(model => model.Warehouse.Name)
+
+    @Html.HiddenFor(model => model.ShiftID);
+    @Html.HiddenFor(model => model.ProductionLine.ProductionLineID);
+    @Html.HiddenFor(model => model.ProductionLine.Name);
+
+    @Html.HiddenFor(model => model.CrucialWorker.EmployeeID);
+    @Html.HiddenFor(model => model.CrucialWorker.Name);
+    
+    @Html.HiddenFor(model => model.Storekeeper.EmployeeID);
+    @Html.HiddenFor(model => model.Storekeeper.Name);
+    
+    @Html.HiddenFor(model => model.Description);
+
+    @(Html.Kendo().Grid<PackageIssuePendingBlendingInstruction>()
+        .Name("packageIssuePendingBlendingInstructionGrid")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.BlendingInstructionReference).Title("KHSX").Width(28);
+            columns.Bound(c => c.BlendingInstructionCode).Title("Mã CT").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(28);
+            columns.Bound(c => c.BlendingInstructionEntryDate).Title("Ngày KHSX").Format("{0:dd/MM/yy}").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(38);
+            columns.Bound(c => c.CommodityCode).Title("Mã TP").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(28);
+            columns.Bound(c => c.CommodityName).Title("Mã TP").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(28);
+            columns.Bound(p => p.TotalQuantity).Title("SL ĐH").Format(Settings.kfmN0).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(31);
+            columns.Bound(p => p.TotalQuantityRemains).Title("Tồn đơn").Format(Settings.kfmN0).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(31);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar" style="float: right;">
+                    <label>Nhập mã chừng từ, số KHSX, khách hàng, ca sx, mã số máy hoặc mặt hàng</label>
+                    <input id="packageIssuePendingBlendingInstructionFilter" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="packageIssuePendingBlendingInstructionFilter_KeyUp()" />
+                </div>
+            </text>);
+        })
+        .Scrollable(s => s.Height(Settings.PopupContentHeight))
+        .DataSource(ds => ds.Ajax()
+            .Read(read => read.Action("GetBlendingInstructions", "PackageIssueAPIs", new { area = "Inventories" }).Data(@<text>
+                function (e) {
+                    return {
+                        locationID: window.parent.requireConfig.pageOptions.LocationID,
+                        blendingInstructionID: window.parent.$("#SelectedBlendingInstructionID") != undefined && window.parent.$("#SelectedBlendingInstructionID").val() != 0? window.parent.$("#SelectedBlendingInstructionID").val(): null
+                    };
+                }
+                </text>))
+                .ServerOperation(false)
+            )
+            .Selectable()
+    )
+
+
+    <div class="background-bar" style="height: 45px;">
+        <div class="popup-button-bar">
+            <input id="submitCreateWizard" type="submit" formaction="@Url.Action("CreateWizard", "PackageIssues")" formtarget="_top" style="display:none" />
+
+            <button type="button" class="k-button" onclick="okButton_Click()"> <img src="~/Content/Images/Mains/Size24/Accept-Total.png" /> Xuất kho </button>
+            <button type="button" class="k-button" onclick="window.parent.$('#myWindow').data('kendoWindow').close()"> <img src="~/Content/Images/Mains/Size24/Users-Exit-icon-24.png" /> Thoát </button>
+        </div>
+    </div>
+
+}
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralPopup.css")" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $("#packageIssuePendingBlendingInstructionGrid").dblclick(function (e) {
+        okButton_Click();
+    })
+
+    function okButton_Click() {       
+        handleOKEvent();
+    }
+    
+
+    function handleOKEvent(promotionGrid) { //This javascript is now used only here. Later, if it is used somewhere else, it should be break into a standalone js file, and then just only add a link here
+
+        var selectedGrid = $("#packageIssuePendingBlendingInstructionGrid").data("kendoGrid");
+        var selectedDataItem = selectedGrid.dataItem(selectedGrid.select());
+        if (selectedDataItem === undefined || selectedDataItem === null)
+            return false;
+
+        _setModelInput(selectedDataItem);
+
+
+        $("#submitCreateWizard").trigger("click");
+
+
+        function _setModelInput(selectedDataItem) {
+
+            $("#BlendingInstructionID").val(selectedDataItem === undefined || selectedDataItem.BlendingInstructionID === undefined ? null : selectedDataItem.BlendingInstructionID);
+            $("#BlendingInstructionCode").val(selectedDataItem === undefined || selectedDataItem.BlendingInstructionCode === undefined ? null : selectedDataItem.BlendingInstructionCode);
+            $("#BlendingInstructionReference").val(selectedDataItem === undefined || selectedDataItem.BlendingInstructionReference === undefined ? null : selectedDataItem.BlendingInstructionReference);
+            $("#BlendingInstructionEntryDate").val(selectedDataItem === undefined || selectedDataItem.BlendingInstructionEntryDate === undefined ? null : kendo.toString(selectedDataItem.BlendingInstructionEntryDate, Settings.DateTimeFormat));
+
+            $("#Commodity_CommodityID").val(selectedDataItem === undefined || selectedDataItem.CommodityID === undefined ? null : selectedDataItem.CommodityID);
+            $("#Commodity_Code").val(selectedDataItem === undefined || selectedDataItem.CommodityCode === undefined ? null : selectedDataItem.CommodityCode);
+            $("#Commodity_Name").val(selectedDataItem === undefined || selectedDataItem.CommodityName === undefined ? null : selectedDataItem.CommodityName);
+
+            $("#Warehouse_WarehouseID").val(selectedDataItem === undefined || selectedDataItem.WarehouseID === undefined ? null : selectedDataItem.WarehouseID);
+            $("#Warehouse_Code").val(selectedDataItem === undefined || selectedDataItem.WarehouseCode === undefined ? null : selectedDataItem.WarehouseCode);
+            $("#Warehouse_Name").val(selectedDataItem === undefined || selectedDataItem.WarehouseName === undefined ? null : selectedDataItem.WarehouseName);
+
+            $("#Description").val(selectedDataItem === undefined || selectedDataItem.Description === undefined ? null : selectedDataItem.Description);
+        }
+    }
+
+
+    function packageIssuePendingBlendingInstructionFilter_KeyUp() {
+        var packageIssuePendingBlendingInstructionFilter = $("#packageIssuePendingBlendingInstructionFilter").val(), gridDetails = $("#packageIssuePendingBlendingInstructionGrid").data("kendoGrid");
+
+        if (packageIssuePendingBlendingInstructionFilter && packageIssuePendingBlendingInstructionFilter.length >= "@Settings.AutoCompleteMinLenght") {
+            gridDetails.dataSource.filter({
+                logic: "or",
+                filters: [
+                    { field: "BlendingInstructionCode", operator: "contains", value: packageIssuePendingBlendingInstructionFilter },
+                    { field: "BlendingInstructionReference", operator: "contains", value: packageIssuePendingBlendingInstructionFilter }
+                ]
+            });
+
+
+        } else {
+            if (gridDetails.dataSource.filter() != undefined)
+                gridDetails.dataSource.filter({});
+        }
+    }
+
+
+</script>
+
+
+
+

@@ -1,0 +1,214 @@
+﻿@using TotalPortal.Configuration
+
+@model TotalPortal.Areas.Productions.ViewModels.BlendingInstructionViewModel
+
+<div id="popupWindow"></div>
+
+<div>
+    @Html.Hidden("LastLabOptionID", "1")
+    @Html.Hidden("LastFilterOptionID", "18")
+    @Html.Hidden("SelectedFirmOrderID", "0")
+
+        @(Html.Kendo().Grid<TotalModel.Models.BlendingInstructionIndex>()
+            .Name("kendoGridIndex")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.BlendingInstructionID).DisplayNameTitle().Hidden();
+                columns.Bound(p => p.EntryDate).Title("Ngày lập").Format("{0:dd/MM/yy}").Hidden();
+                columns.Bound(p => p.Features).Title("BIS").Hidden();
+
+                columns.Bound(p => p.Reference).Title("FT").Width(36).HtmlAttributes(new { @class = "index-nav-column" }).ClientTemplate("<a href='" + Url.RouteUrl("Default", new { controller = "Productions/BlendingInstructions", action = "Edit" }) + "/#= BlendingInstructionID #'>#=Reference#</a>");
+                columns.Bound(p => p.Code).Title("BI").Width(36);
+                columns.Bound(p => p.CommodityCode).Title("Mã NVL").Width(60);
+                                
+                columns.Bound(p => p.Quantity).Title("SL Y/C").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                columns.Bound(p => p.QuantityIssued).Title("Đã xuất").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                columns.Bound(p => p.QuantityRemains).Title("Tồn BIS").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20).ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+
+                columns.Bound(p => p.QuantityAvailableLocation2).Title("Kho PC").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20);
+                columns.Bound(p => p.QuantityAvailableLocation1).Title("Kho NVL").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20);
+                columns.Bound(p => p.QuantityAvailableArrivals).Title("Mới về").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20);
+
+                columns.Bound(p => p.Description).Title("Ghi chú").Width(227);
+                
+                columns.Template(t => { }).Title("!").ClientTemplate("<input class='IsSelected' #= Approved ? '':checked='checked' #  type='checkbox' disabled='disabled'/>").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(3);
+                
+                columns.Template(model => null).HtmlAttributes(new { @class = "grid-column-center" }).Width(68)
+                    .ClientTemplate("<a class='k-button' style='padding-left:0px; padding-right:0px' href='" + Url.RouteUrl("Default", new { controller = "Productions/BlendingInstructions", action = "Print" }) + "/#= ParentID #/1' target='_blank'><span class='k-icon sbt-printer'></span></a> <a class='k-button' title='Hủy' style='padding-left:0px; padding-right:0px' href='" + Url.RouteUrl("Default", new { controller = "Productions/BlendingInstructions", action = "Void" }) + "/#= BlendingInstructionID #'><span class='k-icon sbt-void'></span></a> <a class='k-button' title='Xóa' style='padding-left:0px; padding-right:0px' href='" + Url.RouteUrl("Default", new { controller = "Productions/BlendingInstructions", action = "Delete" }) + "/#= BlendingInstructionID #'><span class='k-icon sbt-delete'></span></a>");
+            })
+            .ToolBar(toolbar =>
+            {
+                toolbar.Template(@<text>
+                    <button type="button" class="k-button" onclick="createWizard()"> <img src="~/Content/Images/Mains/Size24/folder-documents-icon-24.png" /> Lập đơn hàng pha chế </button>
+                    <button type="button" class="k-button" onclick="callCommodities()"> <img src="~/Content/Images/Mains/Size24/Phone-icon-24.png" /> Gọi phụ gia </button>            
+                    <button type="button" title="Cập nhật số liệu sản xuất" class="k-button" onclick="indexFilterText_KeyUp(true)"> <img src="~/Content/Images/New/Refresh-icon.png" /> </button>                                
+                    <div class="toolbar" style="float: right;">
+                        <label>Lọc dữ liệu</label>
+                        <input id="indexFilterText" class="k-textbox" style="text-align: center; width: 108px; " onkeyup="indexFilterText_KeyUp()" />
+
+                        <span id="filterExtended">
+                            @(Html.Kendo().DropDownList()
+                                    .Name("ShowFilterOptionID")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .HtmlAttributes(new { @style = "width: 168px; text-align: center; " })
+                                    .BindTo(new List<SelectListItem>()
+                                      {
+                                            new SelectListItem { Text = "Đang theo dõi", Value = "18"},  
+                                            new SelectListItem { Text = "BIS cần pha chế", Value = "10"},
+                                            new SelectListItem { Text = "BIS cần pc [Chưa PC]", Value = "11"},
+                                            new SelectListItem { Text = "BIS cần pc [Đang PC]", Value = "12"},
+                                            new SelectListItem { Text = "BIS đã pc [Từ ... Đến]", Value = "20"},
+                                            new SelectListItem { Text = "Tất cả [Từ ... Đến]", Value = "0"}
+                                      })
+                                    .Events(e => e.Change("indexFilterText_KeyUp"))
+                            )
+
+                            @(Html.Kendo().DropDownList()
+                                    .Name("ShowLabOptionID")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .HtmlAttributes(new { @style = "width: 118px; text-align: center; " })
+                                    .BindTo(new List<SelectListItem>()
+                                      {
+                                            new SelectListItem { Text = "Đã kiểm định", Value = "1"},
+                                            new SelectListItem { Text = "BG chưa QC", Value = "0"}
+                                      })
+                                    .Events(e => e.Change("indexFilterText_KeyUp"))
+                            )
+
+                            @Html.Kendo().DatePickerFor(m => m.GlobalFromDate).Events(e => e.Change("indexFilterText_KeyUp")).HtmlAttributes(new { @class = "input-class", type = "text", style = "text-align: center; width:118px" })
+                            @Html.Kendo().DatePickerFor(m => m.GlobalToDate).Events(e => e.Change("indexFilterText_KeyUp")).HtmlAttributes(new { @class = "input-class", type = "text", style = "text-align: center; width:118px" })
+                        </span>
+
+
+                        @*</div>*@
+
+
+
+                    </div>
+                </text>        );
+            })
+            .Filterable(f => f.Enabled(false))
+            .Pageable()
+            //.Groupable(g => g.Messages(messages => messages.Empty("Phân nhóm dữ liệu: Kéo và thả tiêu đề một hoặc nhiều cột dữ liệu ngay bên dưới vào đây để phân nhóm hiển thị theo phân cấp của các cột dữ liệu")))
+            .Selectable()
+            .Sortable()
+            .Events(e =>
+            {
+                e.DataBound("hightLightSelectedRow");
+            })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Group(group => group.AddDescending(p => p.EntryDate)).Group(group => group.AddDescending(p => p.Features))
+                .Read(read => read.Action("GetBlendingInstructionIndexes", "BlendingInstructionAPIs", new { area = "Productions" }).Data("onGetBlendingInstructionIndexes"))
+                .PageSize(6)
+                .Model(model =>
+                {
+                    model.Id(x => x.BlendingInstructionID);
+                    model.Field(m => m.BlendingInstructionID).DefaultValue(0);
+                })
+                .ServerOperation(true)
+                .Aggregates(a => a.Add(x => x.Quantity).Sum())
+                .Aggregates(a => a.Add(x => x.QuantityIssued).Sum())
+                .Aggregates(a => a.Add(x => x.QuantityRemains).Sum())
+                )
+            .HtmlAttributes(new { @class = "grid-class" }))
+</div>
+
+
+
+<script type="text/javascript">
+
+    function onGetBlendingInstructionIndexes(e) {
+        var indexFilterText = $("#indexFilterText").val();
+        return {
+            withExtendedSearch: true, //indexFilterText && indexFilterText.length >= "@Settings.AutoCompleteMinLenght03" ? true : false,
+            extendedFromDate: $("#GlobalFromDate").val(),
+            extendedToDate: $("#GlobalToDate").val(),
+            labOptionID: $("#ShowLabOptionID").val(),
+            filterOptionID: $("#ShowFilterOptionID").val()
+        };
+    }
+
+    function hightLightSelectedRow(e) {
+        require(["kindexGrid"], function (kindexGrid) {
+            var kindexGridInstance = new kindexGrid("kendoGridIndex");
+            kindexGridInstance.setSelectedRow("BlendingInstructionID", '@ViewBag.SelectedEntityID');
+        });
+    }
+
+    function createWizard() {
+        require(["kpopupWindow"], function (kpopupWindow) {
+            var createWizardWindow = new kpopupWindow();
+            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("CreateWizard", "BlendingInstructions")", "Lập đơn hàng sản xuất", "@Settings.PopupWidth", "@Settings.PopupHeightWithTab");
+        });
+    }
+
+    function callCommodities() {
+        require(["kpopupWindow"], function (kpopupWindow) {
+            var createWizardWindow = new kpopupWindow();
+            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("CallCommodities", "BlendingInstructions")", "Danh sách NVL cần điều", "@Settings.PopupWidthVerySmall", "@Settings.PopupHeightSmall");
+        });
+    }
+
+
+    decoratingKindex = function (idx, elem) {
+
+        if (elem.Approved == null || elem.Approved == false) {
+            $('tr[data-uid="' + elem.uid + '"]').addClass("NotApproved");
+        }
+        else {
+            if (elem.InActive != null && elem.InActive == true) {
+                $('tr[data-uid="' + elem.uid + '"]').addClass("isBonus");
+            }
+
+            if (elem.InActivePartial != null && elem.InActivePartial == true) {
+                $('tr[data-uid="' + elem.uid + '"]').addClass("isBonus1");
+            }
+        }
+    }
+
+
+
+
+
+
+    function indexFilterText_KeyUp(readDataSource) {
+        var indexFilterText = $("#indexFilterText").val(), gridDetails = $("#kendoGridIndex").data("kendoGrid");
+
+        if (readDataSource == true || (indexFilterText === "" || indexFilterText.length >= "@Settings.AutoCompleteMinLenght03") || $("#LastLabOptionID").val() != $("#ShowLabOptionID").val() || $("#LastFilterOptionID").val() != $("#ShowFilterOptionID").val()) {
+            $("#LastLabOptionID").val($("#ShowLabOptionID").val());
+            $("#LastFilterOptionID").val($("#ShowFilterOptionID").val());
+            gridDetails.dataSource.filter({
+                logic: "or",
+                filters: [
+                    { field: "Reference", operator: "contains", value: indexFilterText },
+                    { field: "Features", operator: "contains", value: indexFilterText },
+                    { field: "CommodityCode", operator: "contains", value: indexFilterText },
+                    { field: "CommodityName", operator: "contains", value: indexFilterText }
+                ]
+            });
+
+
+        } else {
+            if (indexFilterText && indexFilterText.length && gridDetails.dataSource.filter() != undefined)
+                gridDetails.dataSource.filter({});
+        }
+    }
+
+</script>
+
+
+
+<style>
+    .k-grid td {
+        /*border-width: 0;*/
+        /*background-color: #f5f5f5;*/
+        /*white-space: pre-line;
+        word-wrap: initial;*/
+        /*white-space: nowrap;*/
+        /*text-overflow: ellipsis;
+        table-layout: fixed;*/
+    }
+</style>

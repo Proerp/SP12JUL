@@ -1,0 +1,263 @@
+﻿@using TotalBase.Enums;
+@using TotalPortal.Configuration
+
+@using TotalDTO;
+@using TotalModel
+@using TotalDTO.Productions
+@using TotalPortal.Areas.Productions.ViewModels
+
+@model IFinishedHandoverViewModel
+
+<div id="popupWindow"></div>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "MainForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Partial("~/Views/Helpers/Bases/_BaseSectionTop.cshtml")
+    @Html.Partial("~/Views/Helpers/Bases/_BaseSectionTopB.cshtml")
+
+    @Html.HiddenFor(model => (model as IFinishedHandoverPrimitiveDTO).FinishedHandoverID)
+
+    <div class="left-panel">
+
+        @Html.Partial("~/Views/Helpers/Bases/_BaseSectionLeftA.cshtml")
+    
+        @Html.HiddenFor(model => (model as IFinishedHandoverPrimitiveDTO).WorkshiftID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => (model as IFinishedHandoverPrimitiveDTO).WorkshiftCode)
+            <div class="div-input">
+                @Html.Kendo().MaskedTextBoxFor(model => (model as IFinishedHandoverPrimitiveDTO).WorkshiftCode).HtmlAttributes(new { @class = "left-panel-input", @readonly = "readonly" })
+            </div>
+            <div class="div-validation-message">
+                @Html.ValidationMessageFor(model => (model as IFinishedHandoverPrimitiveDTO).WorkshiftCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => (model as IFinishedHandoverPrimitiveDTO).WorkshiftEntryDate)
+            <div class="div-input">
+                @Html.Kendo().DateTimePickerFor(model => (model as IFinishedHandoverPrimitiveDTO).WorkshiftEntryDate).HtmlAttributes(new { @class = "left-panel-input", @readonly = "readonly" })
+            </div>
+            <div class="div-validation-message">
+                @Html.ValidationMessageFor(model => (model as IFinishedHandoverPrimitiveDTO).WorkshiftEntryDate, "", new { @class = "text-danger" })
+            </div>
+        </div>   
+
+        @Html.HiddenFor(model => (model as IFinishedHandoverPrimitiveDTO).PlannedOrderID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => (model as IFinishedHandoverPrimitiveDTO).PlannedOrderCode)
+            <div class="div-input">
+                @Html.Kendo().MaskedTextBoxFor(model => (model as IFinishedHandoverPrimitiveDTO).PlannedOrderCode).HtmlAttributes(new { @class = "left-panel-input", @readonly = "readonly" })
+            </div>
+            <div class="div-validation-message">
+                @Html.ValidationMessageFor(model => (model as IFinishedHandoverPrimitiveDTO).PlannedOrderCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => (model as IFinishedHandoverPrimitiveDTO).PlannedOrderEntryDate)
+            <div class="div-input">
+                @Html.Kendo().DateTimePickerFor(model => (model as IFinishedHandoverPrimitiveDTO).PlannedOrderEntryDate).HtmlAttributes(new { @class = "left-panel-input", @readonly = "readonly" })
+            </div>
+            <div class="div-validation-message">
+                @Html.ValidationMessageFor(model => (model as IFinishedHandoverPrimitiveDTO).PlannedOrderEntryDate, "", new { @class = "text-danger" })
+            </div>
+        </div>   
+
+        <div class="form-group">
+            @Html.EditorFor(d => (d as IFinishedHandoverDTO).Storekeeper, new { EmployeeDisplayName = @Model.Storekeeper.GetDisplayName(m => m.EmployeeID) })
+        </div>   
+        
+        <div class="form-group">
+            @Html.EditorFor(d => (d as IFinishedHandoverDTO).FinishedLeader, new { EmployeeDisplayName = (@Model.IsItem ? "Tổ trưởng tổ màng" : "Tổ trưởng đóng gói") })
+        </div>                      
+
+    </div>
+
+    <div class="right-panel">
+
+        <div class="right-top-panel right-top-panel-H3">
+
+            @Html.EditorFor(d => (d as IFinishedHandoverDTO).Customer, new { CustomerDisplayName = @Model.Customer.GetDisplayName(m => m.CustomerID), CustomerIcon = "Customer Red 24.png", NullCustomer = (Model.CustomerID > 0 ? null : (@Model.IsItem ? "Bàn giao màng thành phẩm" : "Bàn giao khay thành phẩm tổng hợp")), CustomerInfo = (Model.CustomerID > 0 ? null : "#") })
+            
+        </div>
+
+        <div class="div-k-grid-detail">
+            @(Html.Kendo().Grid(Model.FinishedHandoverViewDetails)
+                .Name("kendoGridDetails")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.FinishedHandoverDetailID).DisplayNameTitle().Hidden()
+                        .ClientTemplate("#= FinishedHandoverDetailID #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].FinishedHandoverDetailID' value='#= FinishedHandoverDetailID #' />");
+                    columns.Bound(p => p.FinishedHandoverID).DisplayNameTitle().Hidden()
+                        .ClientTemplate("#= FinishedHandoverID #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].FinishedHandoverID' value='#= FinishedHandoverID #' />");
+
+                    columns.Bound(p => p.FinishedItemID).DisplayNameTitle().Hidden()
+                        .ClientTemplate("#= (FinishedItemID == null)? '' : FinishedItemID #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].FinishedItemID' value='#= (FinishedItemID == null) ? '' : FinishedItemID #' />");
+                    columns.Bound(p => p.FinishedItemPackageID).DisplayNameTitle().Hidden()
+                        .ClientTemplate("#= (FinishedItemPackageID == null)? '' : FinishedItemPackageID #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].FinishedItemPackageID' value='#= (FinishedItemPackageID == null) ? '' : FinishedItemPackageID #' />");
+                    
+                    columns.Bound(p => p.FinishedProductID).DisplayNameTitle().Hidden()
+                        .ClientTemplate("#= (FinishedProductID == null)? '' : FinishedProductID #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].FinishedProductID' value='#= (FinishedProductID == null) ? '' : FinishedProductID #' />");
+                    columns.Bound(p => p.FinishedProductPackageID).DisplayNameTitle().Hidden()
+                        .ClientTemplate("#= (FinishedProductPackageID == null)? '' : FinishedProductPackageID #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].FinishedProductPackageID' value='#= (FinishedProductPackageID == null) ? '' : FinishedProductPackageID #' />");
+
+                    columns.Bound(p => p.FirmOrderReference).DisplayNameTitle().Width(20)
+                        .ClientTemplate("#= FirmOrderReference #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].FirmOrderReference' value='#= FirmOrderReference #' />");
+                    columns.Bound(p => p.FirmOrderCode).DisplayNameTitle().Width(20)
+                        .ClientTemplate("#= FirmOrderCode #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].FirmOrderCode' value='#= FirmOrderCode #' />");
+
+                    columns.Bound(p => p.SemifinishedProtemReferences).Title(@Model.IsItem ? "Cuộn" : "Pallet").Width(20)
+                        .ClientTemplate("#= SemifinishedProtemReferences #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].SemifinishedProtemReferences' value='#= SemifinishedProtemReferences #' />");
+                    columns.Bound(p => p.FinishedProtemEntryDate).Title(@Model.IsItem? "Ngày Tạo" : "Ngày ĐG").Width(15)
+                        .Format("{0:" + @Settings.DateFormat + "}")
+                        .ClientTemplate("#= (FinishedProtemEntryDate == null)? '' : kendo.format('{0:" + @Settings.DateFormat + "}', FinishedProtemEntryDate) #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].FinishedProtemEntryDate' value='#= (FinishedProtemEntryDate == null) ? '' : kendo.format('{0:" + @Settings.DateFormat + "}', FinishedProtemEntryDate) #' />");
+
+
+                    columns.Bound(p => p.CustomerID).DisplayNameTitle().Hidden()
+                        .ClientTemplate("#= CustomerID #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].CustomerID' value='#= CustomerID #' />");
+                    columns.Bound(p => p.CustomerName).DisplayNameTitle().Width(@Model.IsItem ? 206 : 106)
+                        .ClientTemplate("#= CustomerName #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].CustomerName' value='#= CustomerName #' />");
+
+                    columns.Bound(p => p.CommodityID).DisplayNameTitle().Hidden()
+                      .ClientTemplate("#= CommodityID #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].CommodityID' value='#= CommodityID #' />");
+                    columns.Bound(p => p.CommodityCode).DisplayNameTitle().Width(@Model.IsItem ? 168 : 126)
+                        .ClientTemplate("#= CommodityCode #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].CommodityCode' value='#= CommodityCode #' />")
+                        .ClientFooterTemplate("TC (#= kendo.format('{0:n0}', count) # dòng)");
+                    columns.Bound(p => p.CommodityName).DisplayNameTitle().Width(126).Hidden(@Model.IsItem)
+                        .ClientTemplate("#= CommodityName #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].CommodityName' value='#= CommodityName #' />");
+                    columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Hidden()
+                     .ClientTemplate("#= CommodityTypeID #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].CommodityTypeID' value='#= CommodityTypeID #' />");                               
+
+                    columns.Bound(p => p.Quantity).DisplayNameTitle().HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(25)
+                        .Format(Settings.kfmQuantity)
+                        .ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #")
+                        .ClientTemplate("#= kendo.format('" + Settings.kfmQuantity + "', Quantity) #" + "<input type='hidden' name='FinishedHandoverViewDetails[#= index(data) #].Quantity' value='#= Quantity #' />");              
+                    
+                    columns.Command(command => { command.Destroy().Text("<span class='command' ></span>"); }).Width(10).Hidden(!@Model.Editable).HtmlAttributes(new { @class = "grid-column-center" });                   
+                })
+                    .Filterable(f => f.Enabled(false))
+                    .Navigatable()
+
+                    .ToolBar(toolbar =>
+                    {
+                        if (Model.Editable)
+                        {
+                            //toolbar.Create().HtmlAttributes(new { @class = "fa fa-map-marker" }).Text("Add new aa le ea1");
+                            toolbar.Template(@<text>
+                                <button type="button" class="k-button" onclick="GetPendingDetails()"> <img src="~/Content/Images/Mains/Size24/Actions-bookmark-add-icon-24.png" /> Chọn mặt hàng </button>
+                            </text>);
+                        }
+                        else
+                        {
+                            toolbar.Template(@<text> @Commons.Toolbars.BlankToolbar() </text>);
+                        }
+                    })
+
+                    .Editable(editable => { editable.Enabled(Model.Editable); editable.Mode(GridEditMode.InCell).DisplayDeleteConfirmation(true).CreateAt(GridInsertRowPosition.Bottom); })
+                    .Selectable(settings =>
+                    {
+                        settings.Mode(GridSelectionMode.Multiple);
+                        settings.Type(GridSelectionType.Row);
+                    })
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .Batch(true)
+                        .ServerOperation(false)
+                        .Model(model =>
+                        {
+                            model.Id(x => x.FinishedHandoverDetailID);
+                            model.Field(m => m.FinishedHandoverDetailID).DefaultValue(0);
+                            model.Field(m => m.FinishedHandoverID).DefaultValue(@Model.FinishedHandoverID);
+                        })
+                        .Events(events =>
+                        {
+                            events.Error("kendGrid_ErrorHandler");
+                        })                                                
+                        .Aggregates(a => a.Add(x => x.CommodityCode).Count())
+                        .Aggregates(a => a.Add(x => x.Quantity).Sum())                        
+                    )
+            )
+        </div>
+
+        <div class="div-k-panel">
+            @(Html.Kendo().PanelBar()
+                .Name("IntroPanelBar")
+                .Items(items =>
+                {
+                    items.Add()
+                        .Text("Thông tin khác")
+                        .Selected(true)
+                        .Expanded(false)
+                        .Content(@<text>
+                            <div class="right-first-panel">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => (model as IBaseDTO).Description, new { @class = "right-panel-label" })
+                                    <div class="div-input">
+                                        @Html.Kendo().MaskedTextBoxFor(model => (model as IBaseDTO).Description).HtmlAttributes(new { @class = "right-panel-input" })
+                                    </div>
+                                    <div class="div-validation-message">
+                                        @Html.ValidationMessageFor(model => (model as IBaseDTO).Description, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => (model as IBaseModel).Remarks, new { @class = "right-panel-label" })
+                                    <div class="div-input">
+                                        @Html.Kendo().MaskedTextBoxFor(model => (model as IBaseModel).Remarks).HtmlAttributes(new { @class = "right-panel-input" })
+                                    </div>
+                                    <div class="div-validation-message">
+                                        @Html.ValidationMessageFor(model => (model as IBaseModel).Remarks, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="right-second-panel">
+                                @Html.Partial("~/Views/Shared/EditorTemplates/DropDowns/PreparedPerson.cshtml")
+                                @Html.Partial("~/Views/Shared/EditorTemplates/DropDowns/Approver.cshtml")
+                            </div>
+
+                        </text>).HtmlAttributes(new { @class = "panel-class" });
+                })
+            )
+        </div>
+
+
+        <div class="right-botton-panel">
+            @if (Model.Editable)
+            {
+                <button type="submit" class="k-button custom-button SubmitTypeOption-Closed" formaction="@Url.Action("Edit", Model.ControllerName)"> <img src="~/Content/Images/New/save-32-m20.png" /> Lưu </button>
+                <button type="submit" class="k-button custom-button SubmitTypeOption-Closed" formaction="@Url.Action("Edit", Model.ControllerName)" onclick="$('#Approved').val(true);"> <img src="~/Content/Images/New/Save-Verify-32.png" /> Lưu và duyệt </button>
+                <button type="submit" class="k-button custom-button SubmitTypeOption-Closed" formaction="@Url.Action("Edit", Model.ControllerName)" onclick="$('#Approved').val(true); $('#PrintAfterClosedSubmit').val(true);"> <img src="~/Content/Images/New/Print-Gray-32.png" /> Lưu, duyệt và in </button>
+            }
+            else
+            {
+                <button type="button" class="k-button custom-button" onclick="location.href='@Url.Action("Print", Model.ControllerName, new { id = @Model.FinishedHandoverID })'"> <img src="~/Content/Images/New/printer-cashier-32.png" /> In </button>
+            }
+
+            @if (Model.FinishedHandoverID > 0 && !Model.Approvable && !Model.UnApprovable)
+            {
+                <button type="button" class="k-button custom-button" onclick="location.href='@Url.Action("Approve", Model.ControllerName, new {id = @Model.FinishedHandoverID })'"> <img src="~/Content/Images/Mains/@(!@Model.Approved ? "Check-32-CHY.png" : "cloud-32-NoCheck.png")" /> @(!Model.Approved ? Model.ApproveWarning : Model.UnApproveWarning) </button>
+            }
+        </div>
+
+
+        @Html.Partial("~/Views/Helpers/Bases/_BaseSubmit.cshtml")
+
+    </div>
+}
+
+
+<script src="@Url.Content("~/Scripts/Helpers/KendoGrid/gridHelper.js")"></script>
+
+<script type="text/javascript">
+    function GetPendingDetails() {
+        require(["kpopupWindow"], function (kpopupWindow) {
+            var createWizardWindow = new kpopupWindow();
+            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("GetPendingDetails", Model.ControllerName, new { area = "Productions" })", "Chọn mặt hàng từ bán thành phẩm", "@Settings.PopupWidthLarge", "@Settings.PopupHeightWithTab");
+        });
+    }
+</script>

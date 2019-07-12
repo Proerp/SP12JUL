@@ -1,0 +1,97 @@
+﻿@using TotalModel.Models;
+@using TotalPortal.Configuration;
+
+@{Layout = "~/Views/Shared/_LayoutPopup.cshtml";}
+
+
+@(Html.Kendo().Grid<PackageIssuePendingBlendingInstructionDetail>()
+    .Name("gridPendingBlendingInstructionDetails")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.CommodityCode).Title("Mã").Width(30);
+        columns.Bound(c => c.GoodsReceiptReference).Title("Lô").Width(15);
+        columns.Bound(c => c.GoodsReceiptEntryDate).Title("Ngày").Width(15).Format("{0:" + Settings.DateFormat + "}");
+        columns.Bound(c => c.BatchEntryDate).Title("Ngày lô hàng").Width(15).Format("{0:" + Settings.DateFormat + "}");
+        columns.Bound(c => c.QuantityRemains).Title("Tồn lệnh").Format(Settings.kfmQuantity).Width(10).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" });
+        columns.Bound(c => c.QuantityAvailables).Title("Tồn kho").Format(Settings.kfmQuantity).Width(10).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" });
+
+        columns.Template(t => { }).Title("&nbsp;").ClientTemplate("<input class='IsSelected' #= IsSelected ? checked='checked':'' #  type='checkbox' />").HtmlAttributes(new { @class = "grid-column-center" }).Width(5);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+            <div class="toolbar" style="float: right;">
+                <label>Nhập số lô hoặc mã hay tên hàng</label>
+                <input id="filterText" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="filterText_KeyUp()" />
+            </div>
+        </text>);
+    })
+    .Scrollable(s => s.Height(Settings.PopupContentHeightLarge))
+    .DataSource(ds => ds.Ajax()
+            .Read(read => read.Action("GetPendingBlendingInstructionDetails", "PackageIssueAPIs", new { area = "Inventories" }).Data(@<text>
+            function(e) {
+
+            var packageIssueJSON = window.parent.$("#kendoGridDetails").data("kendoGrid").dataSource.data().toJSON();
+
+            return {
+                locationID: window.parent.requireConfig.pageOptions.LocationID,
+                packageIssueID: window.parent.$("#PackageIssueID").val(),
+                blendingInstructionID: window.parent.$("#BlendingInstructionID").val(),
+                workshiftID: window.parent.$("#WorkshiftID").val(),
+                moldID: window.parent.$("#MoldID").val(),
+                warehouseID: window.parent.$("#Warehouse_WarehouseID").val(),
+                barcode: "",
+                goodsReceiptDetailIDs : packageIssueJSON.map(function(elem){return elem.GoodsReceiptDetailID;}).join(",")
+            };}
+            </text>))
+    .ServerOperation(false)) //If this is TRUE: Apply filter to datasource will call Ajax to get new datasource result. If this is FALSE: filter will run on client
+    .Selectable()
+)
+
+
+<div class="background-bar" style="height: 45px;">
+    <div class="popup-button-bar">
+        <button type="button" class="k-button" onclick="okButton_Click()"> <img src="~/Content/Images/Mains/Size24/Actions-bookmark-add-icon-24.png" /> Thêm và đóng cửa sổ </button>
+        <button type="button" class="k-button" onclick="cancelButton_Click()"> <img src="~/Content/Images/Mains/Size24/Users-Exit-icon-24.png" /> Thoát </button>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/Controllers/Inventories/PackageIssues/AddPendingBlendingInstructionDetail.js")"></script>
+
+<script type="text/javascript">
+    function okButton_Click() {
+        handleOKEvent(window.parent.$("#kendoGridDetails").data("kendoGrid").dataSource, $("#gridPendingBlendingInstructionDetails").data("kendoGrid").dataSource);
+    }
+
+    $('#gridPendingBlendingInstructionDetails').on('click', '.IsSelected', function () {
+        var checked = $(this).is(':checked');
+        var grid = $('#gridPendingBlendingInstructionDetails').data().kendoGrid;
+        var dataItem = grid.dataItem($(this).closest('tr'));
+        dataItem.set('IsSelected', checked);
+    })
+</script>
+
+
+
+<script>
+    function filterText_KeyUp() {
+        var filterText = $("#filterText").val(), gridDetails = $("#gridPendingBlendingInstructionDetails").data("kendoGrid");
+
+        if (filterText && filterText.length >= "@Settings.AutoCompleteMinLenght") {
+            gridDetails.dataSource.filter({
+                logic: "or",
+                filters: [
+                    { field: "CommodityCode", operator: "contains", value: filterText },
+                    { field: "CommodityName", operator: "contains", value: filterText },
+
+                    { field: "GoodsReceiptReference", operator: "contains", value: filterText }
+                ]
+            });
+
+
+        } else {
+            if (gridDetails.dataSource.filter() != undefined)
+                gridDetails.dataSource.filter({});
+        }
+    }
+</script>
