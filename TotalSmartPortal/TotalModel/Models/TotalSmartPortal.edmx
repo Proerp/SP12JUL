@@ -1384,6 +1384,7 @@
           <Property Name="Reference" Type="nvarchar" MaxLength="10" />
           <Property Name="Code" Type="nvarchar" MaxLength="50" />
           <Property Name="NMVNTaskID" Type="int" Nullable="false" />
+          <Property Name="ModuleDetailID" Type="int" Nullable="false" />
           <Property Name="ShiftID" Type="int" Nullable="false" />
           <Property Name="WorkshiftID" Type="int" Nullable="false" />
           <Property Name="OneStep" Type="bit" Nullable="false" />
@@ -24361,6 +24362,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           <NavigationProperty Name="GoodsReceiptDetails" Relationship="TotalSmartPortalModel.FK_GoodsReceiptDetails_GoodsReceipts" FromRole="GoodsReceipt" ToRole="GoodsReceiptDetail" />
           <Property Name="TotalRows" Type="Int32" Nullable="false" />
           <NavigationProperty Name="GoodsIssuePackages" Relationship="TotalSmartPortalModel.FK_GoodsIssuePackages_GoodsReceipts" FromRole="GoodsReceipt" ToRole="GoodsIssuePackage" />
+          <Property Name="ModuleDetailID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -33585,6 +33587,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           <EntitySetMapping Name="GoodsReceipts">
             <EntityTypeMapping TypeName="TotalSmartPortalModel.GoodsReceipt">
               <MappingFragment StoreEntitySet="GoodsReceipts">
+                <ScalarProperty Name="ModuleDetailID" ColumnName="ModuleDetailID" />
                 <ScalarProperty Name="TotalRows" ColumnName="TotalRows" />
                 <ScalarProperty Name="RecyclateID" ColumnName="RecyclateID" />
                 <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />

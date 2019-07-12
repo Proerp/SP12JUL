@@ -58,6 +58,7 @@ namespace TotalModel.Models
         public Nullable<System.DateTime> ApprovedDate { get; set; }
         public Nullable<int> RecyclateID { get; set; }
         public int TotalRows { get; set; }
+        public int ModuleDetailID { get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual GoodsArrival GoodsArrival { get; set; }
