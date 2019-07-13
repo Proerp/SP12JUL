@@ -70,7 +70,7 @@ namespace TotalPortal.Controllers.Apis
             //MVC: ViewBag.SelectedEntityID = id == null ? -1 : (int)id;
             //MVC: ViewBag.ShowDiscount = this.GenericService.GetShowDiscount();
 
-            TSimpleViewModel simpleViewModel = new TSimpleViewModel();
+            TSimpleViewModel simpleViewModel = NewViewModel();
 
             return Ok(this.InitViewModel(simpleViewModel));
         }
@@ -108,7 +108,7 @@ namespace TotalPortal.Controllers.Apis
             if (!this.isSimpleCreate) return BadRequest();
 
 
-            return Ok(this.TailorViewModel(this.InitViewModelByPrior(this.InitViewModelByDefault(new TSimpleViewModel())))); //Need to call new TSimpleViewModel() to ensure construct TSimpleViewModel object using Constructor!
+            return Ok(this.TailorViewModel(this.InitViewModelByPrior(this.InitViewModelByDefault(NewViewModel())))); //Need to call NewViewModel() to ensure construct TSimpleViewModel object using Constructor!
         }
 
         [HttpPost]
@@ -144,7 +144,7 @@ namespace TotalPortal.Controllers.Apis
         {
             if (!this.isCreateWizard) return BadRequest();
 
-            return Ok(this.TailorViewModel(this.InitViewModelByDefault(new TSimpleViewModel())));
+            return Ok(this.TailorViewModel(this.InitViewModelByDefault(NewViewModel())));
         }
 
         /// <summary>
@@ -508,6 +508,10 @@ namespace TotalPortal.Controllers.Apis
         }
 
 
+        protected virtual TSimpleViewModel NewViewModel()
+        {
+            return new TSimpleViewModel() { ModuleDetailID = this.GenericService.NmvnTaskID };
+        }
 
         protected virtual bool Save(TSimpleViewModel simpleViewModel)
         {

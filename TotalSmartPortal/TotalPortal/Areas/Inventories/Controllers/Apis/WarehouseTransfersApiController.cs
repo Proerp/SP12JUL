@@ -55,10 +55,11 @@ namespace TotalPortal.Areas.Inventories.Controllers.Apis
         }
 
         [HttpGet]
-        [Route("GetWarehouseTransferIndexes/{nmvnTaskID}/{fromDay}/{fromMonth}/{fromYear}/{toDay}/{toMonth}/{toYear}")]
-        public ICollection<WarehouseTransferIndex> GetWarehouseTransferIndexes(string nmvnTaskID, int fromDay, int fromMonth, int fromYear, int toDay, int toMonth, int toYear)
+        [Route("GetWarehouseTransferIndexes/{nmvnTaskID}/{moduleDetailID}/{fromDay}/{fromMonth}/{fromYear}/{toDay}/{toMonth}/{toYear}")]
+        public ICollection<WarehouseTransferIndex> GetWarehouseTransferIndexes(string nmvnTaskID, int moduleDetailID, int fromDay, int fromMonth, int fromYear, int toDay, int toMonth, int toYear)
         {
             this.warehouseTransferAPIRepository.RepositoryBag["NMVNTaskID"] = nmvnTaskID;
+            this.warehouseTransferAPIRepository.RepositoryBag["ModuleDetailID"] = moduleDetailID;
             return this.warehouseTransferAPIRepository.GetEntityIndexes<WarehouseTransferIndex>(User.Identity.GetUserId(), Helpers.InitDateTime(fromYear, fromMonth, fromDay), Helpers.InitDateTime(toYear, toMonth, toDay, 23, 59, 59));
         }
 

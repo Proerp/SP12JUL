@@ -53,10 +53,11 @@ namespace TotalPortal.Areas.Inventories.Controllers.Apis
         }
 
         [HttpGet]
-        [Route("GetGoodsReceiptIndexes/{nmvnTaskID}/{fromDay}/{fromMonth}/{fromYear}/{toDay}/{toMonth}/{toYear}")]
-        public ICollection<GoodsReceiptIndex> GetGoodsReceiptIndexes(string nmvnTaskID, int fromDay, int fromMonth, int fromYear, int toDay, int toMonth, int toYear)
+        [Route("GetGoodsReceiptIndexes/{nmvnTaskID}/{moduleDetailID}/{fromDay}/{fromMonth}/{fromYear}/{toDay}/{toMonth}/{toYear}")]
+        public ICollection<GoodsReceiptIndex> GetGoodsReceiptIndexes(string nmvnTaskID, int moduleDetailID, int fromDay, int fromMonth, int fromYear, int toDay, int toMonth, int toYear)
         {
             this.goodsReceiptAPIRepository.RepositoryBag["NMVNTaskID"] = nmvnTaskID;
+            this.goodsReceiptAPIRepository.RepositoryBag["ModuleDetailID"] = moduleDetailID;
             return this.goodsReceiptAPIRepository.GetEntityIndexes<GoodsReceiptIndex>(User.Identity.GetUserId(), Helpers.InitDateTime(fromYear, fromMonth, fromDay), Helpers.InitDateTime(toYear, toMonth, toDay, 23, 59, 59));
         }
 
