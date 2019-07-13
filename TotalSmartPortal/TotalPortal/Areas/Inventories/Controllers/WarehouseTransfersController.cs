@@ -132,6 +132,22 @@ namespace TotalPortal.Areas.Inventories.Controllers
         }
     }
 
+    public class HeapTransfersController : ItemTransfersController
+    {
+        public override GlobalEnums.NmvnTaskID ModuleDetailID { get { return GlobalEnums.NmvnTaskID.HeapTransfer; } }
+
+        public HeapTransfersController(IItemTransferService itemTransferService, IItemTransferViewModelSelectListBuilder itemTransferViewModelSelectListBuilder)
+            : base(itemTransferService, itemTransferViewModelSelectListBuilder)
+        {
+        }
+
+        protected override ItemTransferViewModel NewViewModel()
+        {
+            ItemTransferViewModel itemTransferViewModel = base.NewViewModel();
+            itemTransferViewModel.ModuleDetailID = this.ModuleDetailID;
+            return itemTransferViewModel;
+        }
+    }
 
     public class ProductTransfersController : WarehouseTransfersController<WarehouseTransferDTO<WTOptionProduct>, WarehouseTransferPrimitiveDTO<WTOptionProduct>, WarehouseTransferDetailDTO, ProductTransferViewModel>
     {

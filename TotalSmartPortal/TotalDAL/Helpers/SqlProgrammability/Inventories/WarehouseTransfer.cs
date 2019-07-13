@@ -45,7 +45,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
         {
             string queryString;
 
-            queryString = " @NMVNTaskID int, @AspUserID nvarchar(128), @FromDate DateTime, @ToDate DateTime " + "\r\n";
+            queryString = " @NMVNTaskID int, @ModuleDetailID int, @AspUserID nvarchar(128), @FromDate DateTime, @ToDate DateTime " + "\r\n";
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
@@ -53,7 +53,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
             queryString = queryString + "       SELECT      WarehouseTransfers.WarehouseTransferID, CAST(WarehouseTransfers.EntryDate AS DATE) AS EntryDate, WarehouseTransfers.Reference, Locations.Code AS LocationCode, Workshifts.Name AS WorkshiftName, Users.FirstName AS UserFirstName, Users.LastName AS UserLastName, WarehouseTransfers.WarehouseTransferJobs, WarehouseTransfers.Caption, WarehouseTransfers.Description, WarehouseTransfers.TotalRows, WarehouseTransfers.TotalQuantity, WarehouseTransfers.Approved, " + "\r\n";
             queryString = queryString + "                   Warehouses.Code AS WarehouseCode, WarehouseReceipts.Code AS WarehouseReceiptCode, TransferOrders.Reference AS TransferOrdersReference, TransferOrders.EntryDate AS TransferOrderEntryDate " + "\r\n";
             queryString = queryString + "       FROM        WarehouseTransfers " + "\r\n";
-            queryString = queryString + "                   INNER JOIN Locations ON WarehouseTransfers.NMVNTaskID = @NMVNTaskID AND WarehouseTransfers.EntryDate >= @FromDate AND WarehouseTransfers.EntryDate <= @ToDate AND WarehouseTransfers.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID = @NMVNTaskID AND AccessControls.AccessLevel > 0) AND Locations.LocationID = WarehouseTransfers.LocationID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Locations ON WarehouseTransfers.NMVNTaskID = @NMVNTaskID AND WarehouseTransfers.ModuleDetailID = @ModuleDetailID AND WarehouseTransfers.EntryDate >= @FromDate AND WarehouseTransfers.EntryDate <= @ToDate AND WarehouseTransfers.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID = @NMVNTaskID AND AccessControls.AccessLevel > 0) AND Locations.LocationID = WarehouseTransfers.LocationID " + "\r\n";
             queryString = queryString + "                   INNER JOIN Warehouses ON WarehouseTransfers.WarehouseID = Warehouses.WarehouseID " + "\r\n";
             queryString = queryString + "                   INNER JOIN Warehouses WarehouseReceipts ON WarehouseTransfers.WarehouseReceiptID = WarehouseReceipts.WarehouseID " + "\r\n";
             queryString = queryString + "                   INNER JOIN Workshifts ON WarehouseTransfers.WorkshiftID = Workshifts.WorkshiftID " + "\r\n";

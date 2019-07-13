@@ -3874,11 +3874,15 @@ namespace TotalModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("TransferOrderVoidable", entityIDParameter);
         }
     
-        public virtual ObjectResult<WarehouseTransferIndex> GetWarehouseTransferIndexes(Nullable<int> nMVNTaskID, string aspUserID, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        public virtual ObjectResult<WarehouseTransferIndex> GetWarehouseTransferIndexes(Nullable<int> nMVNTaskID, Nullable<int> moduleDetailID, string aspUserID, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
         {
             var nMVNTaskIDParameter = nMVNTaskID.HasValue ?
                 new ObjectParameter("NMVNTaskID", nMVNTaskID) :
                 new ObjectParameter("NMVNTaskID", typeof(int));
+    
+            var moduleDetailIDParameter = moduleDetailID.HasValue ?
+                new ObjectParameter("ModuleDetailID", moduleDetailID) :
+                new ObjectParameter("ModuleDetailID", typeof(int));
     
             var aspUserIDParameter = aspUserID != null ?
                 new ObjectParameter("AspUserID", aspUserID) :
@@ -3892,7 +3896,7 @@ namespace TotalModel.Models
                 new ObjectParameter("ToDate", toDate) :
                 new ObjectParameter("ToDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<WarehouseTransferIndex>("GetWarehouseTransferIndexes", nMVNTaskIDParameter, aspUserIDParameter, fromDateParameter, toDateParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<WarehouseTransferIndex>("GetWarehouseTransferIndexes", nMVNTaskIDParameter, moduleDetailIDParameter, aspUserIDParameter, fromDateParameter, toDateParameter);
         }
     
         public virtual ObjectResult<WarehouseTransferPendingTransferOrderDetail> GetWarehouseTransferPendingTransferOrderDetails(Nullable<bool> webAPI, Nullable<int> locationID, Nullable<int> nMVNTaskID, Nullable<int> warehouseTransferID, Nullable<int> transferOrderID, Nullable<int> warehouseID, Nullable<int> warehouseReceiptID, string barcode, string goodsReceiptDetailIDs)

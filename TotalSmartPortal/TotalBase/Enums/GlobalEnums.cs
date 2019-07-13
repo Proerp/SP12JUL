@@ -176,6 +176,7 @@ namespace TotalBase.Enums
             WarehouseTransfer = 1008071,
             MaterialTransfer = 9081008,
             ItemTransfer = 9081009,
+            HeapTransfer = 908100910,
             ProductTransfer = 9081010,
 
 

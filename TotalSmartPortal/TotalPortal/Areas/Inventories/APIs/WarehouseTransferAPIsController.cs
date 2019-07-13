@@ -25,9 +25,10 @@ namespace TotalPortal.Areas.Inventories.APIs
         }
 
 
-        public JsonResult GetWarehouseTransferIndexes([DataSourceRequest] DataSourceRequest request, string nmvnTaskID)
+        public JsonResult GetWarehouseTransferIndexes([DataSourceRequest] DataSourceRequest request, string nmvnTaskID, int moduleDetailID)
         {
             this.warehouseTransferAPIRepository.RepositoryBag["NMVNTaskID"] = nmvnTaskID;
+            this.warehouseTransferAPIRepository.RepositoryBag["ModuleDetailID"] = moduleDetailID;
             ICollection<WarehouseTransferIndex> transferOrderIndexes = this.warehouseTransferAPIRepository.GetEntityIndexes<WarehouseTransferIndex>(User.Identity.GetUserId(), HomeSession.GetGlobalFromDate(this.HttpContext), HomeSession.GetGlobalToDate(this.HttpContext));
 
             DataSourceResult response = transferOrderIndexes.ToDataSourceResult(request);

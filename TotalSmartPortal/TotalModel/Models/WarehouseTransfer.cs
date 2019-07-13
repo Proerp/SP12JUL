@@ -52,6 +52,7 @@ namespace TotalModel.Models
         public Nullable<System.DateTime> ApprovedDate { get; set; }
         public Nullable<int> BlendingInstructionID { get; set; }
         public int TotalRows { get; set; }
+        public int ModuleDetailID { get; set; }
     
         public virtual Employee Employee { get; set; }
         public virtual Location Location { get; set; }
