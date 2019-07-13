@@ -2236,11 +2236,15 @@ namespace TotalModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("PurchaseRequisitionVoidable", entityIDParameter);
         }
     
-        public virtual ObjectResult<GoodsReceiptIndex> GetGoodsReceiptIndexes(Nullable<int> nMVNTaskID, string aspUserID, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        public virtual ObjectResult<GoodsReceiptIndex> GetGoodsReceiptIndexes(Nullable<int> nMVNTaskID, Nullable<int> moduleDetailID, string aspUserID, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
         {
             var nMVNTaskIDParameter = nMVNTaskID.HasValue ?
                 new ObjectParameter("NMVNTaskID", nMVNTaskID) :
                 new ObjectParameter("NMVNTaskID", typeof(int));
+    
+            var moduleDetailIDParameter = moduleDetailID.HasValue ?
+                new ObjectParameter("ModuleDetailID", moduleDetailID) :
+                new ObjectParameter("ModuleDetailID", typeof(int));
     
             var aspUserIDParameter = aspUserID != null ?
                 new ObjectParameter("AspUserID", aspUserID) :
@@ -2254,7 +2258,7 @@ namespace TotalModel.Models
                 new ObjectParameter("ToDate", toDate) :
                 new ObjectParameter("ToDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GoodsReceiptIndex>("GetGoodsReceiptIndexes", nMVNTaskIDParameter, aspUserIDParameter, fromDateParameter, toDateParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GoodsReceiptIndex>("GetGoodsReceiptIndexes", nMVNTaskIDParameter, moduleDetailIDParameter, aspUserIDParameter, fromDateParameter, toDateParameter);
         }
     
         public virtual ObjectResult<GoodsReceiptPendingCustomer> GetGoodsReceiptPendingCustomers(Nullable<int> locationID)

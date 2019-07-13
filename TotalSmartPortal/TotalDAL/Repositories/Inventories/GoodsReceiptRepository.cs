@@ -36,9 +36,10 @@ namespace TotalDAL.Repositories.Inventories
         {
 
             ObjectParameter[] baseParameters = base.GetEntityIndexParameters(aspUserID, fromDate, toDate);
-            ObjectParameter[] objectParameters = new ObjectParameter[] { new ObjectParameter("NMVNTaskID", this.RepositoryBag.ContainsKey("NMVNTaskID") && this.RepositoryBag["NMVNTaskID"] != null ? this.RepositoryBag["NMVNTaskID"] : 0), baseParameters[0], baseParameters[1], baseParameters[2] };
+            ObjectParameter[] objectParameters = new ObjectParameter[] { new ObjectParameter("NMVNTaskID", this.RepositoryBag.ContainsKey("NMVNTaskID") && this.RepositoryBag["NMVNTaskID"] != null ? this.RepositoryBag["NMVNTaskID"] : 0), new ObjectParameter("ModuleDetailID", this.RepositoryBag.ContainsKey("ModuleDetailID") && this.RepositoryBag["ModuleDetailID"] != null ? this.RepositoryBag["ModuleDetailID"] : 0), baseParameters[0], baseParameters[1], baseParameters[2] };
 
             this.RepositoryBag.Remove("NMVNTaskID");
+            this.RepositoryBag.Remove("ModuleDetailID");
 
             return objectParameters;
         }

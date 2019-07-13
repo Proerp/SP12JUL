@@ -33,9 +33,10 @@ namespace TotalPortal.Areas.Inventories.APIs
         }
 
 
-        public JsonResult GetGoodsReceiptIndexes([DataSourceRequest] DataSourceRequest request, string nmvnTaskID)
+        public JsonResult GetGoodsReceiptIndexes([DataSourceRequest] DataSourceRequest request, string nmvnTaskID, int moduleDetailID)
         {
             this.goodsReceiptAPIRepository.RepositoryBag["NMVNTaskID"] = nmvnTaskID;
+            this.goodsReceiptAPIRepository.RepositoryBag["ModuleDetailID"] = moduleDetailID;
             ICollection<GoodsReceiptIndex> goodsReceiptIndexes = this.goodsReceiptAPIRepository.GetEntityIndexes<GoodsReceiptIndex>(User.Identity.GetUserId(), HomeSession.GetGlobalFromDate(this.HttpContext), HomeSession.GetGlobalToDate(this.HttpContext));
 
             DataSourceResult response = goodsReceiptIndexes.ToDataSourceResult(request);
