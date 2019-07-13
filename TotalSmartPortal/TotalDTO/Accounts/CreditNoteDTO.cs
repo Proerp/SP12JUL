@@ -15,7 +15,7 @@ namespace TotalDTO.Accounts
 {
     public class CreditNotePrimitiveDTO : VATAmountDTO<CreditNoteDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
     {
-        public virtual GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.CreditNote; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.CreditNote; } }
 
         public int GetID() { return this.CreditNoteID; }
         public void SetID(int id) { this.CreditNoteID = id; }

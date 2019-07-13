@@ -29,7 +29,7 @@ namespace TotalDTO.Commons
 
     public class BinLocationPrimitiveDTO : BinLocationBaseDTO, IPrimitiveEntity, IPrimitiveDTO
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.BinLocation; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.BinLocation; } }
 
         public int GetID() { return this.BinLocationID; }
         public void SetID(int id) { this.BinLocationID = id; }

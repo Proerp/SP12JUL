@@ -44,7 +44,7 @@ namespace TotalDTO.Productions
     public class FinishedHandoverPrimitiveDTO<TFinishedHandoverOption> : QuantityDTO<FinishedHandoverDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
         where TFinishedHandoverOption : IFinishedHandoverOption, new()
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TFinishedHandoverOption().NMVNTaskID; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TFinishedHandoverOption().NMVNTaskID; } }
 
         public int GetID() { return this.FinishedHandoverID; }
         public void SetID(int id) { this.FinishedHandoverID = id; }

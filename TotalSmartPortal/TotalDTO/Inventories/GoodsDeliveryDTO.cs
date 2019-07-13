@@ -14,7 +14,7 @@ namespace TotalDTO.Inventories
 {
     public class GoodsDeliveryPrimitiveDTO : QuantityDTO<GoodsDeliveryDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.GoodsDelivery; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.GoodsDelivery; } }
 
         public int GetID() { return this.GoodsDeliveryID; }
         public void SetID(int id) { this.GoodsDeliveryID = id; }

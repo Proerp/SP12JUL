@@ -12,7 +12,7 @@ namespace TotalDTO.Analysis
 {
     public class ReportPrimitiveDTO : BaseDTO, IPrimitiveEntity, IPrimitiveDTO
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Report; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Report; } }
 
         public int GetID() { return this.ReportID; }
         public void SetID(int id) { this.ReportID = id; }

@@ -532,7 +532,7 @@ namespace TotalPortal.Controllers
 
         protected virtual TSimpleViewModel NewViewModel()
         {
-            return new TSimpleViewModel() { ModuleDetailID = this.GenericService.NmvnTaskID };
+            return new TSimpleViewModel();
         }
 
         protected virtual bool Save(TSimpleViewModel simpleViewModel)

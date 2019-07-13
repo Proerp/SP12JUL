@@ -129,7 +129,7 @@ namespace TotalDTO.Commons
     public class CommodityPrimitiveDTO<TCommodityOption> : CommodityBaseDTO, IPrimitiveEntity, IPrimitiveDTO
         where TCommodityOption : ICMDOption, new()
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TCommodityOption().NMVNTaskID; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TCommodityOption().NMVNTaskID; } }
 
         public int GetID() { return this.CommodityID; }
         public void SetID(int id) { this.CommodityID = id; }

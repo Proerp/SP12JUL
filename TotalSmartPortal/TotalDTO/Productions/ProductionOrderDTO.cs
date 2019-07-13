@@ -42,7 +42,7 @@ namespace TotalDTO.Productions
     public class ProductionOrderPrimitiveDTO<TProrderOption> : QuantityDTO<ProductionOrderDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
         where TProrderOption : IProrderOption, new()
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TProrderOption().NMVNTaskID; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TProrderOption().NMVNTaskID; } }
 
         public int GetID() { return this.ProductionOrderID; }
         public void SetID(int id) { this.ProductionOrderID = id; }

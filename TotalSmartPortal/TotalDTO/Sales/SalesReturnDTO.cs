@@ -17,7 +17,7 @@ namespace TotalDTO.Sales
 
     public class SalesReturnPrimitiveDTO : FreeQuantityDiscountVATAmountDTO<SalesReturnDetailDTO>, IPrimitiveEntity, IPrimitiveDTO, IPriceCategory
     {
-        public virtual GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.SalesReturn; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.SalesReturn; } }
 
         public int GetID() { return this.SalesReturnID; }
         public void SetID(int id) { this.SalesReturnID = id; }

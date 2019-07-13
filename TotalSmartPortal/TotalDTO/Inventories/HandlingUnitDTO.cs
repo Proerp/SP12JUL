@@ -14,7 +14,7 @@ namespace TotalDTO.Inventories
 {
     public class HandlingUnitPrimitiveDTO : QuantityDTO<HandlingUnitDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.HandlingUnit; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.HandlingUnit; } }
 
         public int GetID() { return this.HandlingUnitID; }
         public void SetID(int id) { this.HandlingUnitID = id; }

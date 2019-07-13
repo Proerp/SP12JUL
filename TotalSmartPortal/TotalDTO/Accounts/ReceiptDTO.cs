@@ -17,7 +17,7 @@ namespace TotalDTO.Accounts
 {
     public class ReceiptPrimitiveDTO : BaseWithDetailDTO<ReceiptDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
     {
-        public virtual GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Receipt; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Receipt; } }
 
         public int GetID() { return this.ReceiptID; }
         public void SetID(int id) { this.ReceiptID = id; }

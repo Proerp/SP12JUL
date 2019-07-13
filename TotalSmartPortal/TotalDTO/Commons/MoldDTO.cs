@@ -34,7 +34,7 @@ namespace TotalDTO.Commons
 
     public class MoldPrimitiveDTO : MoldBaseDTO, IPrimitiveEntity, IPrimitiveDTO
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Mold; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Mold; } }
 
         public int GetID() { return this.MoldID; }
         public void SetID(int id) { this.MoldID = id; }

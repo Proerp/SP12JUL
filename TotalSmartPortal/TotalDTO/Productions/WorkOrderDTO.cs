@@ -61,7 +61,7 @@ namespace TotalDTO.Productions
     public class WorkOrderPrimitiveDTO<TWOOption> : QuantityDTO<WorkOrderDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
         where TWOOption : IWOOption, new()
     {
-        public virtual GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TWOOption().NMVNTaskID; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TWOOption().NMVNTaskID; } }
 
         public int GetID() { return this.WorkOrderID; }
         public void SetID(int id) { this.WorkOrderID = id; }

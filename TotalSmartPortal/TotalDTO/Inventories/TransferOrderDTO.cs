@@ -36,7 +36,7 @@ namespace TotalDTO.Inventories
     public class TransferOrderPrimitiveDTO<TTOOption> : QuantityDTO<TransferOrderDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
         where TTOOption : ITOOption, new()
     {
-        public virtual GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TTOOption().NMVNTaskID; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TTOOption().NMVNTaskID; } }
 
         public int GetID() { return this.TransferOrderID; }
         public void SetID(int id) { this.TransferOrderID = id; }

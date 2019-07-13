@@ -16,7 +16,7 @@ namespace TotalDTO.Productions
     {
         public override string VoidWarning { get { return "Thanh lý"; } }
 
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.BlendingInstruction; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.BlendingInstruction; } }
 
         public int GetID() { return this.BlendingInstructionID; }
         public void SetID(int id) { this.BlendingInstructionID = id; }

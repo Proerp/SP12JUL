@@ -20,7 +20,7 @@ namespace TotalDTO.Purchases
         public override string ApproveWarning { get { return "PASS"; } }
         public override string UnApproveWarning { get { return "Không PASS"; } }
 
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Lab; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Lab; } }
 
         public int GetID() { return this.LabID; }
         public void SetID(int id) { this.LabID = id; }

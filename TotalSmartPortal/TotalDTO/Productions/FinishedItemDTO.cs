@@ -15,7 +15,7 @@ namespace TotalDTO.Productions
 {
     public class FinishedItemPrimitiveDTO : QuantityDTO<FinishedItemDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
     {
-        public virtual GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.FinishedItem; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.FinishedItem; } }
 
         public int GetID() { return this.FinishedItemID; }
         public void SetID(int id) { this.FinishedItemID = id; }

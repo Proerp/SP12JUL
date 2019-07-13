@@ -15,7 +15,7 @@ namespace TotalDTO.Accounts
 {
     public class AccountInvoicePrimitiveDTO : FreeQuantityDiscountVATAmountDTO<AccountInvoiceDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.AccountInvoice; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.AccountInvoice; } }
 
         public int GetID() { return this.AccountInvoiceID; }
         public void SetID(int id) { this.AccountInvoiceID = id; }

@@ -15,7 +15,7 @@ namespace TotalDTO.Sales
 {
     public class SalesOrderPrimitiveDTO : FreeQuantityDiscountVATAmountDTO<SalesOrderDetailDTO>, IPrimitiveEntity, IPrimitiveDTO, IPriceCategory
     {
-        public virtual GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.SalesOrder; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.SalesOrder; } }
 
         public int GetID() { return this.SalesOrderID; }
         public void SetID(int id) { this.SalesOrderID = id; }

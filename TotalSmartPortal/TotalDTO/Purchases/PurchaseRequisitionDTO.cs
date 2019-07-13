@@ -14,7 +14,7 @@ namespace TotalDTO.Purchases
 {
     public class PurchaseRequisitionPrimitiveDTO : QuantityDTO<PurchaseRequisitionDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.PurchaseRequisition; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.PurchaseRequisition; } }
 
         public int GetID() { return this.PurchaseRequisitionID; }
         public void SetID(int id) { this.PurchaseRequisitionID = id; }

@@ -110,7 +110,7 @@ namespace TotalDTO.Inventories
     public class GoodsReceiptPrimitiveDTO<TGROption> : QuantityDTO<GoodsReceiptDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
         where TGROption : IGROption, new()
     {
-        public virtual GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TGROption().NMVNTaskID; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TGROption().NMVNTaskID; } }
 
         public int GetID() { return this.GoodsReceiptID; }
         public void SetID(int id) { this.GoodsReceiptID = id; }

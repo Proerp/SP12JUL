@@ -39,7 +39,7 @@ namespace TotalDTO.Productions
     public class SemifinishedHandoverPrimitiveDTO<TSemifinishedHandoverOption> : BaseWithDetailDTO<SemifinishedHandoverDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
         where TSemifinishedHandoverOption : ISemifinishedHandoverOption, new()
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TSemifinishedHandoverOption().NMVNTaskID; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TSemifinishedHandoverOption().NMVNTaskID; } }
 
         public int GetID() { return this.SemifinishedHandoverID; }
         public void SetID(int id) { this.SemifinishedHandoverID = id; }

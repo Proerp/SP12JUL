@@ -78,7 +78,7 @@ namespace TotalDTO.Inventories
     public class MaterialIssuePrimitiveDTO<TMIOption> : QuantityDTO<MaterialIssueDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
         where TMIOption : IMIOption, new()
     {
-        public virtual GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TMIOption().NMVNTaskID; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return new TMIOption().NMVNTaskID; } }
 
         public int GetID() { return this.MaterialIssueID; }
         public void SetID(int id) { this.MaterialIssueID = id; }

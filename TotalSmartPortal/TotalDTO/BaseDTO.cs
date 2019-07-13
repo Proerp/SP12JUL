@@ -10,6 +10,7 @@ namespace TotalDTO
 {
     public interface IBaseDTO : IBaseModel, IAccessControlAttribute
     {
+        //GlobalEnums.NmvnTaskID NMVNTaskID { get; }
         GlobalEnums.NmvnTaskID ModuleDetailID { get; set; }
 
         string Reference { get; set; }
@@ -72,8 +73,11 @@ namespace TotalDTO
                     propertyInfo.SetValue(this, attribute.Value, null);
                 }
             }
+
+            this.ModuleDetailID = this.NMVNTaskID;
         }
 
+        public virtual GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.UnKnown ;} }
         public virtual GlobalEnums.NmvnTaskID ModuleDetailID { get; set; }
 
         [Display(Name = "Số phiếu")]

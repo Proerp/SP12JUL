@@ -10,7 +10,7 @@ namespace TotalDTO.Commons
 {
     public class CommodityPricePrimitiveDTO : BaseDTO, IPrimitiveEntity, IPrimitiveDTO
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.CommodityPrice; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.CommodityPrice; } }
 
         public int GetID() { return this.CommodityPriceID; }
         public void SetID(int id) { this.CommodityPriceID = id; }

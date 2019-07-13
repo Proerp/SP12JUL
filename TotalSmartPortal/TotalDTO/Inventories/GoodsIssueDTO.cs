@@ -15,7 +15,7 @@ namespace TotalDTO.Inventories
 {
     public class GoodsIssuePrimitiveDTO : FreeQuantityDiscountVATAmountDTO<GoodsIssueDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
     {
-        public virtual GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.GoodsIssue; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.GoodsIssue; } }
 
         public int GetID() { return this.GoodsIssueID; }
         public void SetID(int id) { this.GoodsIssueID = id; }

@@ -36,7 +36,7 @@ namespace TotalDTO.Commons
 
     public class BomPrimitiveDTO : QuantityDTO<BomDetailDTO>, IPrimitiveEntity, IPrimitiveDTO
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Bom; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Bom; } }
 
         public int GetID() { return this.BomID; }
         public void SetID(int id) { this.BomID = id; }

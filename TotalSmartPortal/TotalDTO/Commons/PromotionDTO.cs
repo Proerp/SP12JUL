@@ -15,7 +15,7 @@ namespace TotalDTO.Commons
 {
     public class PromotionPrimitiveDTO : BaseWithDetailDTO<PromotionCommodityCodePartDTO>, IPrimitiveEntity, IPrimitiveDTO
     {
-        public GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Promotion; } }
+        public override GlobalEnums.NmvnTaskID NMVNTaskID { get { return GlobalEnums.NmvnTaskID.Promotion; } }
 
         public int GetID() { return this.PromotionID; }
         public void SetID(int id) { this.PromotionID = id; }
