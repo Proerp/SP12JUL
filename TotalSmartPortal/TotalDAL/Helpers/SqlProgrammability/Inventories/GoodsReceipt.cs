@@ -192,11 +192,14 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
 
+            queryString = queryString + "       DECLARE         @GoodsArrivalIDs TABLE (GoodsArrivalID int NOT NULL) " + "\r\n";
+            queryString = queryString + "       INSERT INTO     @GoodsArrivalIDs (GoodsArrivalID) SELECT GoodsArrivalID FROM GoodsArrivalPackages WHERE LocationID = @LocationID AND NMVNTaskID = @NMVNTaskID + 70129005 AND Approved = 1 AND InActive = 0 AND InActivePartial = 0 AND ROUND(Quantity - QuantityReceipted, " + (int)GlobalEnums.rndQuantity + ") > 0 " + "\r\n";
+
             queryString = queryString + "       SELECT          " + (int)@GlobalEnums.GoodsReceiptTypeID.GoodsArrival + " AS GoodsReceiptTypeID, GoodsArrivals.GoodsArrivalID, GoodsArrivals.Reference AS GoodsArrivalReference, GoodsArrivals.Code AS GoodsArrivalCode, GoodsArrivals.EntryDate AS GoodsArrivalEntryDate, GoodsArrivals.Description, GoodsArrivals.Remarks, " + "\r\n";
             queryString = queryString + "                       GoodsArrivals.CustomerID, Customers.Code AS CustomerCode, Customers.Name AS CustomerName, Customers.OfficialName AS CustomerOfficialName, Warehouses.WarehouseID, Warehouses.Code AS WarehouseCode, Warehouses.Name AS WarehouseName, GoodsArrivals.CustomsDeclaration AS GoodsArrivalCustomsDeclaration, GoodsArrivals.CustomsDeclarationDate AS GoodsArrivalCustomsDeclarationDate, GoodsArrivals.PurchaseOrderCodes AS GoodsArrivalPurchaseOrderCodes, PurchaseOrders.VoucherDate AS GoodsArrivalPurchaseOrderVoucherDate " + "\r\n";
 
             queryString = queryString + "       FROM            GoodsArrivals " + "\r\n";
-            queryString = queryString + "                       INNER JOIN Customers ON GoodsArrivals.GoodsArrivalID IN (SELECT GoodsArrivalID FROM GoodsArrivalPackages WHERE LocationID = @LocationID AND NMVNTaskID = @NMVNTaskID + 70129005 AND Approved = 1 AND InActive = 0 AND InActivePartial = 0 AND ROUND(Quantity - QuantityReceipted, " + (int)GlobalEnums.rndQuantity + ") > 0) AND GoodsArrivals.CustomerID = Customers.CustomerID " + "\r\n";
+            queryString = queryString + "                       INNER JOIN Customers ON GoodsArrivals.GoodsArrivalID IN (SELECT GoodsArrivalID FROM @GoodsArrivalIDs) AND GoodsArrivals.CustomerID = Customers.CustomerID " + "\r\n";
             queryString = queryString + "                       INNER JOIN EntireTerritories CustomerEntireTerritories ON Customers.TerritoryID = CustomerEntireTerritories.TerritoryID " + "\r\n";
             queryString = queryString + "                       INNER JOIN Warehouses ON GoodsArrivals.WarehouseID = Warehouses.WarehouseID " + "\r\n";
             queryString = queryString + "                       LEFT JOIN PurchaseOrders ON GoodsArrivals.PurchaseOrderID = PurchaseOrders.PurchaseOrderID " + "\r\n";
