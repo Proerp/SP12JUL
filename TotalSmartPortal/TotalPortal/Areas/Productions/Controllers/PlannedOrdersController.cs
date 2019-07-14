@@ -70,4 +70,28 @@ namespace TotalPortal.Areas.Productions.Controllers
         {
         }
     }
+
+    public class PlannedBadgesController : PlannedProductsController
+    {
+        public override GlobalEnums.NmvnTaskID ModuleDetailID { get { return GlobalEnums.NmvnTaskID.PlannedBadge; } }
+
+        public PlannedBadgesController(IPlannedProductService plannedProductService, IPlannedProductViewModelSelectListBuilder plannedProductViewModelSelectListBuilder)
+            : base(plannedProductService, plannedProductViewModelSelectListBuilder)
+        {
+        }
+
+        protected override PlannedProductViewModel NewViewModel()
+        {
+            PlannedProductViewModel plannedProductViewModel = base.NewViewModel();
+            plannedProductViewModel.ModuleDetailID = this.ModuleDetailID;
+            return plannedProductViewModel;
+        }
+
+        protected override PlannedProductViewModel MapEntityToViewModel(PlannedOrder entity)
+        { //THIS IS DIFFRENT FROM GoodsReceipts (THERE IS NO ModuleDetailID STORED IN DATABASE) => SO WE NEED TO override HERE TO SET ModuleDetailID
+            PlannedProductViewModel plannedProductViewModel = base.MapEntityToViewModel(entity);
+            if (plannedProductViewModel != null) plannedProductViewModel.ModuleDetailID = this.ModuleDetailID;
+            return plannedProductViewModel;
+        }
+    }
 }

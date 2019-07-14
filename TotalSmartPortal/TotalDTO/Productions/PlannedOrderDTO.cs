@@ -128,7 +128,7 @@ namespace TotalDTO.Productions
         }
 
 
-        public string ControllerName { get { return this.NMVNTaskID.ToString() + "s"; } }
+        public string ControllerName { get { return this.ModuleDetailID.ToString() + "s"; } }
 
         public bool IsItem { get { return this.NMVNTaskID == GlobalEnums.NmvnTaskID.PlannedItem; } }
         public bool IsProduct { get { return this.NMVNTaskID == GlobalEnums.NmvnTaskID.PlannedProduct; } }

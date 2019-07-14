@@ -6,7 +6,7 @@ namespace TotalBase.Enums
 {
     public static class GlobalEnums
     {
-        public static bool CBPP = true;
+        public static bool CBPP = false;
         public static bool DMC = false;
 
         public static bool ERPConnected = false;
@@ -74,6 +74,7 @@ namespace TotalBase.Enums
             PlannedOrder = 100680016,
             PlannedItem = 680016008,
             PlannedProduct = 680016,
+            PlannedBadge = 68001610,
 
 
             ProductionOrder = 100680018,
