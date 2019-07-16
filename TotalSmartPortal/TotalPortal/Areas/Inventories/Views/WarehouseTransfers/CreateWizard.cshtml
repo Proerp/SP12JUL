@@ -29,60 +29,57 @@
     @Html.HiddenFor(model => (model as IWarehouseTransferPrimitiveDTO).TransferOrderID)
     @Html.HiddenFor(model => (model as IWarehouseTransferPrimitiveDTO).TransferOrderReference)
     @Html.HiddenFor(model => (model as IWarehouseTransferPrimitiveDTO).TransferOrderEntryDate)
-    
+
     @Html.HiddenFor(model => (model as IWarehouseTransferPrimitiveDTO).WarehouseTransferJobs)
-    
-    @(Html.Kendo().TabStrip()
-        .HtmlAttributes(new { @style = "height: 468px; margin-left: 0px; margin-right: 0px;" })
-        .Name("tabStrip")
-        .Items(tabStrip =>
-        {
-            tabStrip.Add().Text("VCNB không có lệnh")
-                .Visible(!GlobalEnums.CBPP && !GlobalEnums.DMC)
-                .Selected(!GlobalEnums.CBPP && !GlobalEnums.DMC)
-                .Content(@<text>
-                    <div style="margin-top: 39px; margin-right: 18px;">
-                        @Html.EditorFor(d => (d as IWarehouseTransferDTO).Warehouse, new { WarehouseDisplayName = @Model.Warehouse.GetDisplayName(m => m.WarehouseID) })
 
-                        @Html.EditorFor(d => (d as IWarehouseTransferDTO).WarehouseReceipt, new { WarehouseDisplayName = @Model.WarehouseReceipt.GetDisplayName(m => m.WarehouseID) })
+    if (GlobalEnums.CBPP || GlobalEnums.DMC)
+    {
+        @Html.Partial("~/Areas/Inventories/Views/WarehouseTransfers/_GetAvailableWarehouse.cshtml")
 
-                    </div>
-                </text>);
-        
-        
-        
-            tabStrip.Add().Text("Xuất không có lệnh VCNB")
-                .Visible(GlobalEnums.CBPP || GlobalEnums.DMC)
-                .Selected(GlobalEnums.CBPP || GlobalEnums.DMC)
-                .Content(@<text>
-                    @Html.Partial("~/Areas/Inventories/Views/WarehouseTransfers/_GetAvailableWarehouse.cshtml")
+        <div style="display: none;">
+            @*NOTE HERE: WE DUPLICATE THIS CODE FOR THE SECOND TABTRIP, BECAUSE THE SECOND TAB STRIP IS HIDDEN*@
+            @Html.EditorFor(d => (d as IWarehouseTransferDTO).Warehouse, new { WarehouseDisplayName = @Model.Warehouse.GetDisplayName(m => m.WarehouseID) })
 
-                    <div style="display: none;"> @*NOTE HERE: WE DUPLICATE THIS CODE FOR THE SECOND TABTRIP, BECAUSE THE SECOND TAB STRIP IS HIDDEN*@
-                        @Html.EditorFor(d => (d as IWarehouseTransferDTO).Warehouse, new { WarehouseDisplayName = @Model.Warehouse.GetDisplayName(m => m.WarehouseID) })
-
-                        @Html.EditorFor(d => (d as IWarehouseTransferDTO).WarehouseReceipt, new { WarehouseDisplayName = @Model.WarehouseReceipt.GetDisplayName(m => m.WarehouseID) })
-                    </div>
-
-
-                </text>);            
-            tabStrip.Add().Text("Xuất theo lệnh VCNB")
-                .Content(@<text>
-                    @Html.Partial("~/Areas/Inventories/Views/WarehouseTransfers/_GetTransferOrder.cshtml")
-                </text>);
-            tabStrip.Add().Text("Xuất tổng hợp của nhiều lệnh")
+            @Html.EditorFor(d => (d as IWarehouseTransferDTO).WarehouseReceipt, new { WarehouseDisplayName = @Model.WarehouseReceipt.GetDisplayName(m => m.WarehouseID) })
+        </div>
+    }
+    else
+    {
+        @(Html.Kendo().TabStrip()
+            .HtmlAttributes(new { @style = "height: " + (GlobalEnums.CBPP ? "138px" : "468px") + "; margin-left: 0px; margin-right: 0px;" })
+            .Name("tabStrip")
+            .Items(tabStrip =>
+            {
+                tabStrip.Add().Text("VCNB không có lệnh")
+                    .Visible(!GlobalEnums.CBPP && !GlobalEnums.DMC)
+                    .Selected(!GlobalEnums.CBPP && !GlobalEnums.DMC)
                     .Content(@<text>
-                    @Html.Partial("~/Areas/Inventories/Views/WarehouseTransfers/_GetPendingWarehouse.cshtml")
-                    </text>);
-        })
-    )
+                        <div style="margin-top: 39px; margin-right: 18px;">
+                            @Html.EditorFor(d => (d as IWarehouseTransferDTO).Warehouse, new { WarehouseDisplayName = @Model.Warehouse.GetDisplayName(m => m.WarehouseID) })
 
+                            @Html.EditorFor(d => (d as IWarehouseTransferDTO).WarehouseReceipt, new { WarehouseDisplayName = @Model.WarehouseReceipt.GetDisplayName(m => m.WarehouseID) })
+                        </div>
+                    </text>);
+                tabStrip.Add().Text("Xuất theo lệnh VCNB")
+                    .Visible(!GlobalEnums.CBPP)
+                    .Content(@<text>
+                        @Html.Partial("~/Areas/Inventories/Views/WarehouseTransfers/_GetTransferOrder.cshtml")
+                    </text>);
+                tabStrip.Add().Text("Xuất tổng hợp của nhiều lệnh")
+                    .Visible(!GlobalEnums.CBPP)
+                    .Content(@<text>
+                        @Html.Partial("~/Areas/Inventories/Views/WarehouseTransfers/_GetPendingWarehouse.cshtml")
+                    </text>);
+            })
+        )
+    }
 
 
     <div class="background-bar" style="height: 45px;">
         <div class="popup-button-bar">
             <input id="submitCreateWizard" type="submit" formaction="@Url.Action("CreateWizard", Model.ControllerName)" formtarget="_top" style="display:none" />  @*<button type="button" class="k-button" onclick="okButton_Click()"> <img src="~/Content/Images/Mains/Size24/Ok-1.png" /> Áp dụng CTKM đang chọn </button>   //At VCP DON'T ALLOW SELECT BY SINGLE PROMOTION *@
 
-            <button type="button" class="k-button" onclick="okButton_Click()"> <img src="~/Content/Images/Mains/Size24/Accept-Total.png" /> Next </button>
+            <button type="button" class="k-button" onclick="okButton_Click(@(GlobalEnums.CBPP || GlobalEnums.DMC ? "$('#warehouseTransferAvailableWarehouseGrid').data('kendoGrid')" : ""))"> <img src="~/Content/Images/Mains/Size24/Accept-Total.png" /> Next </button>
             <button type="button" class="k-button" onclick="window.parent.$('#myWindow').data('kendoWindow').close()"> <img src="~/Content/Images/Mains/Size24/Users-Exit-icon-24.png" /> Exit </button>
         </div>
     </div>
@@ -93,25 +90,26 @@
 
 <script type="text/javascript">
 
-    function okButton_Click() {
-        var selectedGrid;
-        switch ($("#tabStrip").data("kendoTabStrip").select().text()) {
-            case "Xuất không có lệnh VCNB":
-                selectedGrid = $("#warehouseTransferAvailableWarehouseGrid").data("kendoGrid");
-                break;
-            case "Xuất theo lệnh VCNB":
-                selectedGrid = $("#warehouseTransferPendingTransferOrderGrid").data("kendoGrid");
-                break;
-            case "Xuất tổng hợp của nhiều lệnh":
-                selectedGrid = $("#warehouseTransferPendingWarehouseGrid").data("kendoGrid");
-                break;
-            default:
-                $("#submitCreateWizard").trigger("click");
-                break;
-        }
-        
-        if ($("#tabStrip").data("kendoTabStrip").select().text() != "VCNB không có lệnh")
+    function okButton_Click(selectedGrid) {
+        if (selectedGrid != undefined) {
             handleOKEvent(selectedGrid);
+        }
+        else {
+            switch ($("#tabStrip").data("kendoTabStrip").select().text()) {
+                case "Xuất theo lệnh VCNB":
+                    selectedGrid = $("#warehouseTransferPendingTransferOrderGrid").data("kendoGrid");
+                    break;
+                case "Xuất tổng hợp của nhiều lệnh":
+                    selectedGrid = $("#warehouseTransferPendingWarehouseGrid").data("kendoGrid");
+                    break;
+                default:
+                    $("#submitCreateWizard").trigger("click");
+                    break;
+            }
+
+            if ($("#tabStrip").data("kendoTabStrip").select().text() != "VCNB không có lệnh")
+                handleOKEvent(selectedGrid);
+        }
     }
 
     function okWOSelectButton_Click() {

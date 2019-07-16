@@ -1,4 +1,5 @@
-﻿@using TotalPortal.Configuration
+﻿@using TotalBase.Enums
+@using TotalPortal.Configuration
 @using TotalModel.Models;
 
 @(Html.Kendo().Grid<WarehouseTransferAvailableWarehouse>()
@@ -6,20 +7,20 @@
 
     .Columns(columns =>
     {
-        columns.Bound(c => c.Categories).Title("PL").Width(90);
-        columns.Bound(c => c.WarehouseCode).Title("Kho xuất").Width(90);
-        columns.Bound(c => c.WarehouseReceiptCode).Title("Kho nhập").Width(190);
+        columns.Bound(c => c.Categories).Title(GlobalEnums.CBPP? "" : "Chuyển kho").Width(90);
+        columns.Bound(c => c.WarehouseCode).Title("Kho xuất").Width(90).Hidden(GlobalEnums.CBPP);
+        columns.Bound(c => c.WarehouseReceiptCode).Title("Kho nhập").Width(190).Hidden(GlobalEnums.CBPP);
     })
     .ToolBar(toolbar =>
     {
-        toolbar.Template(@<text>
+        @*toolbar.Template(@<text>
             <div class="toolbar" style="float: right;">
-                <label>Nhập kho xuất hoặc kho nhập</label>
+                <label>Lọc dữ liệu</label>
                 <input id="warehouseTransferAvailableWarehouseFilter" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="warehouseTransferAvailableWarehouseFilter_KeyUp()" />
             </div>
-        </text>);
+        </text>);*@
     })
-    .Scrollable(s => s.Height(Settings.PopupContentHeight))
+    .Scrollable(s => s.Height(GlobalEnums.CBPP? 145 : Settings.PopupContentHeight))
     .DataSource(ds => ds.Ajax()
         .Read(read => read.Action("GetAvailableWarehouses", "WarehouseTransferAPIs", new { area = "Inventories" }).Data("onAdditionalGetAvailableWarehouses"))
         .ServerOperation(false)
@@ -56,6 +57,6 @@
 
 
     $("#warehouseTransferAvailableWarehouseGrid").dblclick(function (e) {
-        okButton_Click();
+        okButton_Click($("#warehouseTransferAvailableWarehouseGrid").data("kendoGrid"));
     })
 </script>
