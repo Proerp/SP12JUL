@@ -82,7 +82,7 @@
                         dataRow.TransferOrderRemains = result.TransferOrderRemains === undefined ? 0 : result.TransferOrderRemains;
                         dataRow.QuantityRemains = result.QuantityRemains;
                         dataRow.QuantityAvailables = result.QuantityAvailables;
-                        dataRow.Quantity = result.QuantityAvailables; //INIT BY THE WHOLE QuantityAvailables
+                        //dataRow.Quantity = result.QuantityAvailables; //INIT BY THE WHOLE QuantityAvailables
 
                         $("#kendoGridDetails").data("kendoGrid").refresh();
                     }
