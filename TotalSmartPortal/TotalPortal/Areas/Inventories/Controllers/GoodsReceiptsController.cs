@@ -143,6 +143,23 @@ namespace TotalPortal.Areas.Inventories.Controllers
         }
     }
 
+    public class RawReceiptsController : MaterialReceiptsController
+    {
+        public override GlobalEnums.NmvnTaskID ModuleDetailID { get { return GlobalEnums.NmvnTaskID.RawReceipt; } }
+
+        public RawReceiptsController(IMaterialReceiptService materialReceiptService, IMaterialReceiptViewModelSelectListBuilder materialReceiptViewModelSelectListBuilder)
+            : base(materialReceiptService, materialReceiptViewModelSelectListBuilder)
+        {
+        }
+
+        protected override MaterialReceiptViewModel NewViewModel()
+        {
+            MaterialReceiptViewModel materialReceiptViewModel = base.NewViewModel();
+            materialReceiptViewModel.ModuleDetailID = this.ModuleDetailID;
+            return materialReceiptViewModel;
+        }
+    }
+
     public class ItemReceiptsController : GoodsReceiptsController<GoodsReceiptDTO<GROptionItem>, GoodsReceiptPrimitiveDTO<GROptionItem>, GoodsReceiptDetailDTO, ItemReceiptViewModel>
     {
         public ItemReceiptsController(IItemReceiptService itemReceiptService, IItemReceiptViewModelSelectListBuilder itemReceiptViewModelSelectListBuilder)

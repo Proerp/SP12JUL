@@ -98,13 +98,13 @@
 
 
             tabStrip.Add().Text("Mua hàng")
-                .Visible(GlobalEnums.CBPP)
+                .Visible(GlobalEnums.CBPP && Model.ModuleDetailID != GlobalEnums.NmvnTaskID.RawReceipt)
                 .Content(@<text>
                     @Html.Partial("~/Areas/Inventories/Views/GoodsReceipts/_GetPurchasing.cshtml")
                 </text>);
 
             tabStrip.Add().Text("Đơn hàng")
-            .Visible(Model.IsItem || Model.IsMaterial || (Model.IsProduct && GlobalEnums.DMC))
+            .Visible((Model.IsItem || Model.IsMaterial || (Model.IsProduct && GlobalEnums.DMC)) && Model.ModuleDetailID != GlobalEnums.NmvnTaskID.RawReceipt)
             .Selected(Model.IsMaterial || GlobalEnums.DMC)
             .Content(@<text>
                     @Html.Partial("~/Areas/Inventories/Views/GoodsReceipts/_GetGoodsArrival.cshtml")
@@ -113,7 +113,7 @@
 
 
             tabStrip.Add().Text("Phiếu VCNB")
-                .Visible(Model.IsItem || Model.IsMaterial)
+                .Visible((Model.IsItem || Model.IsMaterial) && Model.ModuleDetailID != GlobalEnums.NmvnTaskID.RawReceipt)
                 .Selected(Model.IsItem)
                 .Content(@<text>
                 @Html.Partial("~/Areas/Inventories/Views/GoodsReceipts/_GetWarehouseTransfer.cshtml")
@@ -150,7 +150,8 @@
                 </text>);
 
             tabStrip.Add().Text("Thu hồi phế phẩm")
-                .Visible(Model.IsMaterial)
+                .Visible(Model.ModuleDetailID == GlobalEnums.NmvnTaskID.RawReceipt)
+                .Selected(Model.ModuleDetailID == GlobalEnums.NmvnTaskID.RawReceipt)
                 .Content(@<text>
                     @Html.Partial("~/Areas/Inventories/Views/GoodsReceipts/_GetRecyclate.cshtml")
                 </text>);

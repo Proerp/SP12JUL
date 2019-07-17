@@ -2056,6 +2056,12 @@
     <Content Include="Areas\Productions\Views\PlannedBadges\Void.cshtml" />
     <Content Include="Areas\Productions\Views\PlannedBadges\VoidDetail.cshtml" />
     <Content Include="Areas\Productions\Views\PlannedBadges\VoidDetailSuccess.cshtml" />
+    <Content Include="Areas\Inventories\Views\RawReceipts\Approve.cshtml" />
+    <Content Include="Areas\Inventories\Views\RawReceipts\CreateWizard.cshtml" />
+    <Content Include="Areas\Inventories\Views\RawReceipts\Delete.cshtml" />
+    <Content Include="Areas\Inventories\Views\RawReceipts\Edit.cshtml" />
+    <Content Include="Areas\Inventories\Views\RawReceipts\Index.cshtml" />
+    <Content Include="Areas\Inventories\Views\RawReceipts\Print.cshtml" />
     <None Include="Properties\PublishProfiles\CBPP.pubxml" />
     <None Include="Properties\PublishProfiles\TDV.pubxml" />
     <None Include="Properties\PublishProfiles\VCP.pubxml">
@@ -2357,6 +2363,13 @@
     <Content Include="Scripts\Controllers\Inventories\ProductTransfers\Open.js" />
     <Content Include="Scripts\Controllers\Inventories\ProductTransfers\Print.js" />
     <Content Include="Scripts\Controllers\Inventories\ProductTransfers\Void.js" />
+    <Content Include="Scripts\Controllers\Inventories\RawReceipts\Approve.js" />
+    <Content Include="Scripts\Controllers\Inventories\RawReceipts\CreateWizard.js" />
+    <Content Include="Scripts\Controllers\Inventories\RawReceipts\Delete.js" />
+    <Content Include="Scripts\Controllers\Inventories\RawReceipts\Edit.js" />
+    <Content Include="Scripts\Controllers\Inventories\RawReceipts\Index.js" />
+    <Content Include="Scripts\Controllers\Inventories\RawReceipts\Open.js" />
+    <Content Include="Scripts\Controllers\Inventories\RawReceipts\Print.js" />
     <Content Include="Scripts\Controllers\Inventories\TransferOrders\AddPendingSource.js" />
     <Content Include="Scripts\Controllers\Inventories\TransferOrders\Approve.js" />
     <Content Include="Scripts\Controllers\Inventories\TransferOrders\CreateWizard.js" />
