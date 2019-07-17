@@ -84,6 +84,7 @@
                         dataRow.QuantityAvailables = result.QuantityAvailables;
                         dataRow.Quantity = result.QuantityAvailables; //INIT BY THE WHOLE QuantityAvailables
 
+                        $("#kendoGridDetails").data("kendoGrid").refresh();
                     }
                     else
                         dataRow.set("CommodityName", result.CommodityName);
