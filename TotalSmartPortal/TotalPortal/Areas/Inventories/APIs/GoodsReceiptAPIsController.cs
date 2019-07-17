@@ -185,5 +185,42 @@ namespace TotalPortal.Areas.Inventories.APIs
             var result = this.goodsReceiptAPIRepository.GetGoodsReceiptDetailAvailables(locationID, warehouseID, warehouseReceiptID, commodityID, commodityIDs, batchID, blendingInstructionID, barcode, goodsReceiptDetailIDs, onlyApproved, onlyIssuable);
             return Json(result.ToDataSourceResult(dataSourceRequest), JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// This function is the same as GetGoodsReceiptDetailAvailables, BUT: it is designed for importinng
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="warehouseID"></param>
+        /// <param name="warehouseReceiptID"></param>
+        /// <param name="commodityID"></param>
+        /// <param name="commodityIDs"></param>
+        /// <param name="batchID"></param>
+        /// <param name="blendingInstructionID"></param>
+        /// <param name="barcode"></param>
+        /// <param name="goodsReceiptDetailIDs"></param>
+        /// <param name="onlyApproved"></param>
+        /// <param name="onlyIssuable"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult ImportGoodsReceiptDetailAvailables(int? locationID, int? warehouseID, int? warehouseReceiptID, int? commodityID, string commodityIDs, int? batchID, int? blendingInstructionID, string barcode, string goodsReceiptDetailIDs, bool onlyApproved, bool onlyIssuable)
+        {
+            try
+            {
+                var result = this.goodsReceiptAPIRepository.GetGoodsReceiptDetailAvailables(locationID, warehouseID, warehouseReceiptID, commodityID, commodityIDs, batchID, blendingInstructionID, barcode, goodsReceiptDetailIDs, onlyApproved, onlyIssuable);
+                if (result.Count() > 0) 
+                    return Json(result.First(), JsonRequestBehavior.AllowGet); 
+                else
+                {
+                    int? foundCommodityID = null; string message = "";
+                    this.goodsReceiptAPIRepository.BarcodeNotFoundMessage(out foundCommodityID, out message, false, locationID, warehouseID, warehouseReceiptID, commodityID, commodityIDs, batchID, blendingInstructionID, barcode, goodsReceiptDetailIDs, onlyApproved, onlyIssuable);
+
+                    return Json(new GoodsReceiptDetailAvailable() { CommodityName = message != "" ? message : "Mã vạch không đúng hoặc không phù hợp." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new GoodsReceiptDetailAvailable() { CommodityName = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

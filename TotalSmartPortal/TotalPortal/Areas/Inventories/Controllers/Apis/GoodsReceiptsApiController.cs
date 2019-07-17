@@ -137,12 +137,7 @@ namespace TotalPortal.Areas.Inventories.Controllers.Apis
             else
             {
                 int? foundCommodityID = null; string message = "";
-                if (!this.goodsReceiptAPIRepository.BarcodeNotFoundMessage(out foundCommodityID, out message, false, locationID, warehouseID, warehouseReceiptID, commodityID, commodityIDs, batchID, blendingInstructionID, barcode, goodsReceiptDetailIDs, onlyApproved, onlyIssuable))
-                    if (foundCommodityID != null && blendingInstructionID != null)
-                    {
-                        IEnumerable<TransferOrderPendingBlendingInstructionCompact> transferOrderPendingBlendingInstructionCompacts = this.goodsReceiptAPIRepository.GetTransferOrderPendingBlendingInstructionCompacts(warehouseReceiptID);
-                        if (transferOrderPendingBlendingInstructionCompacts.Where(w => w.CommodityID == foundCommodityID).Count() == 0) message = "Không có lệnh chuyển pha chế";
-                    }
+                this.goodsReceiptAPIRepository.BarcodeNotFoundMessage(out foundCommodityID, out message, false, locationID, warehouseID, warehouseReceiptID, commodityID, commodityIDs, batchID, blendingInstructionID, barcode, goodsReceiptDetailIDs, onlyApproved, onlyIssuable);
                 return Request.CreateResponse(HttpStatusCode.NotFound, message != "" ? message : "Mã vạch không đúng hoặc không phù hợp.");
             }
         }

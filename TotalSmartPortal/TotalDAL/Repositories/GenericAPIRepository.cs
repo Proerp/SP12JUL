@@ -80,7 +80,7 @@ namespace TotalDAL.Repositories
                     else
                         if (barcodeAvailables[0].QuantityAvailables == 0) message = "Phuy đã xuất hết, không còn tồn";
                         else
-                            if (barcodeAvailables.Where(w => w.WarehouseID == warehouseID).Count() == 0) message = "NVL đang ở kho khác [" + barcodeAvailables[0].WarehouseCode + "]"; //HAVE NOT CHECKED THIS YET (@OnlyIssuable = 0 OR Warehouses.Issuable = 1)
+                            if (barcodeAvailables.Where(w => w.WarehouseID == warehouseID).Count() == 0) message = "Phuy đang ở kho khác [Kho: " + barcodeAvailables[0].WarehouseCode + "]"; //HAVE NOT CHECKED THIS YET (@OnlyIssuable = 0 OR Warehouses.Issuable = 1)
                             else
                                 if (barcodeAvailables.Where(w => w.WarehouseID == warehouseID && (!onlyApproved || w.Approved)).Count() == 0) message = "Phiếu nhập chưa hoàn tất";
                                 else
@@ -105,7 +105,17 @@ namespace TotalDAL.Repositories
                 }
 
 
-            if (message == "" && !goodsArrival_VS_GoodsReceipt && barcodeAvailables.Count > 0) foundCommodityID = barcodeAvailables.Where(w => w.WarehouseID == warehouseID && (!onlyApproved || w.Approved) && (warehouseReceiptID != 6 || ((bool)w.LabApproved && !(bool)w.LabInActive && !(bool)w.LabHold))).ToList()[0].CommodityID;
+            if (message == "" && !goodsArrival_VS_GoodsReceipt && barcodeAvailables.Count > 0)
+            {
+                foundCommodityID = barcodeAvailables.Where(w => w.WarehouseID == warehouseID && (!onlyApproved || w.Approved) && (warehouseReceiptID != 6 || ((bool)w.LabApproved && !(bool)w.LabInActive && !(bool)w.LabHold))).ToList()[0].CommodityID;
+                if (foundCommodityID != null && blendingInstructionID != null)
+                {
+                    int checkCommodityID = (int)foundCommodityID;
+                    IEnumerable<TransferOrderPendingBlendingInstructionCompact> transferOrderPendingBlendingInstructionCompacts = this.TotalSmartPortalEntities.GetTransferOrderPendingBlendingInstructionCompacts(warehouseReceiptID);
+                    if (transferOrderPendingBlendingInstructionCompacts.Where(w => w.CommodityID == checkCommodityID).Count() == 0) message = "Không có lệnh chuyển pha chế";
+                }
+            }
+
             return message != "";
         }
 

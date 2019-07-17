@@ -42,6 +42,7 @@
 
     <div id="main-popup" class="container body-content">
         @Html.Hidden("CBPP", GlobalEnums.CBPP)
+        @Html.Hidden("DMC", GlobalEnums.DMC)
         @RenderBody()
         @Scripts.Render("~/bundles/jqueryval") @*Still using jquery validation*@
     </div>
