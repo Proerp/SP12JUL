@@ -67,16 +67,36 @@
     }
 
     function handleOKEvent(selectedGrid) { //This javascript is now used only here. Later, if it is used somewhere else, it should be break into a standalone js file, and then just only add a link here
-        if (selectedGrid === undefined)
-            _setModelInput();
+        if (selectedGrid === undefined) {
+            if ($("#Code").val() == undefined || $("#Code").val().trim() == "") return false;
+            return $.ajax({
+                url: window.urlCheckBlendingInstructionCode,
+                data: JSON.stringify({ "code": $("#Code").val() }),
+
+                type: 'POST',
+                contentType: 'application/json;',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.CheckResult != "") {
+                        if (!confirm('Số BI này đã có rồi. Chọn OK để tiếp tục, chọn CANCEL để nhập lại số BI khác.')) return false;
+                        _setModelInput();
+                    }
+                    else //NOT EXISTING YET
+                        _setModelInput();
+                },
+                error: function (jqXHR, textStatus) {
+                    alert(textStatus);
+                    return false;
+                }
+            });
+        }
         else {
             var selectedDataItem = selectedGrid.dataItem(selectedGrid.select());
             if (selectedDataItem === undefined)
                 return false;
-            else
-            {
+            else {
                 $("#ParentID").val(selectedDataItem === undefined || selectedDataItem.BlendingInstructionID === undefined ? null : selectedDataItem.BlendingInstructionID);
-                $("#Code").val(selectedDataItem === undefined || selectedDataItem.BlendingInstructionCode === undefined ? null : selectedDataItem.BlendingInstructionCode);                
+                $("#Code").val(selectedDataItem === undefined || selectedDataItem.BlendingInstructionCode === undefined ? null : selectedDataItem.BlendingInstructionCode);
                 $("#EntryDate").val(selectedDataItem === undefined || selectedDataItem.BlendingInstructionEntryDate === undefined ? null : kendo.toString(selectedDataItem.BlendingInstructionEntryDate, Settings.DateTimeFormat));
 
                 $("#Commodity_CommodityID").val(selectedDataItem === undefined || selectedDataItem.CommodityID === undefined ? null : selectedDataItem.CommodityID);
@@ -87,16 +107,18 @@
             _setModelInput(selectedDataItem);
         }
 
-        if ($("#Commodity_CommodityID").val() === null || $("#Commodity_CommodityID").val() === "")
-            return false;
 
-        $("#submitCreateWizard").trigger("click");
 
 
         function _setModelInput(selectedDataItem) {
+            if ($("#Commodity_CommodityID").val() === null || $("#Commodity_CommodityID").val() === "")
+                return false;
+
+            $("#submitCreateWizard").trigger("click");
         }
     }
 
+    window.urlCheckBlendingInstructionCode = '@Url.Action("CheckBlendingInstructionCode", "BlendingInstructionAPIs", new { area = "Productions" })';
 </script>
 
 

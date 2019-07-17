@@ -8504,6 +8504,9 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
         <Function Name="GetBlendingInstructionRunnings" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationID" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetBlendingInstructions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Code" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="GetBlendingInstructionViewDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="BlendingInstructionID" Type="int" Mode="In" />
         </Function>
@@ -17759,6 +17762,9 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           </FunctionImport>
           <FunctionImport Name="EmployeeEditable" ReturnType="Collection(String)">
           <Parameter Name="EntityID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetBlendingInstructions" EntitySet="BlendingInstructions" ReturnType="Collection(TotalSmartPortalModel.BlendingInstruction)">
+            <Parameter Name="Code" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="AccountInvoiceIndex">
@@ -35021,6 +35027,8 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="EmployeeDeletable" FunctionName="TotalSmartPortalModel.Store.EmployeeDeletable" />
           <FunctionImportMapping FunctionImportName="EmployeeEditable" FunctionName="TotalSmartPortalModel.Store.EmployeeEditable" />
+          <FunctionImportMapping FunctionImportName="GetBlendingInstructions" FunctionName="TotalSmartPortalModel.Store.GetBlendingInstructions">
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

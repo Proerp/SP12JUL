@@ -5888,5 +5888,23 @@ namespace TotalModel.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("EmployeeEditable", entityIDParameter);
         }
+    
+        public virtual ObjectResult<BlendingInstruction> GetBlendingInstructions(string code)
+        {
+            var codeParameter = code != null ?
+                new ObjectParameter("Code", code) :
+                new ObjectParameter("Code", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BlendingInstruction>("GetBlendingInstructions", codeParameter);
+        }
+    
+        public virtual ObjectResult<BlendingInstruction> GetBlendingInstructions(string code, MergeOption mergeOption)
+        {
+            var codeParameter = code != null ?
+                new ObjectParameter("Code", code) :
+                new ObjectParameter("Code", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BlendingInstruction>("GetBlendingInstructions", mergeOption, codeParameter);
+        }
     }
 }

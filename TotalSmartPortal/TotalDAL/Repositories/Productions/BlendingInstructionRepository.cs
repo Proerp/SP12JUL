@@ -46,19 +46,28 @@ namespace TotalDAL.Repositories.Productions
             return objectParameters;
         }
 
-        public IEnumerable<BlendingInstructionRunning> GetRunnings(int? locationID)
+        public List<BlendingInstructionRunning> GetRunnings(int? locationID)
         {
             this.TotalSmartPortalEntities.Configuration.ProxyCreationEnabled = false;
-            IEnumerable<BlendingInstructionRunning> blendingInstructionRunnings = base.TotalSmartPortalEntities.GetBlendingInstructionRunnings(locationID).ToList();
+            List<BlendingInstructionRunning> blendingInstructionRunnings = base.TotalSmartPortalEntities.GetBlendingInstructionRunnings(locationID).ToList();
             this.TotalSmartPortalEntities.Configuration.ProxyCreationEnabled = true;
 
             return blendingInstructionRunnings;
         }
 
-        public IEnumerable<BlendingInstructionLog> GetBlendingInstructionLogs(int? blendingInstructionID)
+        public List<BlendingInstruction> GetBlendingInstructions(string code)
         {
             this.TotalSmartPortalEntities.Configuration.ProxyCreationEnabled = false;
-            IEnumerable<BlendingInstructionLog> blendingInstructionLogs = base.TotalSmartPortalEntities.GetBlendingInstructionLogs(blendingInstructionID).ToList();
+            List<BlendingInstruction> blendingInstructions = base.TotalSmartPortalEntities.GetBlendingInstructions(code).ToList();
+            this.TotalSmartPortalEntities.Configuration.ProxyCreationEnabled = true;
+
+            return blendingInstructions;
+        }
+
+        public List<BlendingInstructionLog> GetBlendingInstructionLogs(int? blendingInstructionID)
+        {
+            this.TotalSmartPortalEntities.Configuration.ProxyCreationEnabled = false;
+            List<BlendingInstructionLog> blendingInstructionLogs = base.TotalSmartPortalEntities.GetBlendingInstructionLogs(blendingInstructionID).ToList();
             this.TotalSmartPortalEntities.Configuration.ProxyCreationEnabled = true;
 
             return blendingInstructionLogs;

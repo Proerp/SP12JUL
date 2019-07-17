@@ -29,7 +29,7 @@ namespace TotalPortal.Areas.Productions.APIs
         public JsonResult GetBlendingInstructionIndexes([DataSourceRequest] DataSourceRequest request, bool withExtendedSearch, DateTime extendedFromDate, DateTime extendedToDate, int filterOptionID, int labOptionID)
         {
             this.blendingInstructionAPIRepository.RepositoryBag["LabOptionID"] = labOptionID;
-            this.blendingInstructionAPIRepository.RepositoryBag["FilterOptionID"] = filterOptionID;            
+            this.blendingInstructionAPIRepository.RepositoryBag["FilterOptionID"] = filterOptionID;
             ICollection<BlendingInstructionIndex> blendingInstructionIndexes = this.blendingInstructionAPIRepository.GetEntityIndexes<BlendingInstructionIndex>(User.Identity.GetUserId(), (withExtendedSearch ? extendedFromDate : HomeSession.GetGlobalFromDate(this.HttpContext)), (withExtendedSearch ? extendedToDate : HomeSession.GetGlobalToDate(this.HttpContext)));
 
             DataSourceResult response = blendingInstructionIndexes.ToDataSourceResult(request);
@@ -44,10 +44,32 @@ namespace TotalPortal.Areas.Productions.APIs
             return Json(result.ToDataSourceResult(dataSourceRequest), JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetBlendingInstructions([DataSourceRequest] DataSourceRequest dataSourceRequest, string code)
+        {
+            var result = this.blendingInstructionAPIRepository.GetBlendingInstructions(code);
+            return Json(result.ToDataSourceResult(dataSourceRequest), JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetBlendingInstructionLogs([DataSourceRequest] DataSourceRequest dataSourceRequest, int? blendingInstructionID)
         {
             var result = this.blendingInstructionAPIRepository.GetBlendingInstructionLogs(blendingInstructionID);
             return Json(result.ToDataSourceResult(dataSourceRequest), JsonRequestBehavior.AllowGet);
         }
+
+
+        [HttpPost]
+        public JsonResult CheckBlendingInstructionCode(string code)
+        {
+            try
+            {
+                var result = this.blendingInstructionAPIRepository.GetBlendingInstructions(code);
+                return Json(new { CheckResult = (result != null && result.Count > 0 ? result[0].Code : "") }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { CheckResult = "Lỗi kiểm tra số BI: " + ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

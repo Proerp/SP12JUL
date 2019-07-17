@@ -40,6 +40,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
 
             this.BlendingInstructionInitReference();
 
+            this.GetBlendingInstructions();
             this.GetBlendingInstructionLogs();
             this.BlendingInstructionJournals();
         }
@@ -386,6 +387,20 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
         {
             SimpleInitReference simpleInitReference = new SimpleInitReference("BlendingInstructions", "BlendingInstructionID", "Reference", ModelSettingManager.ReferenceLength, ModelSettingManager.ReferencePrefix(GlobalEnums.NmvnTaskID.BlendingInstruction));
             this.totalSmartPortalEntities.CreateTrigger("BlendingInstructionInitReference", simpleInitReference.CreateQuery());
+        }
+
+        private void GetBlendingInstructions()
+        {
+            string queryString = " @Code nvarchar(50) " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "    BEGIN " + "\r\n";
+
+            queryString = queryString + "       SELECT * FROM BlendingInstructions WHERE Code = @Code " + "\r\n";
+
+            queryString = queryString + "    END " + "\r\n";
+
+            this.totalSmartPortalEntities.CreateStoredProcedure("GetBlendingInstructions", queryString);
         }
 
         private void GetBlendingInstructionLogs()
