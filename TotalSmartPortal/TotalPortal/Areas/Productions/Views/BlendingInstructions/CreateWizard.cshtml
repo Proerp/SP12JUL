@@ -78,7 +78,7 @@
                 dataType: 'json',
                 success: function (result) {
                     if (result.CheckResult != "") {
-                        if (!confirm('Số BI này đã có rồi. Chọn OK để tiếp tục, chọn CANCEL để nhập lại số BI khác.')) return false;
+                        if (!confirm('\r     Số BI: ' + $("#Code").val() + ' đã có rồi.\r\r\r\n     Chọn OK để tiếp tục tạo đơn hàng này, hoặc chọn Cancel để nhập lại số BI khác.     ')) return false;
                         _setModelInput();
                     }
                     else //NOT EXISTING YET
