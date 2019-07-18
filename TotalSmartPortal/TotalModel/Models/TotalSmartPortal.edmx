@@ -17764,7 +17764,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           <Parameter Name="EntityID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetBlendingInstructions" EntitySet="BlendingInstructions" ReturnType="Collection(TotalSmartPortalModel.BlendingInstruction)">
-            <Parameter Name="Code" Mode="In" Type="String" />
+          <Parameter Name="Code" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="AccountInvoiceIndex">

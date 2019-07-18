@@ -93,7 +93,7 @@
     function createWizard() {
         require(["kpopupWindow"], function (kpopupWindow) {
             var createWizardWindow = new kpopupWindow();
-            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("CreateWizard", Model.ControllerName)", "Chọn kho, lập phiếu mới", 500, 225);
+            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("CreateWizard", Model.ControllerName)", "Chọn kho, lập phiếu mới", @GlobalEnums.CBPP? 500 : @Settings.PopupWidth, @GlobalEnums.CBPP? 225 : @Settings.PopupHeightWithTab);
         });
     }
 
