@@ -334,6 +334,15 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
 
+            queryString = queryString + "       DECLARE @BlendingInstructionID int             DECLARE @msg NVARCHAR(300) " + "\r\n";
+            queryString = queryString + "       SELECT  @BlendingInstructionID = BlendingInstructionID FROM BlendingInstructions WHERE (InActive = 1 OR InActivePartial = 1) AND BlendingInstructionID = (SELECT BlendingInstructionID FROM PackageIssues WHERE PackageIssueID = @EntityID) " + "\r\n";
+            queryString = queryString + "       IF (NOT @BlendingInstructionID IS NULL) " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               SET         @msg = N'Đơn hàng của phiếu xuất này đã được THANH LÝ. Vui lòng HỦY THANH LÝ đơn hàng trước khi thử lại.' ; " + "\r\n";
+            queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+
+
             queryString = queryString + "       UPDATE      PackageIssues  SET Approved = @Approved, ApprovedDate = GetDate() WHERE PackageIssueID = @EntityID AND Approved = ~@Approved" + "\r\n";
 
             queryString = queryString + "       IF @@ROWCOUNT = 1 " + "\r\n";
@@ -342,7 +351,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
             queryString = queryString + "           END " + "\r\n";
             queryString = queryString + "       ELSE " + "\r\n";
             queryString = queryString + "           BEGIN " + "\r\n";
-            queryString = queryString + "               DECLARE     @msg NVARCHAR(300) = N'Dữ liệu không tồn tại hoặc đã ' + iif(@Approved = 0, N'hủy', '')  + N' duyệt' ; " + "\r\n";
+            queryString = queryString + "               SET         @msg = N'Dữ liệu không tồn tại hoặc đã ' + iif(@Approved = 0, N'hủy', '')  + N' duyệt' ; " + "\r\n";
             queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";
             queryString = queryString + "           END " + "\r\n";
 

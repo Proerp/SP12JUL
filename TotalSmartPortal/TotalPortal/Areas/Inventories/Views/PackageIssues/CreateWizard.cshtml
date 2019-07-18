@@ -42,19 +42,19 @@
         .Name("packageIssuePendingBlendingInstructionGrid")
         .Columns(columns =>
         {
-            columns.Bound(c => c.BlendingInstructionReference).Title("KHSX").Width(28);
-            columns.Bound(c => c.BlendingInstructionCode).Title("Mã CT").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(28);
-            columns.Bound(c => c.BlendingInstructionEntryDate).Title("Ngày KHSX").Format("{0:dd/MM/yy}").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(38);
-            columns.Bound(c => c.CommodityCode).Title("Mã TP").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(28);
-            columns.Bound(c => c.CommodityName).Title("Mã TP").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(28);
-            columns.Bound(p => p.TotalQuantity).Title("SL ĐH").Format(Settings.kfmN0).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(31);
-            columns.Bound(p => p.TotalQuantityRemains).Title("Tồn đơn").Format(Settings.kfmN0).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(31);
+            columns.Bound(c => c.BlendingInstructionReference).Title("FT").Width(15);
+            columns.Bound(c => c.BlendingInstructionCode).Title("Số BI").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(20);
+            columns.Bound(c => c.BlendingInstructionEntryDate).Title("Ngày lập").Format("{0:dd/MM/yy}").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(20);
+            columns.Bound(c => c.CommodityCode).Title("Mã TP").Width(32);
+            columns.Bound(c => c.CommodityName).Title("Tên TP").Width(80);
+            columns.Bound(p => p.TotalQuantity).Title("SL Y/C").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20);
+            columns.Bound(p => p.TotalQuantityRemains).Title("Tồn đơn").Format(Settings.kfmQuantity).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20);
         })
         .ToolBar(toolbar =>
         {
             toolbar.Template(@<text>
                 <div class="toolbar" style="float: right;">
-                    <label>Nhập mã chừng từ, số KHSX, khách hàng, ca sx, mã số máy hoặc mặt hàng</label>
+                    <label>Nhập số BI</label>
                     <input id="packageIssuePendingBlendingInstructionFilter" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="packageIssuePendingBlendingInstructionFilter_KeyUp()" />
                 </div>
             </text>);

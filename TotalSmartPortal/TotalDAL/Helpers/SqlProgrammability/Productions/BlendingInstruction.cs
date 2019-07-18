@@ -299,6 +299,16 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
 
+            queryString = queryString + "       DECLARE @PackageIssueID int             DECLARE @msg NVARCHAR(300) " + "\r\n";
+            queryString = queryString + "       SELECT  @PackageIssueID = PackageIssueID FROM PackageIssues WHERE BlendingInstructionID = @EntityID AND Approved = 0 " + "\r\n";
+            queryString = queryString + "       IF (NOT @PackageIssueID IS NULL) " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               SET         @msg = N'Phiếu Xuất pha chế (đổ bồn) của đơn hàng này chưa được HOÀN TẤT.\r\n\r\nVui lòng HOÀN TẤT phiếu xuất trước khi thử lại.' ; " + "\r\n";
+            queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+
+
+
             queryString = queryString + "       UPDATE      BlendingInstructions  SET InActive = @InActive, InActiveDate = GetDate(), VoidTypeID = IIF(@InActive = 1, @VoidTypeID, NULL) WHERE BlendingInstructionID = @EntityID AND InActive = ~@InActive" + "\r\n";
 
             queryString = queryString + "       IF @@ROWCOUNT = 1 " + "\r\n";
@@ -307,7 +317,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + "           END " + "\r\n";
             queryString = queryString + "       ELSE " + "\r\n";
             queryString = queryString + "           BEGIN " + "\r\n";
-            queryString = queryString + "               DECLARE     @msg NVARCHAR(300) = N'Dữ liệu không tồn tại hoặc đã ' + iif(@InActive = 0, 'phục hồi lệnh', '')  + ' hủy' ; " + "\r\n";
+            queryString = queryString + "               SET         @msg = N'Dữ liệu không tồn tại hoặc đã ' + iif(@InActive = 0, 'phục hồi lệnh', '')  + ' hủy' ; " + "\r\n";
             queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";
             queryString = queryString + "           END " + "\r\n";
 
@@ -321,6 +331,15 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
 
+            queryString = queryString + "       DECLARE @PackageIssueID int             DECLARE @msg NVARCHAR(300) " + "\r\n";
+            queryString = queryString + "       SELECT  @PackageIssueID = PackageIssueID FROM PackageIssues WHERE BlendingInstructionID = @EntityID AND Approved = 0 " + "\r\n";
+            queryString = queryString + "       IF (NOT @PackageIssueID IS NULL) " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               SET         @msg = N'Phiếu Xuất pha chế (đổ bồn) của đơn hàng này chưa được HOÀN TẤT.\r\n\r\nVui lòng HOÀN TẤT phiếu xuất trước khi thử lại.' ; " + "\r\n";
+            queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+
+
             queryString = queryString + "       UPDATE      BlendingInstructionDetails     SET InActivePartial = @InActivePartial, InActivePartialDate = GetDate(), VoidTypeID = IIF(@InActivePartial = 1, @VoidTypeID, NULL) WHERE BlendingInstructionID = @EntityID AND BlendingInstructionDetailID = @EntityDetailID AND InActivePartial = ~@InActivePartial ; " + "\r\n";
 
             queryString = queryString + "       IF @@ROWCOUNT = 1 " + "\r\n";
@@ -330,7 +349,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + "           END " + "\r\n";
             queryString = queryString + "       ELSE " + "\r\n";
             queryString = queryString + "           BEGIN " + "\r\n";
-            queryString = queryString + "               DECLARE     @msg NVARCHAR(300) = N'Dữ liệu không tồn tại hoặc đã ' + iif(@InActivePartial = 0, 'phục hồi lệnh', '')  + ' hủy' ; " + "\r\n";
+            queryString = queryString + "               SET         @msg = N'Dữ liệu không tồn tại hoặc đã ' + iif(@InActivePartial = 0, 'phục hồi lệnh', '')  + ' hủy' ; " + "\r\n";
             queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";
             queryString = queryString + "           END " + "\r\n";
             this.totalSmartPortalEntities.CreateStoredProcedure("BlendingInstructionToggleVoidDetail", queryString);

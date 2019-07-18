@@ -2,7 +2,7 @@
     window.parent.$("#myWindow").data("kendoWindow").close();
 }
 
-function handleOKEvent(packageIssueGridDataSource, pendingProductionOrderDetailGridDataSource) {
+function handleOKEvent(packageIssueGridDataSource, pendingProductionOrderDetailGridDataSource, closeWhenFinished) {
     if (packageIssueGridDataSource != undefined && pendingProductionOrderDetailGridDataSource != undefined) {
         var pendingProductionOrderDetailGridDataItems = pendingProductionOrderDetailGridDataSource.view();
         var packageIssueJSON = packageIssueGridDataSource.data().toJSON();
@@ -18,7 +18,8 @@ function handleOKEvent(packageIssueGridDataSource, pendingProductionOrderDetailG
         var rawData = packageIssueGridDataSource.data()
         packageIssueGridDataSource.remove(rawData[rawData.length - 1]); //Remove the last row: this is the temporary empty row
 
-        cancelButton_Click();
+        if (closeWhenFinished)
+            cancelButton_Click();
     }
 
 
@@ -71,7 +72,7 @@ function handleOKEvent(packageIssueGridDataSource, pendingProductionOrderDetailG
         dataRow.QuantityBIS = productionOrderGridDataItem.QuantityBIS;
         dataRow.QuantityAvailables = productionOrderGridDataItem.QuantityAvailables;
         dataRow.QuantityRemains = productionOrderGridDataItem.QuantityRemains;
-        dataRow.Quantity = productionOrderGridDataItem.QuantityAvailables;
+        dataRow.Quantity = 0;
 
         dataRow.BatchID = productionOrderGridDataItem.BatchID;
         dataRow.BatchEntryDate = productionOrderGridDataItem.BatchEntryDate;
