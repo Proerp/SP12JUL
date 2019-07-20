@@ -737,6 +737,7 @@
     <Content Include="Content\Images\Mains\Check-32-LimeYellow.png" />
     <Content Include="Content\Images\Mains\Check-32-m16.png" />
     <Content Include="Content\Images\Mains\Check-32-O.png" />
+    <Content Include="Content\Images\Mains\CheckAll.png" />
     <Content Include="Content\Images\Mains\Click_here_blue.png" />
     <Content Include="Content\Images\Mains\cloud-32-NoCheck.png" />
     <Content Include="Content\Images\Mains\cloud-32-NoCheckG.png" />
@@ -830,6 +831,7 @@
     <Content Include="Content\Images\Mains\Size24\Bookmark-add-icon-24.png" />
     <Content Include="Content\Images\Mains\Size24\Borderlands-Select-icon-24.png" />
     <Content Include="Content\Images\Mains\Size24\CheckAll.png" />
+    <Content Include="Content\Images\Mains\Size24\CheckAll24.png" />
     <Content Include="Content\Images\Mains\Size24\Close-python-24.png" />
     <Content Include="Content\Images\Mains\Size24\Coin-16.png" />
     <Content Include="Content\Images\Mains\Size24\Coin-24.png" />
