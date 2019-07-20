@@ -1699,7 +1699,6 @@
     <Content Include="Areas\Inventories\Views\WarehouseTransfers\CreateWizard.cshtml" />
     <Content Include="Areas\Inventories\Views\WarehouseTransfers\Delete.cshtml" />
     <Content Include="Areas\Inventories\Views\WarehouseTransfers\Edit.cshtml" />
-    <Content Include="Areas\Inventories\Views\WarehouseTransfers\Index.cshtml" />
     <Content Include="Areas\Inventories\Views\WarehouseTransfers\Print.cshtml" />
     <Content Include="Areas\Inventories\Views\WarehouseTransfers\_WarehouseTransfer.cshtml" />
     <Content Include="Areas\Inventories\Views\ProductTransfers\GetGoodsReceiptDetailAvailables.cshtml" />
