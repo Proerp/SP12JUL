@@ -50,7 +50,10 @@
             columns.Bound(c => c.FirmOrderCode).Title("Mã CT").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(25);
             columns.Bound(c => c.FirmOrderEntryDate).Title("Ngày KHSX").Format("{0:dd/MM/yy}").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(38);                        
             columns.Bound(c => c.FirmOrderSpecification).Title("Mã thành phẩm").Width(80);            
-            columns.Bound(c => c.CustomerName).Title("Khách hàng").Width(60);                       
+            columns.Bound(c => c.CustomerName).Title("Khách hàng").Width(60);
+            columns.Bound(p => p.FirmOrderQuantity).Title("SL ĐH").Format(Settings.kfmN0).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20);
+            columns.Bound(p => p.FirmOrderRemains).Title("Tồn LSX").Format(Settings.kfmN0).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20);
+            columns.Bound(p => p.QuantityRemains).Title("Tồn HH").Format(Settings.kfmN0).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" }).Width(20);
         })
         .ToolBar(toolbar =>
         {

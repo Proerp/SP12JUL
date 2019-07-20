@@ -1006,6 +1006,11 @@
           <Property Name="TotalQuantity" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="TotalQuantityMaterial" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="TotalQuantitySemifinished" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalQuantityFinished" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalQuantityFailure" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalQuantityExcess" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalQuantityShortage" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalSwarfs" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="QuantityMaterialEstimated" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="QuantityMaterialEstimatedIssued" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Specs" Type="nvarchar" MaxLength="800" />
@@ -20038,6 +20043,11 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           <NavigationProperty Name="WorkOrders" Relationship="TotalSmartPortalModel.FK_WorkOrders_FirmOrders" FromRole="FirmOrder" ToRole="WorkOrder" />
           <Property Name="TotalQuantityMaterial" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <NavigationProperty Name="FinishedItems" Relationship="TotalSmartPortalModel.FK_FinishedItems_FirmOrders" FromRole="FirmOrder" ToRole="FinishedItem" />
+          <Property Name="TotalQuantityFinished" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalQuantityFailure" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalQuantityExcess" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalQuantityShortage" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalSwarfs" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="PlannedOrderDetail">
           <Key>
@@ -25446,6 +25456,9 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           <Property Type="String" Name="CustomerCode" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="CustomerName" Nullable="false" MaxLength="100" />
           <Property Type="Int32" Name="PlannedOrderID" Nullable="false" />
+          <Property Type="Decimal" Name="FirmOrderRemains" Nullable="true" Precision="22" Scale="2" />
+          <Property Type="Decimal" Name="QuantityRemains" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="FirmOrderQuantity" Nullable="false" Precision="18" Scale="2" />
         </ComplexType>
         <ComplexType Name="FinishedItemViewDetail">
           <Property Type="Int32" Name="FinishedItemDetailID" Nullable="false" />
@@ -30988,6 +31001,11 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           <EntitySetMapping Name="FirmOrders">
             <EntityTypeMapping TypeName="TotalSmartPortalModel.FirmOrder">
               <MappingFragment StoreEntitySet="FirmOrders">
+                <ScalarProperty Name="TotalSwarfs" ColumnName="TotalSwarfs" />
+                <ScalarProperty Name="TotalQuantityShortage" ColumnName="TotalQuantityShortage" />
+                <ScalarProperty Name="TotalQuantityExcess" ColumnName="TotalQuantityExcess" />
+                <ScalarProperty Name="TotalQuantityFailure" ColumnName="TotalQuantityFailure" />
+                <ScalarProperty Name="TotalQuantityFinished" ColumnName="TotalQuantityFinished" />
                 <ScalarProperty Name="TotalQuantityMaterial" ColumnName="TotalQuantityMaterial" />
                 <ScalarProperty Name="QuantityMaterialEstimatedIssued" ColumnName="QuantityMaterialEstimatedIssued" />
                 <ScalarProperty Name="QuantityMaterialEstimated" ColumnName="QuantityMaterialEstimated" />
@@ -34016,6 +34034,9 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
                 <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="PlannedOrderID" ColumnName="PlannedOrderID" />
+                <ScalarProperty Name="FirmOrderRemains" ColumnName="FirmOrderRemains" />
+                <ScalarProperty Name="QuantityRemains" ColumnName="QuantityRemains" />
+                <ScalarProperty Name="FirmOrderQuantity" ColumnName="FirmOrderQuantity" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

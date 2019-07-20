@@ -66,6 +66,11 @@ namespace TotalModel.Models
         public decimal QuantityMaterialEstimated { get; set; }
         public decimal QuantityMaterialEstimatedIssued { get; set; }
         public decimal TotalQuantityMaterial { get; set; }
+        public decimal TotalQuantityFinished { get; set; }
+        public decimal TotalQuantityFailure { get; set; }
+        public decimal TotalQuantityExcess { get; set; }
+        public decimal TotalQuantityShortage { get; set; }
+        public decimal TotalSwarfs { get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual Location Location { get; set; }

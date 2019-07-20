@@ -22,5 +22,8 @@ namespace TotalModel.Models
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
         public int PlannedOrderID { get; set; }
+        public Nullable<decimal> FirmOrderRemains { get; set; }
+        public Nullable<decimal> QuantityRemains { get; set; }
+        public decimal FirmOrderQuantity { get; set; }
     }
 }
