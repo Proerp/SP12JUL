@@ -2063,6 +2063,7 @@
     <Content Include="Areas\Inventories\Views\RawReceipts\Edit.cshtml" />
     <Content Include="Areas\Inventories\Views\RawReceipts\Index.cshtml" />
     <Content Include="Areas\Inventories\Views\RawReceipts\Print.cshtml" />
+    <Content Include="Areas\Inventories\Views\WarehouseTransfers\Index.cshtml" />
     <None Include="Properties\PublishProfiles\CBPP.pubxml" />
     <None Include="Properties\PublishProfiles\TDV.pubxml" />
     <None Include="Properties\PublishProfiles\VCP.pubxml">
