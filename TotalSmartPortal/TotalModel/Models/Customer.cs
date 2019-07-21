@@ -53,10 +53,10 @@ namespace TotalModel.Models
             this.PurchaseOrders1 = new HashSet<PurchaseOrder>();
             this.GoodsReceipts = new HashSet<GoodsReceipt>();
             this.Boms = new HashSet<Bom>();
-            this.SemifinishedItems = new HashSet<SemifinishedItem>();
             this.WorkOrders = new HashSet<WorkOrder>();
             this.FinishedItems = new HashSet<FinishedItem>();
             this.GoodsIssuePackages = new HashSet<GoodsIssuePackage>();
+            this.SemifinishedItems = new HashSet<SemifinishedItem>();
         }
     
         public int CustomerID { get; set; }
@@ -165,12 +165,12 @@ namespace TotalModel.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bom> Boms { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SemifinishedItem> SemifinishedItems { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkOrder> WorkOrders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FinishedItem> FinishedItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GoodsIssuePackage> GoodsIssuePackages { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SemifinishedItem> SemifinishedItems { get; set; }
     }
 }

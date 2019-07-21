@@ -39,6 +39,9 @@ namespace TotalModel.Models
         public string Remarks { get; set; }
         public bool Approved { get; set; }
         public bool HandoverApproved { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> StopDate { get; set; }
+        public int Temperature { get; set; }
     
         public virtual Commodity Commodity { get; set; }
         public virtual FirmOrderDetail FirmOrderDetail { get; set; }

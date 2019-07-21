@@ -124,7 +124,6 @@ namespace TotalModel.Models
         public virtual DbSet<BinType> BinTypes { get; set; }
         public virtual DbSet<SemifinishedHandoverDetail> SemifinishedHandoverDetails { get; set; }
         public virtual DbSet<SemifinishedItemDetail> SemifinishedItemDetails { get; set; }
-        public virtual DbSet<SemifinishedItem> SemifinishedItems { get; set; }
         public virtual DbSet<WorkOrderDetail> WorkOrderDetails { get; set; }
         public virtual DbSet<WorkOrder> WorkOrders { get; set; }
         public virtual DbSet<FinishedItem> FinishedItems { get; set; }
@@ -137,6 +136,7 @@ namespace TotalModel.Models
         public virtual DbSet<RecyclateDetail> RecyclateDetails { get; set; }
         public virtual DbSet<GoodsReceiptDetail> GoodsReceiptDetails { get; set; }
         public virtual DbSet<GoodsIssuePackage> GoodsIssuePackages { get; set; }
+        public virtual DbSet<SemifinishedItem> SemifinishedItems { get; set; }
     
         public virtual ObjectResult<string> AccountInvoicePostSaveValidate(Nullable<int> entityID)
         {

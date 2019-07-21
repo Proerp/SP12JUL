@@ -31,5 +31,8 @@ namespace TotalModel.Models
         public int BomID { get; set; }
         public string BomCode { get; set; }
         public Nullable<decimal> MaterialIssueRemains { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> StopDate { get; set; }
+        public int Temperature { get; set; }
     }
 }

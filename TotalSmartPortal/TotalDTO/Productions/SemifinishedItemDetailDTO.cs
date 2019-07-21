@@ -42,6 +42,16 @@ namespace TotalDTO.Productions
         public int ProductionLineID { get; set; }
         public int CrucialWorkerID { get; set; }
 
+        [UIHint("DateTime")]
+        [Display(Name = "Bắt đầu")]
+        public Nullable<System.DateTime> StartDate { get; set; }
+        [UIHint("DateTime")]
+        [Display(Name = "Kết thúc")]
+        public Nullable<System.DateTime> StopDate { get; set; }
+        [UIHint("Integer")]
+        [Display(Name = "Nhiệt độ")]
+        public int Temperature { get; set; }
+
         [Display(Name = "Cái/ tấm")]
         [UIHint("QuantityReadonly")]
         public decimal MoldQuantity { get; set; }

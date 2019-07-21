@@ -50,32 +50,17 @@ namespace TotalDTO.Productions
         [UIHint("Commons/SOCode")]
         public string Code { get; set; }
 
-        public int MaterialIssueWorkshiftID { get; set; }
-        [Display(Name = "Ca sản xuất")]
-        public string MaterialIssueWorkshiftCode { get; set; }
-        [Display(Name = "Ngày sản xuất")]
-        public DateTime MaterialIssueWorkshiftEntryDate { get; set; }
-
         public virtual int ProductionLineID { get; set; }
         [Display(Name = "Mã số máy")]
         public string ProductionLineCode { get; set; }
 
-        [Display(Name = "Mã số máy, ca sx")]
-        public string WorkDescription { get { return this.ProductionLineCode + ", " + this.MaterialIssueWorkshiftCode + " [" + this.MaterialIssueWorkshiftEntryDate.ToString("dd/MM/yyyy") + "]"; } }
+        [Display(Name = "Mã số máy")]
+        public string WorkDescription { get { return this.ProductionLineCode + ", Mã CT: " + (this.DtoDetails().Count() > 0 ? this.DtoDetails().ToList()[0].BomCode + ", Mã màng: " + this.DtoDetails().ToList()[0].CommodityCode : ""); } }
 
         public int ShiftID { get; set; }
         public int WorkshiftID { get; set; } // WHEN ADD NEW: THIS WILL BE ZERO. THEN, THE REAL VALUE OF WorkshiftID WILL BE UPDATE BY SemifinishedItemSaveRelative
 
         public virtual int CrucialWorkerID { get; set; }
-
-        [UIHint("DateTime")]
-        [Display(Name = "Thời gian bắt đầu SX")]
-        public Nullable<System.DateTime> StartDate { get; set; }
-        [UIHint("DateTime")]
-        [Display(Name = "Thời gian kết thúc SX")]
-        public Nullable<System.DateTime> StopDate { get; set; }
-        [Display(Name = "Nhiệt độ trộn")]
-        public int Temperature { get; set; }
 
         public virtual decimal TotalQuantityFailure { get { return this.DtoDetails().Select(o => o.QuantityFailure).Sum(); } }
 

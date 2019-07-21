@@ -37,10 +37,6 @@
     @Html.HiddenFor(model => model.Customer.PriceCategoryID)
     @Html.HiddenFor(model => model.Customer.PriceCategoryCode)
 
-    @Html.HiddenFor(model => model.MaterialIssueWorkshiftID)
-    @Html.HiddenFor(model => model.MaterialIssueWorkshiftCode)
-    @Html.HiddenFor(model => model.MaterialIssueWorkshiftEntryDate)
-    
     @Html.HiddenFor(model => model.ProductionLineID)
     @Html.HiddenFor(model => model.ProductionLineCode)
 
@@ -65,7 +61,7 @@
             columns.Bound(c => c.FirmOrderEntryDate).Title("Ngày KHSX").Format("{0:dd/MM/yy}").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(38);
             columns.Bound(c => c.MaterialIssueWorkshiftEntryDate).Title("Cấp NVL").Format("{0:dd/MM/yy}").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(38);
             columns.Bound(c => c.MaterialIssueWorkshiftCode).Title("Cấp NVL").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(30);
-            columns.Bound(c => c.ProductionLineCode).Title("Máy").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(19);
+            columns.Bound(c => c.ProductionLineCode).Title("Máy").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(22);
             columns.Bound(c => c.CustomerName).Title("Khách hàng").Width(52);
             columns.Bound(c => c.FirmOrderSpecification).Title("Mã màng").Width(88);
             columns.Bound(c => c.BomCode).Title("Mã công thức").Width(56);
@@ -158,10 +154,6 @@
             $("#Customer_PriceCategoryID").val(selectedDataItem === undefined || selectedDataItem.CustomerPriceCategoryID === undefined ? null : selectedDataItem.CustomerPriceCategoryID);
             $("#Customer_PriceCategoryCode").val(selectedDataItem === undefined || selectedDataItem.CustomerPriceCategoryCode === undefined ? null : selectedDataItem.CustomerPriceCategoryCode);
 
-            $("#MaterialIssueWorkshiftID").val(selectedDataItem === undefined || selectedDataItem.MaterialIssueWorkshiftID === undefined ? null : selectedDataItem.MaterialIssueWorkshiftID);
-            $("#MaterialIssueWorkshiftEntryDate").val(selectedDataItem === undefined || selectedDataItem.MaterialIssueWorkshiftEntryDate === undefined ? null : kendo.toString(selectedDataItem.MaterialIssueWorkshiftEntryDate, Settings.DateTimeFormat));
-            $("#MaterialIssueWorkshiftCode").val(selectedDataItem === undefined || selectedDataItem.MaterialIssueWorkshiftCode === undefined ? null : selectedDataItem.MaterialIssueWorkshiftCode);
-
             $("#ProductionLineID").val(selectedDataItem === undefined || selectedDataItem.ProductionLineID === undefined ? null : selectedDataItem.ProductionLineID);
             $("#ProductionLineCode").val(selectedDataItem === undefined || selectedDataItem.ProductionLineCode === undefined ? null : selectedDataItem.ProductionLineCode);
 
@@ -186,7 +178,6 @@
                     { field: "FirmOrderCode", operator: "contains", value: semifinishedItemPendingMaterialIssueFilter },
                     { field: "FirmOrderReference", operator: "contains", value: semifinishedItemPendingMaterialIssueFilter },
                     { field: "CustomerName", operator: "contains", value: semifinishedItemPendingMaterialIssueFilter },
-                    { field: "MaterialIssueWorkshiftCode", operator: "contains", value: semifinishedItemPendingMaterialIssueFilter },
                     { field: "ProductionLineCode", operator: "contains", value: semifinishedItemPendingMaterialIssueFilter },
                     { field: "FirmOrderSpecification", operator: "contains", value: semifinishedItemPendingMaterialIssueFilter },
                     { field: "BomCode", operator: "contains", value: semifinishedItemPendingMaterialIssueFilter }

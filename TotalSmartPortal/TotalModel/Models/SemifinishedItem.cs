@@ -39,9 +39,6 @@ namespace TotalModel.Models
         public int OrganizationalUnitID { get; set; }
         public int LocationID { get; set; }
         public int ApproverID { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> StopDate { get; set; }
-        public int Temperature { get; set; }
         public decimal TotalQuantity { get; set; }
         public decimal TotalQuantityFailure { get; set; }
         public decimal TotalQuantityFinished { get; set; }
