@@ -2649,6 +2649,8 @@
     <Content Include="Scripts\Controllers\Root\Shared\Edits\gridDatasourcePackage.js" />
     <Content Include="Scripts\Controllers\Root\Shared\Edits\gridDatasourcePackageSubscribe.js" />
     <Content Include="Scripts\Controllers\Root\Shared\Edits\gridDatasourceQuantity.js" />
+    <Content Include="Scripts\Controllers\Root\Shared\Edits\gridDatasourceQuantityFailure.js" />
+    <Content Include="Scripts\Controllers\Root\Shared\Edits\gridDatasourceQuantityFailureSubscribe.js" />
     <Content Include="Scripts\Controllers\Root\Shared\Edits\gridDatasourceQuantitySubscribe.js" />
     <Content Include="Scripts\Controllers\Root\Shared\Edits\gridDatasourceReceipt.js" />
     <Content Include="Scripts\Controllers\Root\Shared\Edits\gridDatasourceReceiptSubscribe.js" />

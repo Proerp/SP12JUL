@@ -28,6 +28,9 @@
         "gridDatasourcePackage": "Controllers/Root/Shared/Edits/gridDatasourcePackage",
         "gridDatasourcePackageSubscribe": "Controllers/Root/Shared/Edits/gridDatasourcePackageSubscribe",
 
+        "gridDatasourceQuantityFailure": "Controllers/Root/Shared/Edits/gridDatasourceQuantityFailure",
+        "gridDatasourceQuantityFailureSubscribe": "Controllers/Root/Shared/Edits/gridDatasourceQuantityFailureSubscribe",
+
         "gridDatasourceFinishedProduct": "Controllers/Root/Shared/Edits/gridDatasourceFinishedProduct",
         "gridDatasourceFinishedProductSubscribe": "Controllers/Root/Shared/Edits/gridDatasourceFinishedProductSubscribe",
 

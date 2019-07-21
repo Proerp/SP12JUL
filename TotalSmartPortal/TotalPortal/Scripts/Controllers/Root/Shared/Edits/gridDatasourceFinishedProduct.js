@@ -1,11 +1,11 @@
-﻿define(["superBase", "gridDatasourceQuantity"], (function (superBase, gridDatasourceQuantity) {
+﻿define(["superBase", "gridDatasourceQuantityFailure"], (function (superBase, gridDatasourceQuantityFailure) {
 
     var definedExemplar = function (kenGridName) {
         definedExemplar._super.constructor.call(this, kenGridName);
     }
 
     var superBaseHelper = new superBase();
-    superBaseHelper.inherits(definedExemplar, gridDatasourceQuantity);
+    superBaseHelper.inherits(definedExemplar, gridDatasourceQuantityFailure);
 
 
 
@@ -13,7 +13,6 @@
 
 
     definedExemplar.prototype._removeTotalToModelProperty = function (dataRow) {
-        this._updateTotalToModelProperty("TotalQuantityFailure", "QuantityFailure", "sum", requireConfig.websiteOptions.rndQuantity, false);
         this._updateTotalToModelProperty("TotalQuantityExcess", "QuantityExcess", "sum", requireConfig.websiteOptions.rndQuantity, false);
         this._updateTotalToModelProperty("TotalQuantityShortage", "QuantityShortage", "sum", requireConfig.websiteOptions.rndQuantity, false);
         this._updateTotalToModelProperty("TotalSwarfs", "Swarfs", "sum", requireConfig.websiteOptions.rndQuantity, false);
@@ -26,7 +25,7 @@
         if (dataRow.QuantityFailure > this._round(dataRow.QuantityRemains - dataRow.QuantityShortage, requireConfig.websiteOptions.rndQuantity)) dataRow.set("QuantityFailure", this._round(dataRow.QuantityRemains - dataRow.QuantityShortage, requireConfig.websiteOptions.rndQuantity));
         this._updateRowQuantity(dataRow);
 
-        this._updateTotalToModelProperty("TotalQuantityFailure", "QuantityFailure", "sum", requireConfig.websiteOptions.rndQuantity);
+        definedExemplar._super._changeQuantityFailure.call(this, dataRow);
     }
 
     definedExemplar.prototype._changeQuantityExcess = function (dataRow) {
