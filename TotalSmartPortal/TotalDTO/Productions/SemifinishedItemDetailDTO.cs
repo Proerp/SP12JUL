@@ -28,6 +28,13 @@ namespace TotalDTO.Productions
         public string BomCode { get; set; }
 
         public Nullable<int> CustomerID { get; set; }
+        [Display(Name = "Mã NVL")]
+        [UIHint("StringReadonly")]
+        public override string CommodityCode { get; set; }
+
+        [Display(Name = "Tên NVL")]
+        [UIHint("StringReadonly")]
+        public override string CommodityName { get; set; }
 
         public int ShiftID { get; set; }
         public int WorkshiftID { get; set; }
@@ -42,6 +49,10 @@ namespace TotalDTO.Productions
         [Display(Name = "Tồn lệnh")]
         [UIHint("QuantityReadonly")]
         public decimal QuantityRemains { get; set; }
+        [Display(Name = "Tồn NVL")]
+        [UIHint("QuantityReadonly")]
+        public decimal MaterialIssueRemains { get; set; }
+
         [Display(Name = "KL hỗn hợp")]
         [UIHint("Quantity")]
         public override decimal Quantity { get; set; }

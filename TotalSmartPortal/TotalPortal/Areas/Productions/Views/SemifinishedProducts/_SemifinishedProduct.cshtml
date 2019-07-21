@@ -135,7 +135,7 @@
 
         <div class="SBT-Hidden">
             <div class="form-group">
-                <a style="color: #428bca; " href="@Url.Action("Edit", "PlannedOrders", new { area = "Productions", id = Model.PlannedOrderID })" target="_blank"> @Html.LabelFor(model => model.FirmOrderReference) </a>
+                <a style="color: #428bca; " href="@Url.Action("Edit", "PlannedProducts", new { area = "Productions", id = Model.PlannedOrderID })" target="_blank"> @Html.LabelFor(model => model.FirmOrderReference) </a>
 
                 <div class="div-input">
                     @Html.Kendo().MaskedTextBoxFor(model => model.FirmOrderReference).HtmlAttributes(new { @class = "left-panel-input", @readonly = "readonly" })

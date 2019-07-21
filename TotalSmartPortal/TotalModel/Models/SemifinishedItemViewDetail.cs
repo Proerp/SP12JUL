@@ -30,5 +30,6 @@ namespace TotalModel.Models
         public decimal QuantityFailure { get; set; }
         public int BomID { get; set; }
         public string BomCode { get; set; }
+        public Nullable<decimal> MaterialIssueRemains { get; set; }
     }
 }

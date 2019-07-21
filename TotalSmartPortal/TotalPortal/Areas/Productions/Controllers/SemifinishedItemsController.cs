@@ -35,7 +35,7 @@ namespace TotalPortal.Areas.Productions.Controllers
 
         protected override ICollection<SemifinishedItemViewDetail> GetEntityViewDetails(SemifinishedItemViewModel semifinishedItemViewModel)
         {
-            ICollection<SemifinishedItemViewDetail> semifinishedItemViewDetails = this.semifinishedItemService.GetSemifinishedItemViewDetails(semifinishedItemViewModel.SemifinishedItemID, semifinishedItemViewModel.FirmOrderID);
+            ICollection<SemifinishedItemViewDetail> semifinishedItemViewDetails = this.semifinishedItemService.GetSemifinishedItemViewDetails(semifinishedItemViewModel.SemifinishedItemID, semifinishedItemViewModel.FirmOrderID, semifinishedItemViewModel.MaterialIssueID);
 
             return semifinishedItemViewDetails;
         }

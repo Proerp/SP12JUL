@@ -28,9 +28,9 @@ namespace TotalService.Productions
             semifinishedItemDTO.SemifinishedItemViewDetails.RemoveAll(x => x.Quantity == 0 && x.QuantityFailure == 0);
             return base.Save(semifinishedItemDTO);
         }
-        public ICollection<SemifinishedItemViewDetail> GetSemifinishedItemViewDetails(int semifinishedItemID, int firmOrderID)
+        public ICollection<SemifinishedItemViewDetail> GetSemifinishedItemViewDetails(int semifinishedItemID, int firmOrderID, int materialIssueID)
         {
-            ObjectParameter[] parameters = new ObjectParameter[] { new ObjectParameter("SemifinishedItemID", semifinishedItemID), new ObjectParameter("FirmOrderID", firmOrderID) };
+            ObjectParameter[] parameters = new ObjectParameter[] { new ObjectParameter("SemifinishedItemID", semifinishedItemID), new ObjectParameter("FirmOrderID", firmOrderID), new ObjectParameter("MaterialIssueID", materialIssueID) };
             return this.GetViewDetails(parameters);
         }
     }

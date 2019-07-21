@@ -7,6 +7,6 @@ namespace TotalCore.Services.Productions
 {
     public interface ISemifinishedItemService : IGenericWithViewDetailService<SemifinishedItem, SemifinishedItemDetail, SemifinishedItemViewDetail, SemifinishedItemDTO, SemifinishedItemPrimitiveDTO, SemifinishedItemDetailDTO>
     {
-        ICollection<SemifinishedItemViewDetail> GetSemifinishedItemViewDetails(int semifinishedItemID, int firmOrderID);
+        ICollection<SemifinishedItemViewDetail> GetSemifinishedItemViewDetails(int semifinishedItemID, int firmOrderID, int materialIssueID);
     }
 }

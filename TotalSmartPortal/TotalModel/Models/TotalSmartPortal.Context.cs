@@ -5121,7 +5121,7 @@ namespace TotalModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SemifinishedItemPendingMaterialIssue>("GetSemifinishedItemPendingMaterialIssues", locationIDParameter);
         }
     
-        public virtual ObjectResult<SemifinishedItemViewDetail> GetSemifinishedItemViewDetails(Nullable<int> semifinishedItemID, Nullable<int> firmOrderID)
+        public virtual ObjectResult<SemifinishedItemViewDetail> GetSemifinishedItemViewDetails(Nullable<int> semifinishedItemID, Nullable<int> firmOrderID, Nullable<int> materialIssueID)
         {
             var semifinishedItemIDParameter = semifinishedItemID.HasValue ?
                 new ObjectParameter("SemifinishedItemID", semifinishedItemID) :
@@ -5131,7 +5131,11 @@ namespace TotalModel.Models
                 new ObjectParameter("FirmOrderID", firmOrderID) :
                 new ObjectParameter("FirmOrderID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SemifinishedItemViewDetail>("GetSemifinishedItemViewDetails", semifinishedItemIDParameter, firmOrderIDParameter);
+            var materialIssueIDParameter = materialIssueID.HasValue ?
+                new ObjectParameter("MaterialIssueID", materialIssueID) :
+                new ObjectParameter("MaterialIssueID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SemifinishedItemViewDetail>("GetSemifinishedItemViewDetails", semifinishedItemIDParameter, firmOrderIDParameter, materialIssueIDParameter);
         }
     
         public virtual ObjectResult<string> SemifinishedItemApproved(Nullable<int> entityID)

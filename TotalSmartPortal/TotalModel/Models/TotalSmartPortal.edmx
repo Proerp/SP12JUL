@@ -9241,6 +9241,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
         <Function Name="GetSemifinishedItemViewDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SemifinishedItemID" Type="int" Mode="In" />
           <Parameter Name="FirmOrderID" Type="int" Mode="In" />
+          <Parameter Name="MaterialIssueID" Type="int" Mode="In" />
         </Function>
         <Function Name="GetSemifinishedProductIndexes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AspUserID" Type="nvarchar" Mode="In" />
@@ -17091,6 +17092,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           <FunctionImport Name="GetSemifinishedItemViewDetails" ReturnType="Collection(TotalSmartPortalModel.SemifinishedItemViewDetail)">
             <Parameter Name="SemifinishedItemID" Mode="In" Type="Int32" />
             <Parameter Name="FirmOrderID" Mode="In" Type="Int32" />
+            <Parameter Name="MaterialIssueID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SemifinishedItemApproved" ReturnType="Collection(String)">
           <Parameter Name="EntityID" Mode="In" Type="Int32" />
@@ -25305,6 +25307,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           <Property Type="Decimal" Name="QuantityFailure" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Int32" Name="BomID" Nullable="false" />
           <Property Type="String" Name="BomCode" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="MaterialIssueRemains" Nullable="true" Precision="38" Scale="2" />
         </ComplexType>
         <Association Name="FK_MaterialIssueDetails_BomDetails">
           <End Type="TotalSmartPortalModel.BomDetail" Role="BomDetail" Multiplicity="1" />
@@ -33947,6 +33950,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
                 <ScalarProperty Name="QuantityFailure" ColumnName="QuantityFailure" />
                 <ScalarProperty Name="BomID" ColumnName="BomID" />
                 <ScalarProperty Name="BomCode" ColumnName="BomCode" />
+                <ScalarProperty Name="MaterialIssueRemains" ColumnName="MaterialIssueRemains" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
