@@ -79,14 +79,6 @@ namespace TotalDTO.Productions
 
         public virtual decimal TotalQuantityFailure { get { return this.DtoDetails().Select(o => o.QuantityFailure).Sum(); } }
 
-
-        //public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        //{
-        //    foreach (var result in base.Validate(validationContext)) { yield return result; }
-
-        //    if (this.DtoDetails().Count() > 0 && (this.TotalQuantity + this.TotalQuantityFailure != this.DtoDetails().First().MaterialIssueRemains)) yield return new ValidationResult("Chi tiết xuất kho từng mặt hàng phải bằng tổng xuất kho của mặt hàng đó", new[] { "TotalQuantity" });
-        //}
-
         public override void PerformPresaveRule()
         {
             base.PerformPresaveRule();

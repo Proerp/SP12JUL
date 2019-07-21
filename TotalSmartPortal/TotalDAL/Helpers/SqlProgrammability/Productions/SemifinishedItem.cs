@@ -196,27 +196,44 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             #region INIT FirmOrders
             queryString = queryString + "       IF (@SaveRelativeOption = 1) " + "\r\n"; //Update
             queryString = queryString + "           BEGIN " + "\r\n";
-            queryString = queryString + "               DECLARE         @MaterialIssueID int, @BomID int, @TotalQuantity decimal(18, 2); " + "\r\n";
-            queryString = queryString + "               DECLARE         @BomDetailID int, @MaterialID int, @MaterialQuantity decimal(18, 2), @MaterialCode nvarchar(50), @MaterialName nvarchar(200); " + "\r\n";
+            queryString = queryString + "               DECLARE     @MaterialIssueID int, @BomID int, @TotalQuantity decimal(18, 2); " + "\r\n";
+            queryString = queryString + "               SELECT      @MaterialIssueID = MaterialIssueID, @BomID = BomID, @TotalQuantity = TotalQuantity + TotalQuantityFailure FROM SemifinishedItems WHERE SemifinishedItemID = @EntityID " + "\r\n";
 
-            queryString = queryString + "               SELECT          @MaterialIssueID = MaterialIssueID, @BomID = BomID, @TotalQuantity = TotalQuantity + TotalQuantityFailure FROM SemifinishedItems WHERE SemifinishedItemID = @EntityID " + "\r\n";
 
-            queryString = queryString + "               DECLARE         CURSORSemifinishedItems CURSOR LOCAL FOR  SELECT BomDetails.BomDetailID, BomDetails.MaterialID, ROUND(((@TotalQuantity * BomDetails.BlockUnit)/ 100) * (BomDetails.BlockQuantity/ BomDetails.LayerQuantity), " + (int)GlobalEnums.rndQuantity + ") AS MaterialQuantity, Commodities.Code AS MaterialCode, Commodities.Name AS MaterialName FROM BomDetails INNER JOIN Commodities ON BomDetails.MaterialID = Commodities.CommodityID WHERE BomID = @BomID; " + "\r\n";
-            queryString = queryString + "               OPEN            CURSORSemifinishedItems; " + "\r\n";
-            queryString = queryString + "               FETCH NEXT FROM CURSORSemifinishedItems INTO @BomDetailID, @MaterialID, @MaterialQuantity, @MaterialCode, @MaterialName; " + "\r\n";
+            queryString = queryString + "               DECLARE     @MaterialIssueRemains decimal(18, 2) = (SELECT ROUND(SUM(Quantity - QuantitySemifinished - QuantityFailure - QuantityReceipted - QuantityLoss), " + (int)GlobalEnums.rndQuantity + ") FROM MaterialIssueDetails WHERE MaterialIssueID = @MaterialIssueID) " + "\r\n";
+            queryString = queryString + "               DECLARE     @TotalMaterialIssueRemains decimal(18, 2) = (SELECT ROUND(TotalQuantity - TotalQuantitySemifinished - TotalQuantityFailure - TotalQuantityReceipted - TotalQuantityLoss, " + (int)GlobalEnums.rndQuantity + ") FROM MaterialIssues WHERE MaterialIssueID = @MaterialIssueID) " + "\r\n";
+            queryString = queryString + "               IF (@MaterialIssueRemains <> @TotalMaterialIssueRemains) " + "\r\n";
+            queryString = queryString + "                   BEGIN   " + "\r\n"; //SURELY, MUST: @MaterialIssueRemains = @TotalMaterialIssueRemains. IF @MaterialIssueRemains <> @TotalMaterialIssueRemains THEN: RAISE ERROR
+            queryString = queryString + "                       SET         @msg = N'Lỗi khối lượng nguyên vật liệu còn tồn của mẻ trộn không khớp'; " + "\r\n";
+            queryString = queryString + "                       THROW       61001,  @msg, 1; " + "\r\n";
+            queryString = queryString + "                   END   " + "\r\n";
 
-            queryString = queryString + "               WHILE @@FETCH_STATUS = 0   " + "\r\n";
-            queryString = queryString + "                   BEGIN " + "\r\n";
-            queryString = queryString + "                       EXECUTE SemifinishedItemSaveMaterials @EntityID, @MaterialIssueID, @BomID, @BomDetailID, @MaterialID, @Quantity = @MaterialQuantity OUTPUT;" + "\r\n";
+            queryString = queryString + "               IF (@MaterialIssueRemains = @TotalQuantity) " + "\r\n";
+            queryString = queryString + "                   BEGIN  " + "\r\n"; //OUTPUT THE WHOLE LAST REMAINS
+            queryString = queryString + "                       INSERT INTO     SemifinishedItemMaterials   (SemifinishedItemID, MaterialIssueID, MaterialIssueDetailID, BomID, BomDetailID, MaterialID, Quantity) " + "\r\n";
+            queryString = queryString + "                       SELECT          @EntityID, @MaterialIssueID, MaterialIssueDetailID, @BomID, BomDetailID, CommodityID, ROUND(Quantity - QuantitySemifinished - QuantityFailure - QuantityReceipted - QuantityLoss, " + (int)GlobalEnums.rndQuantity + ") AS Quantity FROM MaterialIssueDetails WHERE MaterialIssueID = @MaterialIssueID AND ROUND(Quantity - QuantitySemifinished - QuantityFailure - QuantityReceipted - QuantityLoss, " + (int)GlobalEnums.rndQuantity + ") > 0; " + "\r\n";
+            queryString = queryString + "                   END   " + "\r\n";
+            queryString = queryString + "               ELSE   " + "\r\n";
+            queryString = queryString + "                   BEGIN  " + "\r\n";
+            queryString = queryString + "                       DECLARE         @BomDetailID int, @MaterialID int, @MaterialQuantity decimal(18, 2), @MaterialCode nvarchar(50), @MaterialName nvarchar(200); " + "\r\n";
 
-            queryString = queryString + "                       IF @MaterialQuantity <> 0 " + "\r\n";
-            queryString = queryString + "                           BEGIN " + "\r\n";
-            queryString = queryString + "                               SET         @msg = N'Khối lượng sử dụng vượt khối lượng nguyên liệu đã cấp, ' + @MaterialCode + '-' + @MaterialName + ': ' + CAST(@MaterialQuantity AS nvarchar) + '.' ; " + "\r\n";
-            queryString = queryString + "                               THROW       61001,  @msg, 1; " + "\r\n";
-            queryString = queryString + "                           END " + "\r\n";
-
+            queryString = queryString + "                       DECLARE         CURSORSemifinishedItems CURSOR LOCAL FOR  SELECT BomDetails.BomDetailID, BomDetails.MaterialID, ROUND(((@TotalQuantity * BomDetails.BlockUnit)/ 100) * (BomDetails.BlockQuantity/ BomDetails.LayerQuantity), " + (int)GlobalEnums.rndQuantity + ") AS MaterialQuantity, Commodities.Code AS MaterialCode, Commodities.Name AS MaterialName FROM BomDetails INNER JOIN Commodities ON BomDetails.MaterialID = Commodities.CommodityID WHERE BomID = @BomID; " + "\r\n";
+            queryString = queryString + "                       OPEN            CURSORSemifinishedItems; " + "\r\n";
             queryString = queryString + "                       FETCH NEXT FROM CURSORSemifinishedItems INTO @BomDetailID, @MaterialID, @MaterialQuantity, @MaterialCode, @MaterialName; " + "\r\n";
-            queryString = queryString + "                   END " + "\r\n";
+
+            queryString = queryString + "                       WHILE @@FETCH_STATUS = 0   " + "\r\n";
+            queryString = queryString + "                           BEGIN " + "\r\n";
+            queryString = queryString + "                               EXECUTE SemifinishedItemSaveMaterials @EntityID, @MaterialIssueID, @BomID, @BomDetailID, @MaterialID, @Quantity = @MaterialQuantity OUTPUT;" + "\r\n";
+
+            queryString = queryString + "                               IF @MaterialQuantity <> 0 " + "\r\n";
+            queryString = queryString + "                                   BEGIN " + "\r\n";
+            queryString = queryString + "                                       SET         @msg = N'Khối lượng sử dụng vượt khối lượng nguyên liệu đã cấp, ' + @MaterialCode + '-' + @MaterialName + ': ' + CAST(@MaterialQuantity AS nvarchar) + '.' ; " + "\r\n";
+            queryString = queryString + "                                       THROW       61001,  @msg, 1; " + "\r\n";
+            queryString = queryString + "                                   END " + "\r\n";
+
+            queryString = queryString + "                               FETCH NEXT FROM CURSORSemifinishedItems INTO @BomDetailID, @MaterialID, @MaterialQuantity, @MaterialCode, @MaterialName; " + "\r\n";
+            queryString = queryString + "                           END " + "\r\n";
+            queryString = queryString + "                   END   " + "\r\n";
             queryString = queryString + "           END " + "\r\n";
 
 
