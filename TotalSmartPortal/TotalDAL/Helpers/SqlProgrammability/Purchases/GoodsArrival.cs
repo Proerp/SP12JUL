@@ -305,7 +305,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Purchases
             string[] queryArray = new string[2];
 
             queryArray[0] = " SELECT TOP 1 @FoundEntity = N'Ngày đặt hàng: ' + CAST(PurchaseOrders.EntryDate AS nvarchar) FROM GoodsArrivalDetails INNER JOIN PurchaseOrders ON GoodsArrivalDetails.GoodsArrivalID = @EntityID AND GoodsArrivalDetails.PurchaseOrderID = PurchaseOrders.PurchaseOrderID AND GoodsArrivalDetails.EntryDate < PurchaseOrders.EntryDate ";
-            queryArray[1] = " SELECT TOP 1 @FoundEntity = N'Số lượng xuất vượt quá số lượng đặt hàng: ' + CAST(ROUND(Quantity - QuantityArrived, " + (int)GlobalEnums.rndQuantity + ") AS nvarchar) FROM PurchaseOrderDetails WHERE (ROUND(Quantity - QuantityArrived, " + (int)GlobalEnums.rndQuantity + ") < 0) ";
+            queryArray[1] = " SELECT TOP 1 @FoundEntity = N'Số lượng xuất vượt quá số lượng đặt hàng: ' + CAST(ROUND(Quantity - QuantityArrived, " + (int)GlobalEnums.rndQuantity + ") AS nvarchar) FROM PurchaseOrderDetails WHERE (ROUND((Quantity * 1.1) - QuantityArrived, " + (int)GlobalEnums.rndQuantity + ") < 0) ";
 
             this.totalSmartPortalEntities.CreateProcedureToCheckExisting("GoodsArrivalPostSaveValidate", queryArray);
         }
