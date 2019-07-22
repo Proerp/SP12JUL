@@ -19,6 +19,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Reports
         public void RestoreProcedure()
         {
             this.FirmOrderJournals();
+            this.PlannedItemLoss();
         }
 
         private void FirmOrderJournals()
@@ -50,6 +51,37 @@ namespace TotalDAL.Helpers.SqlProgrammability.Reports
             queryString = queryString + "    END " + "\r\n";
 
             this.totalSmartPortalEntities.CreateStoredProcedure("FirmOrderJournals", queryString);
+        }
+
+        private void PlannedItemLoss()
+        {
+            string queryString = " @FromDate DateTime, @ToDate DateTime " + "\r\n";
+
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "    BEGIN " + "\r\n";
+
+            queryString = queryString + "       DECLARE     @LocalFromDate DateTime,        @LocalToDate DateTime " + "\r\n";
+            queryString = queryString + "       SET         @LocalFromDate = @FromDate      SET @LocalToDate = @ToDate " + "\r\n";
+
+            queryString = queryString + "       SELECT      FirmOrders.FirmOrderID, FirmOrders.EntryDate, FirmOrders.Reference, FirmOrders.Code, FirmOrders.VoucherDate, FirmOrders.DeliveryDate, Customers.Code AS CustomerCode, Customers.Name AS CustomerName, Boms.Code AS BomCode, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, FirmOrders.TotalQuantity, UNIQUE_FirmOrders.QuantityLoss, UNIQUE_FirmOrders.QuantityFailure " + "\r\n";
+            queryString = queryString + "       FROM        ( " + "\r\n";
+            queryString = queryString + "                   SELECT      FirmOrderID, SUM(QuantityLoss) AS QuantityLoss, SUM(QuantityFailure) AS QuantityFailure " + "\r\n";
+            queryString = queryString + "                   FROM        ( " + "\r\n";
+            queryString = queryString + "                               SELECT      FirmOrderID, TotalQuantityFailure AS QuantityLoss, 0 AS QuantityFailure FROM SemifinishedItems WHERE TotalQuantityFailure > 0 AND EntryDate >= @LocalFromDate AND EntryDate <= @LocalToDate " + "\r\n";
+            queryString = queryString + "                               UNION ALL   " + "\r\n";
+            queryString = queryString + "                               SELECT      FirmOrderID, 0 AS QuantityLoss, QuantityFailure + QuantityShortage + Swarfs - QuantityExcess AS QuantityFailure FROM FinishedItemDetails WHERE EntryDate >= @LocalFromDate AND EntryDate <= @LocalToDate " + "\r\n";
+            queryString = queryString + "                               ) RAW_FirmOrders GROUP BY FirmOrderID HAVING SUM(QuantityLoss) > 0 OR SUM(QuantityFailure) > 0 " + "\r\n";
+            queryString = queryString + "                   ) UNIQUE_FirmOrders " + "\r\n";
+            queryString = queryString + "                   INNER JOIN FirmOrders ON UNIQUE_FirmOrders.FirmOrderID = FirmOrders.FirmOrderID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Boms ON FirmOrders.BomID = Boms.BomID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Customers ON FirmOrders.CustomerID = Customers.CustomerID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN FirmOrderDetails ON FirmOrders.FirmOrderID = FirmOrderDetails.FirmOrderID " + "\r\n"; //HERE NMVNTaskID.PlannedItem = 680016008 ==> ONLY ONE ROW FirmOrderDetails FOR EACH FirmOrderID
+            queryString = queryString + "                   INNER JOIN Commodities ON FirmOrderDetails.CommodityID = Commodities.CommodityID " + "\r\n";
+
+            queryString = queryString + "    END " + "\r\n";
+
+            this.totalSmartPortalEntities.CreateStoredProcedure("PlannedItemLoss", queryString);
         }
     }
 }

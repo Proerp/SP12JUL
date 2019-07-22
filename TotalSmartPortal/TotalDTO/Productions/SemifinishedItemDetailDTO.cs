@@ -66,7 +66,7 @@ namespace TotalDTO.Productions
         [Display(Name = "KL hỗn hợp")]
         [UIHint("Quantity")]
         public override decimal Quantity { get; set; }
-        [Display(Name = "Phế phẩm")]
+        [Display(Name = "Hao hụt")]
         [UIHint("Quantity")]
         public decimal QuantityFailure { get; set; }
 

@@ -258,7 +258,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
         private void SemifinishedProductSheet()
         {
             string queryString = " @WorkshiftID int, @SemifinishedProductID int, @FromDate DateTime, @ToDate DateTime " + "\r\n";
-            //queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
 
