@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="EntityFrameworkExtension.cs" />
     <Compile Include="Helpers\SqlProgrammability\Accounts\CreditNote.cs" />
+    <Compile Include="Helpers\SqlProgrammability\Accounts\WarehouseInvoice.cs" />
     <Compile Include="Helpers\SqlProgrammability\Analysis\Report.cs" />
     <Compile Include="Helpers\SqlProgrammability\Commons\Barcode.cs" />
     <Compile Include="Helpers\SqlProgrammability\Commons\BinLocation.cs" />

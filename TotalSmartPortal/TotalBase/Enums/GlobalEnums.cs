@@ -144,6 +144,7 @@ namespace TotalBase.Enums
             ServiceContract = 8056,
 
             AccountInvoice = 8057,
+            WarehouseInvoice = 8057100,
             Receipt = 8059,
 
 
