@@ -433,8 +433,8 @@ namespace TotalModel.Models
     {
         public int GetID() { return this.RecyclateID; }
 
-        public virtual Employee Storekeeper { get { return this.Employee; } }
-        public virtual Employee CrucialWorker { get { return this.Employee1; } }
+        public virtual Employee Storekeeper { get { return this.Employee1; } }
+        public virtual Employee CrucialWorker { get { return this.Employee; } }
 
         public ICollection<RecyclateDetail> GetDetails() { return this.RecyclateDetails; }
     }
