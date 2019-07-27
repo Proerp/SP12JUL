@@ -474,16 +474,16 @@ namespace TotalPortal.Controllers
 
         [HttpPost, ActionName("RemarkDetail")]
         [ValidateAntiForgeryToken, ExportModelStateToTempData]
-        public virtual ActionResult RemarkDetailConfirmed(TotalPortal.ViewModels.Helpers.RemarkDetailViewModel voidDetailViewModel)
+        public virtual ActionResult RemarkDetailConfirmed(RemarkDetailViewModel remarkDetailViewModel)
         {
             try
             {
-                TEntity entity = this.GetEntityAndCheckAccessLevel(voidDetailViewModel.ID, GlobalEnums.AccessLevel.Readable);
+                TEntity entity = this.GetEntityAndCheckAccessLevel(remarkDetailViewModel.ID, GlobalEnums.AccessLevel.Readable);
                 if (entity == null) throw new System.ArgumentException("Lỗi hủy dữ liệu", "BadRequest.");
 
                 TDto dto = Mapper.Map<TDto>(entity);
 
-                if (this.GenericService.SaveRemarkDetail(dto, voidDetailViewModel.DetailID, voidDetailViewModel.Remarks))
+                if (this.SaveRemarkDetail(dto, remarkDetailViewModel))
                 {
                     ModelState.Clear(); ////https://weblog.west-wind.com/posts/2012/apr/20/aspnet-mvc-postbacks-and-htmlhelper-controls-ignoring-model-changes
                     //IMPORTANT NOTES: ASP.NET MVC Postbacks and HtmlHelper Controls ignoring Model Changes
@@ -491,7 +491,7 @@ namespace TotalPortal.Controllers
                     //When MVC binds controls like @Html.TextBoxFor() or @Html.TextBox(), it always binds values on a GET operation. On a POST operation however, it'll always used the AttemptedValue to display the control. MVC binds using the ModelState on a POST operation, not the model's value
                     //So, if you want the behavior that I was expecting originally you can actually get it by clearing the ModelState in the controller code: ModelState.Clear();
                     //voidDetailViewModel.Remarks = voidDetailViewModel.Remarks;
-                    return View("RemarkDetailSuccess", voidDetailViewModel);
+                    return View("RemarkDetailSuccess", remarkDetailViewModel);
                 }
                 else
                     throw new System.ArgumentException("Lỗi hủy dữ liệu", "Dữ liệu này không thể hủy được.");
@@ -499,7 +499,7 @@ namespace TotalPortal.Controllers
             catch (Exception exception)
             {
                 ModelState.AddValidationErrors(exception);
-                return RedirectToAction("RemarkDetail", new { @id = voidDetailViewModel.ID, @detailId = voidDetailViewModel.DetailID });
+                return RedirectToAction("RemarkDetail", new { @id = remarkDetailViewModel.ID, @detailId = remarkDetailViewModel.DetailID });
             }
         }
 
@@ -564,7 +564,10 @@ namespace TotalPortal.Controllers
         }
 
 
-
+        protected virtual bool SaveRemarkDetail(TDto dto, RemarkDetailViewModel remarkDetailViewModel)
+        {
+            return this.GenericService.SaveRemarkDetail(dto, remarkDetailViewModel.DetailID, remarkDetailViewModel.Remarks);
+        }
 
 
 

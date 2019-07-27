@@ -2064,6 +2064,14 @@
     <Content Include="Areas\Inventories\Views\RawReceipts\Index.cshtml" />
     <Content Include="Areas\Inventories\Views\RawReceipts\Print.cshtml" />
     <Content Include="Areas\Inventories\Views\WarehouseTransfers\Index.cshtml" />
+    <Content Include="Areas\Purchases\Views\GoodsArrivals\RemarkDetail.cshtml" />
+    <Content Include="Areas\Purchases\Views\GoodsArrivals\RemarkDetailSuccess.cshtml" />
+    <Content Include="Areas\Purchases\Views\MaterialArrivals\RemarkDetail.cshtml" />
+    <Content Include="Areas\Purchases\Views\MaterialArrivals\RemarkDetailSuccess.cshtml" />
+    <Content Include="Areas\Purchases\Views\ItemArrivals\RemarkDetail.cshtml" />
+    <Content Include="Areas\Purchases\Views\ItemArrivals\RemarkDetailSuccess.cshtml" />
+    <Content Include="Areas\Purchases\Views\ProductArrivals\RemarkDetail.cshtml" />
+    <Content Include="Areas\Purchases\Views\ProductArrivals\RemarkDetailSuccess.cshtml" />
     <None Include="Properties\PublishProfiles\CBPP.pubxml" />
     <None Include="Properties\PublishProfiles\TDV.pubxml" />
     <None Include="Properties\PublishProfiles\VCP.pubxml">
