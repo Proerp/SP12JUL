@@ -23906,6 +23906,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           <Property Type="Int32" Name="LabID" Nullable="true" />
           <Property Type="Boolean" Name="LabHold" Nullable="false" />
           <Property Type="Boolean" Name="LabInActive" Nullable="false" />
+          <Property Type="Boolean" Name="BatchExpiried" Nullable="false" />
         </ComplexType>
         <EntityType Name="WarehouseTransferDetail">
           <Key>
@@ -33512,6 +33513,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
                 <ScalarProperty Name="LabID" ColumnName="LabID" />
                 <ScalarProperty Name="LabHold" ColumnName="LabHold" />
                 <ScalarProperty Name="LabInActive" ColumnName="LabInActive" />
+                <ScalarProperty Name="BatchExpiried" ColumnName="BatchExpiried" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

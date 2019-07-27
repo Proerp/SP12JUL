@@ -40,6 +40,7 @@
                             g.Template(t => { }).Title("!P").ClientTemplate("<input class='IsSelected' #= LabApproved ? '':checked='checked' #  type='checkbox' disabled='disabled'/>").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(3);
                             g.Template(t => { }).Title("H").ClientTemplate("<input class='IsSelected' #= LabHold ? checked='checked':'' #  type='checkbox' disabled='disabled'/>").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(3);
                             g.Template(t => { }).Title("Q").ClientTemplate("<input class='IsSelected' #= LabInActive ? checked='checked':'' #  type='checkbox' disabled='disabled'/>").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(3);
+                            g.Template(t => { }).Title("HSD").ClientTemplate("<input class='IsSelected' #= BatchExpiried ? checked='checked':'' #  type='checkbox' disabled='disabled'/>").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(3);
                         }
                     ));
                 columns.Group(gr => gr

@@ -49,5 +49,6 @@ namespace TotalModel.Models
         public Nullable<int> LabID { get; set; }
         public bool LabHold { get; set; }
         public bool LabInActive { get; set; }
+        public bool BatchExpiried { get; set; }
     }
 }

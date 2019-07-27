@@ -321,7 +321,7 @@ namespace TotalDAL.Repositories
         {
             Helpers.SqlProgrammability.Accounts.WarehouseInvoice warehouseInvoice = new Helpers.SqlProgrammability.Accounts.WarehouseInvoice(totalSmartPortalEntities);
             warehouseInvoice.RestoreProcedure();
-            return;
+            //return;
 
             Helpers.SqlProgrammability.Commons.Barcode barcode = new Helpers.SqlProgrammability.Commons.Barcode(totalSmartPortalEntities);
             barcode.RestoreProcedure();
