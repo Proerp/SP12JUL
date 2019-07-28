@@ -1,0 +1,84 @@
+﻿@using TotalPortal.Configuration;
+@using TotalDTO.Purchases
+
+@model ExpiryDateBbViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.GoodsArrivalID);
+    @Html.HiddenFor(model => model.GoodsArrivalDetailID);
+
+    <div class="left-panel">
+        <div style="padding: 16px;"> <img src="~/Content/Images/Mains/new-64.png" /> </div>
+    </div>
+    <div class="right-panel" style="padding-right:17px;">
+        <div class=" form-group">
+            @Html.LabelFor(model => model.CommodityCode)
+            <div class="div-input">
+                @Html.Kendo().MaskedTextBoxFor(model => model.CommodityCode).HtmlAttributes(new { @class = "left-panel-input", @readonly = "readonly" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BatchCode)
+            <div class="div-input">
+                @Html.Kendo().MaskedTextBoxFor(model => model.BatchCode).HtmlAttributes(new { @class = "left-panel-input", @readonly = "readonly" })
+            </div>
+        </div>        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CurrentProductionDate)
+            <div class="div-input">
+                @*@Html.Kendo().DatePickerFor(model => model.ProductionDate).HtmlAttributes(new { @class = "left-panel-input" })*@
+                @Html.Kendo().DatePicker().Name("ProductionDate").Value(@Model.CurrentProductionDate).HtmlAttributes(new { @class = "left-panel-input", @readonly = "readonly" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CurrentExpiryDate)
+            <div class="div-input">
+                @*@Html.Kendo().DatePickerFor(model => model.ExpiryDate).HtmlAttributes(new { @class = "left-panel-input" })*@
+                @Html.Kendo().DatePicker().Name("ExpiryDate").Value(@Model.CurrentExpiryDate).HtmlAttributes(new { @class = "left-panel-input" })
+            </div>
+        </div>
+
+        <div class=" form-group">
+            @Html.LabelFor(model => model.Remarks)
+            <div class="div-input">
+                @Html.Kendo().MaskedTextBoxFor(model => model.Remarks).HtmlAttributes(new { @class = "left-panel-input" })
+            </div>
+        </div>
+
+    </div>
+    <div class="background-bar">
+        <div class="popup-button-bar">
+            <button type="submit" class="k-button"> <img src="~/Content/Images/New/save-32-m20.png" alt="" /> Lưu </button>
+            <button type="button" class="k-button" onclick="window.parent.$('#myWindow').data('kendoWindow').close()"> <img src="~/Content/Images/Mains/Users-Exit-icon.png" alt="" /> Thoát </button>
+        </div>
+    </div>
+    
+}
+@Html.Partial("~/Views/Helpers/Bases/_BaseSubmit.cshtml")
+
+
+<script type="text/javascript">
+    function cancelButton_Click() {
+        window.parent.$("#myWindow").data("kendoWindow").close();
+    }
+</script>
+
+<style>
+    .left-panel {
+        width: 13%;
+    }
+
+    .right-panel {
+        width: 87%;
+    }
+
+    .left-panel-input {
+        width: 100%;
+    }
+</style>

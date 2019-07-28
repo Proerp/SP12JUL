@@ -50,7 +50,7 @@ namespace TotalDTO.Purchases
         public Nullable<int> Lifespan { get { return this.ExpiryDate != null && this.ProductionDate != null ? ((DateTime)this.ExpiryDate - (DateTime)this.ProductionDate).Days : (int?)null; } set { } }
 
 
-        [UIHint("AutoCompletes/CommodityBase")]
+        [UIHint("StringReadonly")]
         public override string CommodityCode { get; set; }
 
         [Display(Name = "Số cont")]
@@ -100,5 +100,48 @@ namespace TotalDTO.Purchases
             if (this.Quantity != 0 && (this.Quantity != this.Packages * this.UnitWeight || this.UnitWeight == 0 || this.Packages - Math.Truncate(this.Packages) != 0)) yield return new ValidationResult("Số kiện phải lớn hơn 0 và là số nguyên [" + this.CommodityName + "]", new[] { "UnitWeight" });
             if (this.PurchaseOrderID > 0 && (this.Quantity > this.QuantityRemains * (decimal)1.1)) yield return new ValidationResult("Số lượng xuất không được lớn hơn số lượng còn lại [" + this.CommodityName + "]", new[] { "Quantity" });
         }
+    }
+
+
+    public class ExpiryDateAaViewModel : BaseDTO
+    {
+        public int GoodsArrivalDetailID { get; set; }
+        public int GoodsArrivalID { get; set; }
+
+        [Display(Name = "Mã hàng")]
+        [UIHint("StringReadonly")]
+        public string CommodityCode { get; set; }
+
+        [Display(Name = "Tên hàng")]
+        [UIHint("StringReadonly")]
+        public string CommodityName { get; set; }
+
+        [Display(Name = "Số lô")]
+        [UIHint("StringReadonly")]
+        public string BatchCode { get; set; }
+        
+        [Display(Name = "Số hồ sơ gia hạn")]
+        [Required(ErrorMessage = "Vui lòng nhập số hồ sơ gia hạn")]
+        public string Remarks { get; set; }
+    }
+
+    public class ExpiryDateBbViewModel : ExpiryDateAaViewModel
+    {
+        [Display(Name = "Ngày SX")]
+        [UIHint("Date")]
+        public Nullable<System.DateTime> CurrentProductionDate { get; set; }
+        [Display(Name = "HSD")]
+        [UIHint("Date")]
+        public Nullable<System.DateTime> CurrentExpiryDate { get; set; }
+    }
+
+    public class ExpiryDateViewModel : ExpiryDateAaViewModel
+    {
+        [Display(Name = "Ngày SX")]
+        [UIHint("Date")]
+        public Nullable<System.DateTime> ProductionDate { get; set; }
+        [Display(Name = "HSD")]
+        [UIHint("Date")]
+        public Nullable<System.DateTime> ExpiryDate { get; set; }
     }
 }

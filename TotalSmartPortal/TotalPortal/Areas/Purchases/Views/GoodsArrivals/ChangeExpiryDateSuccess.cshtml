@@ -1,9 +1,11 @@
-﻿@model TotalPortal.ViewModels.Helpers.RemarkDetailViewModel
+﻿@model TotalDTO.Purchases.ExpiryDateViewModel
 
 @using (Html.BeginForm())
 {
-    @Html.HiddenFor(model => model.ID)
-    @Html.HiddenFor(model => model.DetailID)
+    @Html.HiddenFor(model => model.GoodsArrivalID)
+    @Html.HiddenFor(model => model.GoodsArrivalDetailID)
+    
+    @Html.HiddenFor(model => model.ExpiryDate)
     @Html.Hidden("Remarks", (@Model.Remarks != null && @Model.Remarks.Length > 100 ? @Model.Remarks.Substring(0, 99) : @Model.Remarks))
 }
 
@@ -13,9 +15,10 @@
         var data = kenGrid.dataSource.data();
 
         $.each(data, function (i, row) {
-            if (row.BlendingInstructionDetailID == $("#DetailID").val()) {
+            if (row.GoodsArrivalDetailID == $("#GoodsArrivalDetailID").val()) {
 
                 //This will raise kendo grid DataBound event (to style grid row). Now: we set only one field to raise DataBound event one time only. (The control will raise event per each row.set command)
+                row.set("ExpiryDate", $("#ExpiryDate").val());
                 row.set("Remarks", $("#Remarks").val());
                 //Important note: this Success response does not set all necessary fields for the model, ex: InActivePartial, VoidTypeID, ...
                 //So: Never submit model to save to database when in void mode

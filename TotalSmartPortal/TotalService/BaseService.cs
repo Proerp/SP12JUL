@@ -1,4 +1,6 @@
-﻿using TotalBase.Enums;
+﻿using System.Collections.Generic;
+
+using TotalBase.Enums;
 using TotalCore.Repositories;
 using TotalCore.Services;
 using TotalModel.Models;
@@ -7,6 +9,8 @@ namespace TotalService
 {
     public abstract class BaseService : IBaseService
     {
+        public Dictionary<string, object> ServiceBag { get; set; }
+
         private int userID;
         public int LocationID { get; protected set; }
 
@@ -15,6 +19,7 @@ namespace TotalService
         public BaseService(IBaseRepository baseRepository)
         {
             this.baseRepository = baseRepository;
+            this.ServiceBag = new Dictionary<string, object>();
         }
 
         public virtual int UserID

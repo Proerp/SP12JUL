@@ -32,6 +32,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Purchases
             this.GoodsArrivalEditable();
 
             this.GoodsArrivalToggleApproved();
+            this.GoodsArrivalChangeExpiryDate();
 
             this.GetBarcodeBases();
             this.GetBarcodeSymbologies();
@@ -433,6 +434,29 @@ namespace TotalDAL.Helpers.SqlProgrammability.Purchases
             queryString = queryString + "           END " + "\r\n";
 
             this.totalSmartPortalEntities.CreateStoredProcedure("GoodsArrivalToggleApproved", queryString);
+        }
+
+        private void GoodsArrivalChangeExpiryDate()
+        {
+            string queryString = " @GoodsArrivalID int, @GoodsArrivalDetailID int, @ExpiryDate datetime, @Remarks nvarchar(100) " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+
+            queryString = queryString + "       IF (NOT @Remarks IS NULL) BEGIN SET @Remarks = LTRIM(RTRIM(@Remarks)) IF (@Remarks = '') SET @Remarks = NULL END " + "\r\n";
+            queryString = queryString + "       UPDATE      GoodsArrivalDetails     SET ExpiryDate = @ExpiryDate, Remarks = @Remarks WHERE GoodsArrivalID = @GoodsArrivalID AND GoodsArrivalDetailID = @GoodsArrivalDetailID ; " + "\r\n";
+
+            queryString = queryString + "       IF @@ROWCOUNT = 1 " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               DECLARE @BatchID int = (SELECT BatchID FROM GoodsArrivalDetails WHERE GoodsArrivalDetailID = @GoodsArrivalDetailID); " + "\r\n";
+            queryString = queryString + "               UPDATE GoodsArrivalPackages SET ExpiryDate = @ExpiryDate WHERE BatchID = @BatchID; " + "\r\n";
+            queryString = queryString + "               UPDATE GoodsReceiptDetails  SET ExpiryDate = @ExpiryDate WHERE BatchID = @BatchID; " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+            queryString = queryString + "       ELSE " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               DECLARE     @msg NVARCHAR(300) = N'Dữ liệu không tồn tại' ; " + "\r\n";
+            queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+            this.totalSmartPortalEntities.CreateStoredProcedure("GoodsArrivalChangeExpiryDate", queryString);
         }
 
         private void GetBarcodeBases()

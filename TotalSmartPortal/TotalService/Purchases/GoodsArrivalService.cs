@@ -52,7 +52,12 @@ namespace TotalService.Purchases
             }
 
             return goodsArrival;
-        }        
+        }
+
+        public bool ChangeExpiryDate(int? goodsArrivalID, int? goodsArrivalDetailID, DateTime? expiryDate, string Remarks)
+        {
+            return this.goodsArrivalRepository.ChangeExpiryDate(goodsArrivalID, goodsArrivalDetailID, expiryDate, Remarks);
+        }
     }
 
 

@@ -1,4 +1,6 @@
-﻿using TotalModel;
+﻿using System;
+
+using TotalModel;
 using TotalDTO;
 using TotalModel.Models;
 using TotalDTO.Purchases;
@@ -10,6 +12,7 @@ namespace TotalCore.Services.Purchases
         where TPrimitiveDto : BaseDTO, IPrimitiveEntity, IPrimitiveDTO, new()
         where TDtoDetail : class, IPrimitiveEntity
     {
+        bool ChangeExpiryDate(int? goodsArrivalID, int? goodsArrivalDetailID, DateTime? expiryDate, string Remarks);
     }
 
     public interface IMaterialArrivalService : IGoodsArrivalService<GoodsArrivalDTO<GoodsArrivalOptionMaterial>, GoodsArrivalPrimitiveDTO<GoodsArrivalOptionMaterial>, GoodsArrivalDetailDTO>

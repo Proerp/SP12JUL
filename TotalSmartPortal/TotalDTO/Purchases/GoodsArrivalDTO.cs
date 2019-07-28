@@ -140,7 +140,7 @@ namespace TotalDTO.Purchases
         EmployeeBaseDTO Salesperson { get; set; }
 
         List<GoodsArrivalDetailDTO> GoodsArrivalViewDetails { get; set; }
-        List<GoodsArrivalDetailDTO> ViewDetails { get; set; }
+        //List<GoodsArrivalDetailDTO> ViewDetails { get; set; }
 
         string ControllerName { get; }
         string PurchaseController { get; }

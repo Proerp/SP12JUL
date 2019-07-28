@@ -9409,6 +9409,12 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
         <Function Name="GoodsArrivalApproved" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
         </Function>
+        <Function Name="GoodsArrivalChangeExpiryDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GoodsArrivalID" Type="int" Mode="In" />
+          <Parameter Name="GoodsArrivalDetailID" Type="int" Mode="In" />
+          <Parameter Name="ExpiryDate" Type="datetime" Mode="In" />
+          <Parameter Name="Remarks" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="GoodsArrivalEditable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
         </Function>
@@ -17773,6 +17779,12 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
             <End Role="Workshift" EntitySet="Workshifts" />
             <End Role="SemifinishedItem" EntitySet="SemifinishedItems" />
           </AssociationSet>
+          <FunctionImport Name="GoodsArrivalChangeExpiryDate">
+            <Parameter Name="GoodsArrivalID" Mode="In" Type="Int32" />
+            <Parameter Name="GoodsArrivalDetailID" Mode="In" Type="Int32" />
+            <Parameter Name="ExpiryDate" Mode="In" Type="DateTime" />
+            <Parameter Name="Remarks" Mode="In" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="AccountInvoiceIndex">
           <Property Type="Int32" Name="AccountInvoiceID" Nullable="false" />
@@ -35062,6 +35074,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GoodsArrivalChangeExpiryDate" FunctionName="TotalSmartPortalModel.Store.GoodsArrivalChangeExpiryDate" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

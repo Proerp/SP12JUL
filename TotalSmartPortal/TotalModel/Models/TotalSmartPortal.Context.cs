@@ -5910,5 +5910,26 @@ namespace TotalModel.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BlendingInstruction>("GetBlendingInstructions", mergeOption, codeParameter);
         }
+    
+        public virtual int GoodsArrivalChangeExpiryDate(Nullable<int> goodsArrivalID, Nullable<int> goodsArrivalDetailID, Nullable<System.DateTime> expiryDate, string remarks)
+        {
+            var goodsArrivalIDParameter = goodsArrivalID.HasValue ?
+                new ObjectParameter("GoodsArrivalID", goodsArrivalID) :
+                new ObjectParameter("GoodsArrivalID", typeof(int));
+    
+            var goodsArrivalDetailIDParameter = goodsArrivalDetailID.HasValue ?
+                new ObjectParameter("GoodsArrivalDetailID", goodsArrivalDetailID) :
+                new ObjectParameter("GoodsArrivalDetailID", typeof(int));
+    
+            var expiryDateParameter = expiryDate.HasValue ?
+                new ObjectParameter("ExpiryDate", expiryDate) :
+                new ObjectParameter("ExpiryDate", typeof(System.DateTime));
+    
+            var remarksParameter = remarks != null ?
+                new ObjectParameter("Remarks", remarks) :
+                new ObjectParameter("Remarks", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GoodsArrivalChangeExpiryDate", goodsArrivalIDParameter, goodsArrivalDetailIDParameter, expiryDateParameter, remarksParameter);
+        }
     }
 }

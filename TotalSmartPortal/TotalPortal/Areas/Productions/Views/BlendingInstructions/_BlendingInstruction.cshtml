@@ -262,17 +262,17 @@
 <script src="@Url.Content("~/Scripts/Helpers/KendoGrid/gridHelper.js")"></script>
 
 <script type="text/javascript">
-    function callVoidDetail(blendingInstructionID) {
+    function callVoidDetail(blendingInstructionDetailID) {
         require(["kpopupWindow"], function (kpopupWindow) {
             var voidDetailWindow = new kpopupWindow();
-            voidDetailWindow.openWindow($("#popupWindow"), "@Url.Action("VoidDetail", "BlendingInstructions")" + "/" + $("#BlendingInstructionID").val() + "/" + blendingInstructionID, "Hủy/ phục hồi một phần đơn hàng", @Settings.PopupWidthVoid,  @Settings.PopupHeightSmall);
+            voidDetailWindow.openWindow($("#popupWindow"), "@Url.Action("VoidDetail", "BlendingInstructions")" + "/" + $("#BlendingInstructionID").val() + "/" + blendingInstructionDetailID, "Hủy/ phục hồi một phần đơn hàng", @Settings.PopupWidthVoid,  @Settings.PopupHeightSmall);
         });
     }
 
-    function callRemarkDetail(blendingInstructionID) {
+    function callRemarkDetail(blendingInstructionDetailID) {
         require(["kpopupWindow"], function (kpopupWindow) {
             var voidDetailWindow = new kpopupWindow();
-            voidDetailWindow.openWindow($("#popupWindow"), "@Url.Action("RemarkDetail", "BlendingInstructions")" + "/" + $("#BlendingInstructionID").val() + "/" + blendingInstructionID, "Nhập ghi chú", @Settings.PopupWidthSmall,  @Settings.GridPopupNoTabHeight);
+            voidDetailWindow.openWindow($("#popupWindow"), "@Url.Action("RemarkDetail", "BlendingInstructions")" + "/" + $("#BlendingInstructionID").val() + "/" + blendingInstructionDetailID, "Nhập ghi chú", @Settings.PopupWidthSmall,  @Settings.GridPopupNoTabHeight);
         });
     }
 

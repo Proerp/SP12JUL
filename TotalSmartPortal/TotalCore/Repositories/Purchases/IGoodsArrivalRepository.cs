@@ -9,6 +9,8 @@ namespace TotalCore.Repositories.Purchases
     {
         List<BarcodeBase> GetBarcodeBases(int? goodsArrivalID);        
         void SetBarcodeSymbologies(int? barcodeID, string symbologies);
+
+        bool ChangeExpiryDate(int? goodsArrivalID, int? goodsArrivalDetailID, DateTime? expiryDate, string Remarks);
     }
 
     public interface IGoodsArrivalAPIRepository : IGenericAPIRepository

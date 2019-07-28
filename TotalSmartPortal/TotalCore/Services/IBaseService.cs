@@ -1,9 +1,13 @@
-﻿using TotalBase.Enums;
+﻿using System.Collections.Generic;
+
+using TotalBase.Enums;
 
 namespace TotalCore.Services
 {
     public interface IBaseService
     {
+        Dictionary<string, object> ServiceBag { get; set; }
+
         int UserID { get; set; }
         int LocationID { get; }
 

@@ -30,6 +30,11 @@ namespace TotalDAL.Repositories.Purchases
         {
             base.TotalSmartPortalEntities.SetBarcodeSymbologies(barcodeID, symbologies);
         }
+
+        public bool ChangeExpiryDate(int? goodsArrivalID, int? goodsArrivalDetailID, DateTime? expiryDate, string Remarks)
+        {
+            return base.TotalSmartPortalEntities.GoodsArrivalChangeExpiryDate(goodsArrivalID, goodsArrivalDetailID, expiryDate, Remarks) > 0;
+        }
     }
 
 
