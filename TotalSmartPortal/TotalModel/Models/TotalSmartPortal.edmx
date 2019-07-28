@@ -26483,6 +26483,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           <Property Type="Int32" Name="WarehouseID" Nullable="true" />
           <Property Type="String" Name="WarehouseCode" Nullable="true" MaxLength="10" />
           <Property Type="Int32" Name="BatchID" Nullable="true" />
+          <Property Type="Boolean" Name="BatchExpiried" Nullable="true" />
         </ComplexType>
         <EntityType Name="RecyclatePackage">
           <Key>
@@ -34608,6 +34609,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
                 <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
                 <ScalarProperty Name="WarehouseCode" ColumnName="WarehouseCode" />
                 <ScalarProperty Name="BatchID" ColumnName="BatchID" />
+                <ScalarProperty Name="BatchExpiried" ColumnName="BatchExpiried" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
