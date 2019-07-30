@@ -5,11 +5,10 @@
     {
         @Html.AntiForgeryToken()
 
-        <ul class="nav navbar-nav navbar-right">
-            <li>@Html.ActionLink("User Guide", "UserGuide", "Home", new { area = "" }, null)</li>
+        <ul class="nav navbar-nav navbar-right">            
             <li>@Html.ActionLink("Lock Data", "LockedDate", "Home", new { area = "" }, null)</li>
-
-            <li>@Html.ActionLink("User References", "UserReferences", "Account", new { area = "" }, null)</li>
+            <li>@Html.ActionLink("User Controls", "UserReferences", "Account", new { area = "" }, null)</li>
+            <li>@Html.ActionLink("User References", "Viewer", "Reports", new { area = "Analysis", id = 1 }, new { target = "_blank" })</li>
 
             @if (User.Identity.GetUserName() == "hieperp@gmail.com")
             {

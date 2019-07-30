@@ -31,6 +31,8 @@ namespace TotalDAL.Helpers.SqlProgrammability.Generals
 
             this.GetUserReportControls();
             this.SaveUserReportControls();
+
+            this.GetUserReferenceSheet();
         }
 
         private void GetModuleDetailIndexes()
@@ -273,6 +275,31 @@ namespace TotalDAL.Helpers.SqlProgrammability.Generals
             this.totalSmartPortalEntities.CreateStoredProcedure("SaveUserReportControls", queryString);
         }
 
+
+
+        private void GetUserReferenceSheet()
+        {
+            string queryString;
+
+            queryString = " " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "    BEGIN " + "\r\n";
+
+            queryString = queryString + "       SELECT      OUs.Code AS OUsCode, Users.UserName, CAST(Modules.SerialID AS varchar) + '.' + Modules.Description AS ModuleName, DRV_ModuleDetails.SoftDescription AS ModuleDetailName, OrganizationalUnits.Code AS OrganizationalUnitCode, AccessControls.AccessLevel, AccessControls.ApprovalPermitted, AccessControls.UnApprovalPermitted, AccessControls.VoidablePermitted, AccessControls.UnVoidablePermitted " + "\r\n";
+            queryString = queryString + "       FROM        AccessControls " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Users ON AccessControls.UserID = Users.UserID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN OrganizationalUnits ON AccessControls.OrganizationalUnitID = OrganizationalUnits.OrganizationalUnitID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN (SELECT TaskID, MIN(ModuleID) AS ModuleID, MIN(SoftDescription) AS SoftDescription FROM ModuleDetails WHERE InActive = 0 AND Controller <> '' GROUP BY TaskID) AS DRV_ModuleDetails ON AccessControls.NMVNTaskID = DRV_ModuleDetails.TaskID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Modules ON Modules.InActive = 0 AND DRV_ModuleDetails.ModuleID = Modules.ModuleID " + "\r\n";
+
+            queryString = queryString + "                   INNER JOIN OrganizationalUnitUsers ON OrganizationalUnitUsers.InActive = 0 AND Users.UserID = OrganizationalUnitUsers.UserID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN OrganizationalUnits OUs ON OrganizationalUnitUsers.OrganizationalUnitID = OUs.OrganizationalUnitID " + "\r\n";
+
+            queryString = queryString + "    END " + "\r\n";
+
+            this.totalSmartPortalEntities.CreateStoredProcedure("UserReferenceSheet", queryString);
+        }
 
     }
 }
