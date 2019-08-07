@@ -477,13 +477,14 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
             queryString = queryString + "       DECLARE         @LocalWarehouseTransferID int    SET @LocalWarehouseTransferID = @WarehouseTransferID" + "\r\n";
 
             queryString = queryString + "       SELECT          WarehouseTransfers.WarehouseTransferID, WarehouseTransfers.EntryDate, WarehouseTransfers.Reference, WarehouseTransfers.NMVNTaskID, Warehouses.Name AS WarehouseName, WarehouseReceipts.Name AS WarehouseReceiptName, WarehouseTransfers.Description, " + "\r\n";
-            queryString = queryString + "                       WarehouseTransferDetails.CommodityID, WarehouseTransferDetails.CommodityTypeID, Commodities.Code, Commodities.CodePartA, Commodities.CodePartB, Commodities.CodePartC, Commodities.CodePartD, Commodities.CodePartE, Commodities.CodePartF, Commodities.Name AS CommodityName, Commodities.SalesUnit, WarehouseTransferDetails.BatchEntryDate, WarehouseTransferDetails.Quantity, WarehouseTransferDetails.Remarks " + "\r\n";
+            queryString = queryString + "                       WarehouseTransferDetails.CommodityID, WarehouseTransferDetails.CommodityTypeID, Commodities.Code, Commodities.CodePartA, Commodities.CodePartB, Commodities.CodePartC, Commodities.CodePartD, Commodities.CodePartE, Commodities.CodePartF, Commodities.Name AS CommodityName, Commodities.SalesUnit, Batches.Code AS BatchCode, WarehouseTransferDetails.BatchEntryDate, WarehouseTransferDetails.Quantity, WarehouseTransferDetails.Remarks " + "\r\n";
 
             queryString = queryString + "       FROM            WarehouseTransfers " + "\r\n";
             queryString = queryString + "                       INNER JOIN WarehouseTransferDetails ON WarehouseTransfers.WarehouseTransferID = @LocalWarehouseTransferID AND WarehouseTransfers.WarehouseTransferID = WarehouseTransferDetails.WarehouseTransferID " + "\r\n";
             queryString = queryString + "                       INNER JOIN Commodities ON WarehouseTransferDetails.CommodityID = Commodities.CommodityID " + "\r\n";
             queryString = queryString + "                       INNER JOIN Warehouses ON WarehouseTransfers.WarehouseID = Warehouses.WarehouseID " + "\r\n";
             queryString = queryString + "                       INNER JOIN Warehouses AS WarehouseReceipts ON WarehouseTransfers.WarehouseReceiptID = WarehouseReceipts.WarehouseID " + "\r\n";
+            queryString = queryString + "                       INNER JOIN Batches ON WarehouseTransferDetails.BatchID = Batches.BatchID " + "\r\n";
 
             queryString = queryString + "       ORDER BY        WarehouseTransferDetails.WarehouseTransferDetailID " + "\r\n";
 
