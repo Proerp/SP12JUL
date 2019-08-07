@@ -221,8 +221,12 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";
             queryString = queryString + "           END " + "\r\n";
 
-
-
+            queryString = queryString + "       IF (@SaveRelativeOption = 1) " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               INSERT INTO Batches (EntryDate, Code, FinishedItemID, FinishedItemLotID) SELECT FinishedItems.EntryDate, FinishedItems.Reference + '/' + RIGHT(CAST(YEAR(FinishedItems.EntryDate) AS nvarchar), 2) AS Code, FinishedItems.FinishedItemID, FinishedItemLots.FinishedItemLotID FROM FinishedItems INNER JOIN FinishedItemLots ON FinishedItems.FinishedItemID = FinishedItemLots.FinishedItemID WHERE FinishedItems.FinishedItemID = @EntityID AND FinishedItemLots.FinishedItemLotID NOT IN (SELECT FinishedItemLotID FROM Batches WHERE FinishedItemID = @EntityID) " + "\r\n";
+            queryString = queryString + "               UPDATE Batches SET Batches.EntryDate = FinishedItemLots.EntryDate, Batches.Code = FinishedItems.Reference + '/' + RIGHT(CAST(YEAR(FinishedItems.EntryDate) AS nvarchar), 2) FROM FinishedItems INNER JOIN FinishedItemLots ON FinishedItems.FinishedItemID = @EntityID AND FinishedItems.FinishedItemID = FinishedItemLots.FinishedItemID INNER JOIN Batches ON FinishedItemLots.FinishedItemLotID = Batches.FinishedItemLotID " + "\r\n";
+            queryString = queryString + "               UPDATE FinishedItemLots SET FinishedItemLots.BatchID = Batches.BatchID, FinishedItemLots.BatchEntryDate = Batches.EntryDate FROM FinishedItemLots INNER JOIN Batches ON FinishedItemLots.FinishedItemID = @EntityID AND FinishedItemLots.FinishedItemLotID = Batches.FinishedItemLotID " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
 
             queryString = queryString + "       IF ((SELECT Approved FROM FinishedItems WHERE FinishedItemID = @EntityID AND Approved = 1) = 1) " + "\r\n";
             queryString = queryString + "           BEGIN " + "\r\n";

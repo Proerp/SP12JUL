@@ -112,7 +112,7 @@ function handleOKEvent(goodsReceiptGridDataSource, pendingRecyclateDetailGridDat
         dataRow.LabID = -1;
 
         dataRow.Barcode = null;
-        dataRow.BatchCode = null;
+        dataRow.BatchCode = recyclateGridDataItem.BatchCode;
         dataRow.SealCode = null;
         dataRow.LabCode = null;
 

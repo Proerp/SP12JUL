@@ -698,7 +698,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
         {
             string queryString = "";
 
-            queryString = queryString + "       SELECT      FinishedProductPackages.FinishedProductID, FinishedProductPackages.FinishedProductPackageID, FinishedProductPackages.EntryDate AS FinishedProductEntryDate, FirmOrders.Reference AS FirmOrderReference, FirmOrders.Code AS FirmOrderCode, FinishedProductPackages.SemifinishedProductReferences, FinishedProductPackages.BatchID, FinishedProductPackages.BatchEntryDate, " + "\r\n";
+            queryString = queryString + "       SELECT      FinishedProductPackages.FinishedProductID, FinishedProductPackages.FinishedProductPackageID, FinishedProductPackages.EntryDate AS FinishedProductEntryDate, FirmOrders.Reference AS FirmOrderReference, FirmOrders.Code AS FirmOrderCode, FinishedProductPackages.SemifinishedProductReferences, FinishedProductPackages.BatchID, FinishedProductPackages.BatchEntryDate, Batches.Code AS BatchCode, " + "\r\n";
             queryString = queryString + "                   Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, " + "\r\n";
             queryString = queryString + "                   ROUND(FinishedProductPackages.Quantity - FinishedProductPackages.QuantityReceipted, " + (int)GlobalEnums.rndQuantity + ") AS QuantityRemains, " + "\r\n";
             queryString = queryString + "                   0.0 AS Quantity, FinishedProductPackages.Remarks, CAST(1 AS bit) AS IsSelected " + "\r\n";
@@ -706,6 +706,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
             queryString = queryString + "       FROM        FirmOrders " + "\r\n";
             queryString = queryString + "                   INNER JOIN FinishedProductPackages ON " + (isFinishedProductID ? " FinishedProductPackages.PlannedOrderID = @PlannedOrderID " : "FinishedProductPackages.LocationID = @LocationID AND FinishedProductPackages.CustomerID = @CustomerID ") + " AND FinishedProductPackages.Approved = 1 AND FinishedProductPackages.HandoverApproved = 1 AND ROUND(FinishedProductPackages.Quantity - FinishedProductPackages.QuantityReceipted, " + (int)GlobalEnums.rndQuantity + ") > 0 AND FirmOrders.FirmOrderID = FinishedProductPackages.FirmOrderID " + (isFinishedProductPackageIDs ? " AND FinishedProductPackages.FinishedProductPackageID NOT IN (SELECT Id FROM dbo.SplitToIntList (@FinishedProductPackageIDs))" : "") + "\r\n";
             queryString = queryString + "                   INNER JOIN Commodities ON FinishedProductPackages.CommodityID = Commodities.CommodityID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Batches ON FinishedProductPackages.BatchID = Batches.BatchID " + "\r\n";
 
             return queryString;
         }
@@ -714,7 +715,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
         {
             string queryString = "";
 
-            queryString = queryString + "       SELECT      FinishedProductPackages.FinishedProductID, FinishedProductPackages.FinishedProductPackageID, FinishedProductPackages.EntryDate AS FinishedProductEntryDate, FirmOrders.Reference AS FirmOrderReference, FirmOrders.Code AS FirmOrderCode, FinishedProductPackages.SemifinishedProductReferences, FinishedProductPackages.BatchID, FinishedProductPackages.BatchEntryDate, " + "\r\n";
+            queryString = queryString + "       SELECT      FinishedProductPackages.FinishedProductID, FinishedProductPackages.FinishedProductPackageID, FinishedProductPackages.EntryDate AS FinishedProductEntryDate, FirmOrders.Reference AS FirmOrderReference, FirmOrders.Code AS FirmOrderCode, FinishedProductPackages.SemifinishedProductReferences, FinishedProductPackages.BatchID, FinishedProductPackages.BatchEntryDate, Batches.Code AS BatchCode, " + "\r\n";
             queryString = queryString + "                   Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, " + "\r\n";
             queryString = queryString + "                   ROUND(FinishedProductPackages.Quantity - FinishedProductPackages.QuantityReceipted + GoodsReceiptDetails.Quantity, " + (int)GlobalEnums.rndQuantity + ") AS QuantityRemains, " + "\r\n";
             queryString = queryString + "                   0.0 AS Quantity, FinishedProductPackages.Remarks, CAST(1 AS bit) AS IsSelected " + "\r\n";
@@ -723,6 +724,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
             queryString = queryString + "                   INNER JOIN GoodsReceiptDetails ON GoodsReceiptDetails.GoodsReceiptID = @GoodsReceiptID AND FinishedProductPackages.FinishedProductPackageID = GoodsReceiptDetails.FinishedProductPackageID" + (isFinishedProductPackageIDs ? " AND FinishedProductPackages.FinishedProductPackageID NOT IN (SELECT Id FROM dbo.SplitToIntList (@FinishedProductPackageIDs))" : "") + "\r\n";
             queryString = queryString + "                   INNER JOIN FirmOrders ON FinishedProductPackages.FirmOrderID = FirmOrders.FirmOrderID " + "\r\n";
             queryString = queryString + "                   INNER JOIN Commodities ON FinishedProductPackages.CommodityID = Commodities.CommodityID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Batches ON FinishedProductPackages.BatchID = Batches.BatchID " + "\r\n";
 
             return queryString;
         }
@@ -823,7 +825,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
         {
             string queryString = "";
 
-            queryString = queryString + "       SELECT      FinishedItemPackages.FinishedItemID, FinishedItemPackages.FinishedItemPackageID, FinishedItemPackages.EntryDate AS FinishedItemEntryDate, FirmOrders.Reference AS FirmOrderReference, FirmOrders.Code AS FirmOrderCode, FinishedItemPackages.SemifinishedItemReferences, FinishedItemPackages.BatchID, FinishedItemPackages.BatchEntryDate, " + "\r\n";
+            queryString = queryString + "       SELECT      FinishedItemPackages.FinishedItemID, FinishedItemPackages.FinishedItemPackageID, FinishedItemPackages.EntryDate AS FinishedItemEntryDate, FirmOrders.Reference AS FirmOrderReference, FirmOrders.Code AS FirmOrderCode, FinishedItemPackages.SemifinishedItemReferences, FinishedItemPackages.BatchID, FinishedItemPackages.BatchEntryDate, Batches.Code AS BatchCode, " + "\r\n";
             queryString = queryString + "                   Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, " + "\r\n";
             queryString = queryString + "                   ROUND(FinishedItemPackages.Quantity - FinishedItemPackages.QuantityReceipted, " + (int)GlobalEnums.rndQuantity + ") AS QuantityRemains, " + "\r\n";
             queryString = queryString + "                   0.0 AS Quantity, FinishedItemPackages.Remarks, CAST(1 AS bit) AS IsSelected " + "\r\n";
@@ -831,6 +833,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
             queryString = queryString + "       FROM        FirmOrders " + "\r\n";
             queryString = queryString + "                   INNER JOIN FinishedItemPackages ON " + (isFinishedItemID ? " FinishedItemPackages.PlannedOrderID = @PlannedOrderID " : "FinishedItemPackages.LocationID = @LocationID AND FinishedItemPackages.CustomerID = @CustomerID ") + " AND FinishedItemPackages.Approved = 1 AND FinishedItemPackages.HandoverApproved = 1 AND ROUND(FinishedItemPackages.Quantity - FinishedItemPackages.QuantityReceipted, " + (int)GlobalEnums.rndQuantity + ") > 0 AND FirmOrders.FirmOrderID = FinishedItemPackages.FirmOrderID " + (isFinishedItemPackageIDs ? " AND FinishedItemPackages.FinishedItemPackageID NOT IN (SELECT Id FROM dbo.SplitToIntList (@FinishedItemPackageIDs))" : "") + "\r\n";
             queryString = queryString + "                   INNER JOIN Commodities ON FinishedItemPackages.CommodityID = Commodities.CommodityID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Batches ON FinishedItemPackages.BatchID = Batches.BatchID " + "\r\n";
 
             return queryString;
         }
@@ -839,7 +842,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
         {
             string queryString = "";
 
-            queryString = queryString + "       SELECT      FinishedItemPackages.FinishedItemID, FinishedItemPackages.FinishedItemPackageID, FinishedItemPackages.EntryDate AS FinishedItemEntryDate, FirmOrders.Reference AS FirmOrderReference, FirmOrders.Code AS FirmOrderCode, FinishedItemPackages.SemifinishedItemReferences, FinishedItemPackages.BatchID, FinishedItemPackages.BatchEntryDate, " + "\r\n";
+            queryString = queryString + "       SELECT      FinishedItemPackages.FinishedItemID, FinishedItemPackages.FinishedItemPackageID, FinishedItemPackages.EntryDate AS FinishedItemEntryDate, FirmOrders.Reference AS FirmOrderReference, FirmOrders.Code AS FirmOrderCode, FinishedItemPackages.SemifinishedItemReferences, FinishedItemPackages.BatchID, FinishedItemPackages.BatchEntryDate, Batches.Code AS BatchCode, " + "\r\n";
             queryString = queryString + "                   Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, " + "\r\n";
             queryString = queryString + "                   ROUND(FinishedItemPackages.Quantity - FinishedItemPackages.QuantityReceipted + GoodsReceiptDetails.Quantity, " + (int)GlobalEnums.rndQuantity + ") AS QuantityRemains, " + "\r\n";
             queryString = queryString + "                   0.0 AS Quantity, FinishedItemPackages.Remarks, CAST(1 AS bit) AS IsSelected " + "\r\n";
@@ -848,6 +851,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
             queryString = queryString + "                   INNER JOIN GoodsReceiptDetails ON GoodsReceiptDetails.GoodsReceiptID = @GoodsReceiptID AND FinishedItemPackages.FinishedItemPackageID = GoodsReceiptDetails.FinishedItemPackageID" + (isFinishedItemPackageIDs ? " AND FinishedItemPackages.FinishedItemPackageID NOT IN (SELECT Id FROM dbo.SplitToIntList (@FinishedItemPackageIDs))" : "") + "\r\n";
             queryString = queryString + "                   INNER JOIN FirmOrders ON FinishedItemPackages.FirmOrderID = FirmOrders.FirmOrderID " + "\r\n";
             queryString = queryString + "                   INNER JOIN Commodities ON FinishedItemPackages.CommodityID = Commodities.CommodityID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Batches ON FinishedItemPackages.BatchID = Batches.BatchID " + "\r\n";
 
             return queryString;
         }
@@ -920,13 +924,14 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
         {
             string queryString = "";
 
-            queryString = queryString + "       SELECT      RecyclatePackages.RecyclateID, RecyclatePackages.RecyclatePackageID, RecyclatePackages.EntryDate AS RecyclateEntryDate, RecyclatePackages.BatchID, RecyclatePackages.BatchEntryDate, " + "\r\n";
+            queryString = queryString + "       SELECT      RecyclatePackages.RecyclateID, RecyclatePackages.RecyclatePackageID, RecyclatePackages.EntryDate AS RecyclateEntryDate, RecyclatePackages.BatchID, RecyclatePackages.BatchEntryDate, Batches.Code AS BatchCode, " + "\r\n";
             queryString = queryString + "                   Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, " + "\r\n";
             queryString = queryString + "                   ROUND(RecyclatePackages.Quantity - RecyclatePackages.QuantityReceipted, " + (int)GlobalEnums.rndQuantity + ") AS QuantityRemains, " + "\r\n";
             queryString = queryString + "                   0.0 AS Quantity, RecyclatePackages.Remarks, CAST(1 AS bit) AS IsSelected " + "\r\n";
 
             queryString = queryString + "       FROM        Commodities " + "\r\n";
             queryString = queryString + "                   INNER JOIN RecyclatePackages ON RecyclatePackages.RecyclateID = @RecyclateID AND RecyclatePackages.Approved = 1 AND ROUND(RecyclatePackages.Quantity - RecyclatePackages.QuantityReceipted, " + (int)GlobalEnums.rndQuantity + ") > 0 AND RecyclatePackages.CommodityID = Commodities.CommodityID " + (isRecyclatePackageIDs ? " AND RecyclatePackages.RecyclatePackageID NOT IN (SELECT Id FROM dbo.SplitToIntList (@RecyclatePackageIDs))" : "") + "\r\n";
+            queryString = queryString + "                   INNER JOIN Batches ON RecyclatePackages.BatchID = Batches.BatchID " + "\r\n";
 
             return queryString;
         }
@@ -935,7 +940,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
         {
             string queryString = "";
 
-            queryString = queryString + "       SELECT      RecyclatePackages.RecyclateID, RecyclatePackages.RecyclatePackageID, RecyclatePackages.EntryDate AS RecyclateEntryDate, RecyclatePackages.BatchID, RecyclatePackages.BatchEntryDate, " + "\r\n";
+            queryString = queryString + "       SELECT      RecyclatePackages.RecyclateID, RecyclatePackages.RecyclatePackageID, RecyclatePackages.EntryDate AS RecyclateEntryDate, RecyclatePackages.BatchID, RecyclatePackages.BatchEntryDate, Batches.Code AS BatchCode, " + "\r\n";
             queryString = queryString + "                   Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, " + "\r\n";
             queryString = queryString + "                   ROUND(RecyclatePackages.Quantity - RecyclatePackages.QuantityReceipted + GoodsReceiptDetails.Quantity, " + (int)GlobalEnums.rndQuantity + ") AS QuantityRemains, " + "\r\n";
             queryString = queryString + "                   0.0 AS Quantity, RecyclatePackages.Remarks, CAST(1 AS bit) AS IsSelected " + "\r\n";
@@ -943,6 +948,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
             queryString = queryString + "       FROM        RecyclatePackages " + "\r\n";
             queryString = queryString + "                   INNER JOIN GoodsReceiptDetails ON GoodsReceiptDetails.GoodsReceiptID = @GoodsReceiptID AND RecyclatePackages.RecyclatePackageID = GoodsReceiptDetails.RecyclatePackageID" + (isRecyclatePackageIDs ? " AND RecyclatePackages.RecyclatePackageID NOT IN (SELECT Id FROM dbo.SplitToIntList (@RecyclatePackageIDs))" : "") + "\r\n";
             queryString = queryString + "                   INNER JOIN Commodities ON RecyclatePackages.CommodityID = Commodities.CommodityID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Batches ON RecyclatePackages.BatchID = Batches.BatchID " + "\r\n";
 
             return queryString;
         }

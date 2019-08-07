@@ -112,7 +112,7 @@ function handleOKEvent(goodsReceiptGridDataSource, pendingPlannedOrderDetailGrid
         dataRow.LabID = -1;
 
         dataRow.Barcode = null;
-        dataRow.BatchCode = null;
+        dataRow.BatchCode = plannedOrderGridDataItem.BatchCode;
         dataRow.SealCode = null;
         dataRow.LabCode = null;
 

@@ -10,6 +10,7 @@
     {
         columns.Bound(c => c.CommodityCode).Title("Mã hàng").Width(68);
         columns.Bound(c => c.CommodityName).Title("Tên hàng").Width(88);
+        columns.Bound(c => c.BatchCode).Title("Số lô").Width(30);
         columns.Bound(c => c.Remarks).Title("Ghi chú").Width(188);
         columns.Bound(c => c.QuantityRemains).Title("SL").Format(Settings.kfmQuantity).Width(30).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" });
 

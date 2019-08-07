@@ -42,7 +42,7 @@ namespace TotalDTO.Productions
         [UIHint("StringReadonly")]
         public string SemifinishedProductReference { get; set; }
 
-        [Display(Name = "Lô SX")]
+        [Display(Name = "PNK")]
         [UIHint("StringReadonly")]
         public string GoodsReceiptReference { get; set; }
         [Display(Name = "Mã NK")]

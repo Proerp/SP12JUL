@@ -310,6 +310,13 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + "                   THROW       61001,  @msg, 1; " + "\r\n";
             queryString = queryString + "               END " + "\r\n";
 
+            queryString = queryString + "           IF (@SaveRelativeOption = 1) " + "\r\n";
+            queryString = queryString + "               BEGIN " + "\r\n";
+            queryString = queryString + "                   INSERT INTO Batches (EntryDate, Code, RecyclateID, RecyclatePackageID) SELECT Recyclates.EntryDate, Recyclates.Reference + '/' + RIGHT(CAST(YEAR(Recyclates.EntryDate) AS nvarchar), 2) AS Code, Recyclates.RecyclateID, RecyclatePackages.RecyclatePackageID FROM Recyclates INNER JOIN RecyclatePackages ON Recyclates.RecyclateID = RecyclatePackages.RecyclateID WHERE Recyclates.RecyclateID = @EntityID AND RecyclatePackages.RecyclatePackageID NOT IN (SELECT RecyclatePackageID FROM Batches WHERE RecyclateID = @EntityID) " + "\r\n";
+            queryString = queryString + "                   UPDATE Batches SET Batches.EntryDate = RecyclatePackages.EntryDate, Batches.Code = Recyclates.Reference + '/' + RIGHT(CAST(YEAR(Recyclates.EntryDate) AS nvarchar), 2) FROM Recyclates INNER JOIN RecyclatePackages ON Recyclates.RecyclateID = @EntityID AND Recyclates.RecyclateID = RecyclatePackages.RecyclateID INNER JOIN Batches ON RecyclatePackages.RecyclatePackageID = Batches.RecyclatePackageID " + "\r\n";
+            queryString = queryString + "                   UPDATE RecyclatePackages SET RecyclatePackages.BatchID = Batches.BatchID, RecyclatePackages.BatchEntryDate = Batches.EntryDate FROM RecyclatePackages INNER JOIN Batches ON RecyclatePackages.RecyclateID = @EntityID AND RecyclatePackages.RecyclatePackageID = Batches.RecyclatePackageID " + "\r\n";
+            queryString = queryString + "               END " + "\r\n";
+
             queryString = queryString + "       END " + "\r\n";
 
             this.totalSmartPortalEntities.CreateStoredProcedure("RecyclateSaveRelative", queryString);

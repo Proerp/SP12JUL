@@ -111,10 +111,10 @@ function handleOKEvent(goodsReceiptGridDataSource, pendingMaterialIssueDetailGri
 
         dataRow.LabID = materialIssueGridDataItem.LabID;
 
-        dataRow.Barcode = null;
-        dataRow.BatchCode = null;
-        dataRow.SealCode = null;
-        dataRow.LabCode = null;
+        dataRow.Barcode = materialIssueGridDataItem.Barcode;
+        dataRow.BatchCode = materialIssueGridDataItem.BatchCode;
+        dataRow.SealCode = materialIssueGridDataItem.SealCode;
+        dataRow.LabCode = materialIssueGridDataItem.LabCode;
 
         dataRow.BinLocationID = 1;
         dataRow.BinLocationCode = "DEFAULT";

@@ -132,7 +132,7 @@ namespace TotalDTO.Productions
         public decimal Swarfs { get; set; }
 
         public int BatchID { get; set; }
-        [Display(Name = "Ngày lô hàng")]
+        [Display(Name = "Ngày lô")]
         [UIHint("DateTimeReadonly")]
         public DateTime BatchEntryDate { get; set; }
 

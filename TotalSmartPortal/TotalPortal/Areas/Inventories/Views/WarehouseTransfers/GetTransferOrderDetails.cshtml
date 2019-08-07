@@ -19,8 +19,8 @@
         columns.Bound(p => p.CodePartE).Title("Độ dầy").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(10).Hidden(!@Model.IsItem ? true : false);
         columns.Bound(p => p.CodePartF).Title("Chiều rộng").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(12).Hidden(!@Model.IsItem ? true : false);
         columns.Bound(c => c.CommodityName).Title("Tên hàng").Width(45).Hidden(!GlobalEnums.CBPP && !GlobalEnums.DMC && @Model.IsItem);
-        columns.Bound(c => c.GoodsReceiptReference).Title("Lô").Width(10);
-        columns.Bound(c => c.GoodsReceiptEntryDate).Title("Ngày").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(15).Format("{0:" + Settings.DateFormat + "}");
+        columns.Bound(c => c.BatchCode).Title("Số lô").Width(10);
+        columns.Bound(c => c.BatchEntryDate).Title("Ngày lô").HtmlAttributes(new { @class = "grid-column-center" }).HeaderHtmlAttributes(new { @style = "text-align: center" }).Width(10).Format("{0:" + Settings.DateFormat + "}");
         columns.Bound(c => c.TransferOrderRemains).Title("Tồn Lệnh").Format(Settings.kfmQuantity).Width(12).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" });
         columns.Bound(c => c.QuantityAvailables).Title("Tồn Kho").Format(Settings.kfmQuantity).Width(12).HtmlAttributes(new { @class = "grid-number-column" }).HeaderHtmlAttributes(new { @style = "text-align: right" });
 

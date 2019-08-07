@@ -288,12 +288,17 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + "                       UPDATE          FinishedProductDetails " + "\r\n";
             queryString = queryString + "                       SET             FinishedProductDetails.FinishedProductPackageID = FinishedProductPackages.FinishedProductPackageID " + "\r\n";
             queryString = queryString + "                       FROM            FinishedProductDetails INNER JOIN FinishedProductPackages ON FinishedProductDetails.FinishedProductID = @EntityID AND FinishedProductDetails.FinishedProductID = FinishedProductPackages.FinishedProductID AND FinishedProductDetails.CommodityID = FinishedProductPackages.CommodityID; " + "\r\n";
+
+            queryString = queryString + "                       INSERT INTO Batches (EntryDate, Code, FinishedProductID, FinishedProductPackageID) SELECT EntryDate, Reference + '/' + RIGHT(CAST(YEAR(EntryDate) AS nvarchar), 2) AS Code, FinishedProductID, FinishedProductPackageID FROM FinishedProductPackages WHERE FinishedProductID = @EntityID " + "\r\n";
+            queryString = queryString + "                       UPDATE FinishedProductPackages SET FinishedProductPackages.BatchID = Batches.BatchID, FinishedProductPackages.BatchEntryDate = Batches.EntryDate FROM FinishedProductPackages INNER JOIN Batches ON FinishedProductPackages.FinishedProductID = @EntityID AND FinishedProductPackages.FinishedProductPackageID = Batches.FinishedProductPackageID " + "\r\n";
+
             queryString = queryString + "                   END " + "\r\n";
 
             queryString = queryString + "               ELSE " + "\r\n";
             queryString = queryString + "                   BEGIN " + "\r\n";
             queryString = queryString + "                       UPDATE          FinishedProductDetails SET FinishedProductPackageID = NULL WHERE FinishedProductID = @EntityID ; " + "\r\n";
             queryString = queryString + "                       DELETE FROM     FinishedProductPackages WHERE FinishedProductID = @EntityID ; " + "\r\n";
+            queryString = queryString + "                       DELETE FROM     Batches WHERE FinishedProductID = @EntityID ; " + "\r\n";
             queryString = queryString + "                   END " + "\r\n";
             #endregion INIT FinishedProductPackages
 

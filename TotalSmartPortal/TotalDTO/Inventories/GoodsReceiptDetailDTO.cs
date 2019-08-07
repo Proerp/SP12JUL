@@ -149,7 +149,7 @@ namespace TotalDTO.Inventories
 
         public int LabID { get; set; }
         public int BatchID { get; set; }
-        [Display(Name = "Ngày lô hàng")]
+        [Display(Name = "Ngày lô")]
         [UIHint("DateTimeReadonly")]
         public Nullable<System.DateTime> BatchEntryDate { get; set; }
 
@@ -176,6 +176,7 @@ namespace TotalDTO.Inventories
         public string SealCode { get; set; }
         [Display(Name = "Số lô")]
         [UIHint("StringReadonly")]
+        [Required(ErrorMessage = "Vui lòng kiểm tra số lô")]
         public string BatchCode { get; set; }
         [Display(Name = "Mã lab")]
         [UIHint("StringReadonly")]

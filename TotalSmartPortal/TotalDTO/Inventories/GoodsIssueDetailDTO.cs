@@ -72,7 +72,7 @@ namespace TotalDTO.Inventories
         public Nullable<System.DateTime> ExpiryDate { get; set; }
 
         public int BatchID { get; set; }
-        [Display(Name = "Ngày lô hàng")]
+        [Display(Name = "Ngày lô")]
         [UIHint("DateTimeReadonly")]
         public System.DateTime BatchEntryDate { get; set; }
 

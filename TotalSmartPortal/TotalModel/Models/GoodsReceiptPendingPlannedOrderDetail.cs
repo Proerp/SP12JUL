@@ -29,5 +29,6 @@ namespace TotalModel.Models
         public string SemifinishedProductReferences { get; set; }
         public int BatchID { get; set; }
         public System.DateTime BatchEntryDate { get; set; }
+        public string BatchCode { get; set; }
     }
 }

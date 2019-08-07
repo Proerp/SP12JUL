@@ -21,7 +21,7 @@ namespace TotalDTO.Inventories
         public Nullable<int> GoodsReceiptID { get; set; }
         public Nullable<int> GoodsReceiptDetailID { get; set; }
 
-        [Display(Name = "Lô SX")]
+        [Display(Name = "PNK")]
         [UIHint("StringReadonly")]
         public string GoodsReceiptReference { get; set; }
         [Display(Name = "Mã NK")]
@@ -32,11 +32,11 @@ namespace TotalDTO.Inventories
         public Nullable<System.DateTime> GoodsReceiptEntryDate { get; set; }
 
         public int BatchID { get; set; }
-        [Display(Name = "Ngày lô hàng")]
+        [Display(Name = "Ngày lô")]
         [UIHint("DateTimeReadonly")]
         public System.DateTime BatchEntryDate { get; set; }
 
-        [Display(Name = "Lô")]
+        [Display(Name = "Số lô")]
         [UIHint("StringReadonly")]
         public string BatchCode { get; set; }
         [Display(Name = "Lab")]

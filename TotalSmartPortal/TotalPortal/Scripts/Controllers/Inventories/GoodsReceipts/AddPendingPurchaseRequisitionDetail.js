@@ -112,7 +112,7 @@ function handleOKEvent(goodsReceiptGridDataSource, pendingPurchaseRequisitionDet
         dataRow.LabID = -1;
 
         dataRow.Barcode = null;
-        dataRow.BatchCode = null;
+        dataRow.BatchCode = purchaseRequisitionGridDataItem.BatchCode;
         dataRow.SealCode = null;
         dataRow.LabCode = null;
 

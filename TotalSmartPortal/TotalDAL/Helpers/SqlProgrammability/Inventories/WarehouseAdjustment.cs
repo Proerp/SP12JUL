@@ -112,6 +112,17 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
             queryString = queryString + "                   DECLARE     @msg NVARCHAR(300) = N'Phiếu giao hàng đã hủy, hoặc chưa duyệt' ; " + "\r\n";
             queryString = queryString + "                   THROW       61001,  @msg, 1; " + "\r\n";
             queryString = queryString + "               END " + "\r\n";
+
+
+            queryString = queryString + "           IF (@SaveRelativeOption = 1) " + "\r\n";
+            queryString = queryString + "               IF ((SELECT HasPositiveLine FROM WarehouseAdjustments WHERE WarehouseAdjustmentID = @EntityID) = 1) " + "\r\n";
+            queryString = queryString + "                   BEGIN " + "\r\n";
+            queryString = queryString + "                       INSERT INTO Batches (EntryDate, Code, WarehouseAdjustmentID, WarehouseAdjustmentDetailID) SELECT EntryDate, Reference + '/' + RIGHT(CAST(YEAR(EntryDate) AS nvarchar), 2) AS Code, WarehouseAdjustmentID, WarehouseAdjustmentDetailID FROM WarehouseAdjustmentDetails WHERE WarehouseAdjustmentID = @EntityID AND Quantity > 0 AND WarehouseAdjustmentDetailID NOT IN (SELECT WarehouseAdjustmentDetailID FROM Batches WHERE WarehouseAdjustmentID = @EntityID) " + "\r\n";
+            queryString = queryString + "                       UPDATE Batches SET Batches.EntryDate = WarehouseAdjustmentDetails.EntryDate, Batches.Code = WarehouseAdjustmentDetails.Reference + '/' + RIGHT(CAST(YEAR(WarehouseAdjustmentDetails.EntryDate) AS nvarchar), 2) FROM WarehouseAdjustmentDetails INNER JOIN Batches ON WarehouseAdjustmentDetails.WarehouseAdjustmentID = @EntityID AND WarehouseAdjustmentDetails.Quantity > 0 AND WarehouseAdjustmentDetails.WarehouseAdjustmentDetailID = Batches.WarehouseAdjustmentDetailID " + "\r\n";
+            queryString = queryString + "                       UPDATE WarehouseAdjustmentDetails SET WarehouseAdjustmentDetails.BatchID = Batches.BatchID, WarehouseAdjustmentDetails.BatchEntryDate = Batches.EntryDate FROM WarehouseAdjustmentDetails INNER JOIN Batches ON WarehouseAdjustmentDetails.WarehouseAdjustmentID = @EntityID AND WarehouseAdjustmentDetails.Quantity > 0 AND WarehouseAdjustmentDetails.WarehouseAdjustmentDetailID = Batches.WarehouseAdjustmentDetailID " + "\r\n";
+            queryString = queryString + "                   END " + "\r\n";
+
+
             queryString = queryString + "       END " + "\r\n";
 
             this.totalSmartPortalEntities.CreateStoredProcedure("WarehouseAdjustmentSaveRelative", queryString);

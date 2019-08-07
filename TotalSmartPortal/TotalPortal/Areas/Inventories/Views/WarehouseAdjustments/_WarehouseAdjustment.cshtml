@@ -78,11 +78,11 @@
 
                     columns.Bound(p => p.CommodityID).DisplayNameTitle().Filterable(false).Hidden()
                         .ClientTemplate("#= CommodityID #" + "<input type='hidden' name='WarehouseAdjustmentViewDetails[#= index(data) #].CommodityID' value='#= CommodityID #' />");
-                    columns.Bound(p => p.CommodityCode).DisplayNameTitle().Filterable(false).Width(GlobalEnums.CBPP ? 120 : 220).EditorTemplateName(@Model.NegativeOnly ? "StringReadonly" : "AutoCompletes/CommodityBase")
+                    columns.Bound(p => p.CommodityCode).DisplayNameTitle().Filterable(false).Width(GlobalEnums.CBPP ? 120 : 200).EditorTemplateName(@Model.NegativeOnly ? "StringReadonly" : "AutoCompletes/CommodityBase")
                         .ClientFooterTemplate("TC (#= kendo.format('{0:n0}', count) # dòng)")
                         .ClientTemplate("<div> #= CommodityCode #</div>" + "<input type='hidden' name='WarehouseAdjustmentViewDetails[#= index(data) #].CommodityCode' value='#= CommodityCode #' />");
 
-                    columns.Bound(p => p.CommodityName).DisplayNameTitle().Filterable(false).Width(200).Hidden(GlobalEnums.CBPP)
+                    columns.Bound(p => p.CommodityName).DisplayNameTitle().Filterable(false).Width(238).Hidden(GlobalEnums.CBPP)
                         .ClientTemplate("#= CommodityName #" + "<input type='hidden' name='WarehouseAdjustmentViewDetails[#= index(data) #].CommodityName' value='#= CommodityName #' />");
 
                     columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Filterable(false).Hidden()
@@ -96,7 +96,7 @@
 
                     columns.Bound(p => p.GoodsReceiptCode).DisplayNameTitle().Filterable(false).Width(60).Hidden()
                         .ClientTemplate("#= (GoodsReceiptCode == null)? '' : GoodsReceiptCode #" + "<input type='hidden' name='WarehouseAdjustmentViewDetails[#= index(data) #].GoodsReceiptCode' value='#= (GoodsReceiptCode == null) ? '' : GoodsReceiptCode #' />");
-                    columns.Bound(p => p.GoodsReceiptReference).DisplayNameTitle().Filterable(false).Width(60).Hidden(GlobalEnums.CBPP)
+                    columns.Bound(p => p.GoodsReceiptReference).DisplayNameTitle().Filterable(false).Width(60).Hidden()
                         .ClientTemplate("#= (GoodsReceiptReference == null)? '' : GoodsReceiptReference #" + "<input type='hidden' name='WarehouseAdjustmentViewDetails[#= index(data) #].GoodsReceiptReference' value='#= (GoodsReceiptReference == null) ? '' : GoodsReceiptReference #' />");
                     columns.Bound(p => p.GoodsReceiptEntryDate).DisplayNameTitle().Filterable(false).Width(80).Hidden(GlobalEnums.CBPP)
                         .Format("{0:" + @Settings.DateFormat + "}")
@@ -105,7 +105,7 @@
 
                     columns.Bound(p => p.BatchID).DisplayNameTitle().Filterable(false).Hidden()
                         .ClientTemplate("#= BatchID #" + "<input type='hidden' name='WarehouseAdjustmentViewDetails[#= index(data) #].BatchID' value='#= BatchID #' />");
-                    columns.Bound(p => p.BatchCode).DisplayNameTitle().Filterable(false).Width(60).Hidden(!GlobalEnums.CBPP)
+                    columns.Bound(p => p.BatchCode).DisplayNameTitle().Filterable(false).Width(60)
                         .ClientTemplate("#= (BatchCode == null)? '' : BatchCode #" + "<input type='hidden' name='WarehouseAdjustmentViewDetails[#= index(data) #].BatchCode' value='#= (BatchCode == null) ? '' : BatchCode #' />");
                     columns.Bound(p => p.BatchEntryDate).DisplayNameTitle().Filterable(false).Width(80)
                         .Format("{0:" + @Settings.DateFormat + "}")
@@ -138,7 +138,7 @@
                         .ClientFooterTemplate("#= kendo.format('" + Settings.kfmQuantity + "', sum) #")
                         .ClientTemplate("#= kendo.format('" + Settings.kfmQuantity + "', QuantityNegative) #" + "<input type='hidden' name='WarehouseAdjustmentViewDetails[#= index(data) #].QuantityNegative' value='#= QuantityNegative #' />");
 
-                    columns.Bound(p => p.Remarks).DisplayNameTitle().Filterable(false).Width(180)
+                    columns.Bound(p => p.Remarks).DisplayNameTitle().Filterable(false).Width(125)
                         .ClientTemplate("#= (Remarks == null)? '' : Remarks #" + "<input type='hidden' name='WarehouseAdjustmentViewDetails[#= index(data) #].Remarks' value='#= (Remarks == null) ? '' : Remarks #' />");
 
 

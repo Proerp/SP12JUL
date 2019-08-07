@@ -26,5 +26,6 @@ namespace TotalModel.Models
         public decimal Quantity { get; set; }
         public string Remarks { get; set; }
         public Nullable<bool> IsSelected { get; set; }
+        public string BatchCode { get; set; }
     }
 }
