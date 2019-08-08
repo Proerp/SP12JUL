@@ -441,7 +441,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Inventories
 
             queryString = queryString + "       SELECT          MaterialIssues.MaterialIssueID, MaterialIssues.EntryDate AS MaterialIssueEntryDate, MaterialIssues.Reference, Workshifts.Code AS WorkshiftCode, ProductionLines.Code AS ProductionLineCode, " + "\r\n";
             queryString = queryString + "                       FirmOrders.EntryDate AS FirmOrderEntryDate, FirmOrders.Reference AS FirmOrderReference, FirmOrders.Code AS FirmOrderCode, FirmOrders.Specs, FirmOrders.Specification, FirmOrders.TotalQuantity AS FirmOrderTotalQuantity, Customers.Name AS CustomerName, " + "\r\n";
-            queryString = queryString + "                       Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, MaterialIssueDetails.BatchEntryDate, MaterialIssueDetails.Quantity, ISNULL(FirmOrders.Description, '') + ' ' + ISNULL(MaterialIssues.Description, '') AS Description " + "\r\n";
+            queryString = queryString + "                       Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, MaterialIssueDetails.BatchCode, MaterialIssueDetails.BatchEntryDate, MaterialIssueDetails.Quantity, ISNULL(FirmOrders.Description, '') + ' ' + ISNULL(MaterialIssues.Description, '') AS Description " + "\r\n";
 
             queryString = queryString + "       FROM            MaterialIssues " + "\r\n";
             queryString = queryString + "                       INNER JOIN MaterialIssueDetails ON MaterialIssues.MaterialIssueID = @LocalMaterialIssueID AND MaterialIssues.MaterialIssueID = MaterialIssueDetails.MaterialIssueID " + "\r\n";

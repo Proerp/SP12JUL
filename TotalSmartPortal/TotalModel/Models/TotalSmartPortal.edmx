@@ -19745,6 +19745,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
           <Property Type="Decimal" Name="Quantity" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="Remarks" Nullable="true" MaxLength="100" />
           <Property Type="Boolean" Name="IsSelected" Nullable="true" />
+          <Property Type="String" Name="BatchCode" Nullable="false" MaxLength="60" />
         </ComplexType>
         <ComplexType Name="CommodityIndex">
           <Property Type="String" Name="Code" Nullable="false" MaxLength="50" />
@@ -30822,6 +30823,7 @@ warning 6035: The relationship 'FK_SemifinishedProducts_AspNetUsers2' has column
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="IsSelected" ColumnName="IsSelected" />
+                <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

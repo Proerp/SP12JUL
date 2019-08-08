@@ -84,6 +84,7 @@ namespace TotalService.Inventories
                             WarehouseAdjustmentTypeID = pendingWarehouseAdjustmentDetail.WarehouseAdjustmentTypeID,
 
                             BatchID = pendingWarehouseAdjustmentDetail.BatchID,
+                            BatchCode = pendingWarehouseAdjustmentDetail.BatchCode,
                             BatchEntryDate = pendingWarehouseAdjustmentDetail.BatchEntryDate,
 
                             CommodityID = pendingWarehouseAdjustmentDetail.CommodityID,
