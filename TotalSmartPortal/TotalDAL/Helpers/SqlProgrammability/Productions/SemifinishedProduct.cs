@@ -277,7 +277,6 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
 
             queryString = queryString + "    END " + "\r\n";
 
-
             this.totalSmartPortalEntities.CreateStoredProcedure("SemifinishedProductSheet", queryString);
         }
 
